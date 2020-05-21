@@ -56,5 +56,6 @@ setup(
     ],
     extras_require={
         'dev':  ['prospector[with_pyroma]', 'yapf', 'isort'],
+        'test':  ['pytest', 'ytest-cov', 'pycodestyle'],
     }
 )
