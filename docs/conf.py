@@ -18,6 +18,7 @@
 #
 import os
 import sys
+import datetime
 
 import tutorials
 
@@ -34,7 +35,14 @@ sys.path.insert(0, os.path.abspath(os.path.join(here, '..')))
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.napoleon']
+extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx.ext.intersphinx',
+    'sphinx.ext.mathjax',
+    'sphinx.ext.viewcode',
+    'sphinx.ext.autosummary',
+    'sphinx.ext.napoleon'
+]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -49,9 +57,10 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Tutorials'
-copyright = u'2020, '
-author = u"Juliette Zito"
+_year = str(datetime.datetime.now().year)
+author = tutorials.__author__
+copyright = f'{_year}, {author}'
+project = tutorials.__name__.capitalize()
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -67,7 +76,7 @@ release = tutorials.__version__
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = 'en'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -121,7 +130,7 @@ html_sidebars = {
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'tutorials_doc'
+htmlhelp_basename = f'{project}_doc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -147,20 +156,25 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
-latex_documents = [
-    (master_doc, 'tutorials.tex', u'Tutorials Documentation',
-     u"Juliette Zito", 'manual'),
-]
+latex_documents = [(
+    master_doc,
+    f'{project}.tex',
+    f'{project} Documentation',
+    author, 'manual'
+)]
 
 
 # -- Options for manual page output ---------------------------------------
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    (master_doc, 'tutorials', u'Tutorials Documentation',
-     [author], 1)
-]
+man_pages = [(
+    master_doc,
+    project,
+    f'{project} Documentation',
+    [author],
+    1
+)]
 
 
 # -- Options for Texinfo output -------------------------------------------
@@ -168,8 +182,12 @@ man_pages = [
 # Grouping the document tree into Texinfo files. List of tuples
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
-texinfo_documents = [
-    (master_doc, 'tutorials', u'Tutorials Documentation',
-     author, 'tutorials', "A collection of tutorials for the analysis of nanocrystals.",
-     'Miscellaneous'),
-]
+texinfo_documents = [(
+    master_doc,
+    project,
+    f'{project} Documentation',
+    author,
+    project,
+    "A collection of tutorials for the analysis of nanocrystals.",
+    "Documentation"
+)]
