@@ -1,9 +1,14 @@
 name: Build
 
-on: [push, pull_request]
+on:
+  # Trigger the workflow on pushes to the master or (any) pull request
+  push:
+    branches:
+      - master
+  pull_request:
+
 
 jobs:
-
   build:
     name: Build for (${{ matrix.python-version }}, ${{ matrix.os }})
     runs-on: ${{ matrix.os }}
