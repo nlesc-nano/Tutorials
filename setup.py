@@ -21,7 +21,7 @@ setup(
     long_description=readme + '\n\n',
     author="Juliette Zito",
     author_email='juliette.zito@hotmail.fr',
-    url='https://github.com/juliette1996/tutorials',
+    url='https://github.com/nlesc-nano/Tutorials',
     packages=[
         'tutorials',
     ],
@@ -31,31 +31,25 @@ setup(
     keywords='tutorials',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
-        'Intended Audience :: Developers',
+        'Intended Audience :: Science/Research',
         'License :: OSI Approved :: Apache Software License',
         'Natural Language :: English',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Topic :: Documentation :: Sphinx',
+        'Topic :: Scientific/Engineering :: Chemistry'
     ],
     test_suite='tests',
     install_requires=[],  # FIXME: add your package's dependencies to this list
-    setup_requires=[
-        # dependency for `python setup.py test`
-        'pytest-runner',
-        # dependencies for `python setup.py build_sphinx`
-        'sphinx',
-        'sphinx_rtd_theme',
-        'recommonmark'
-    ],
     tests_require=[
         'pytest',
         'pytest-cov',
         'pycodestyle',
     ],
     extras_require={
-        'dev':  ['prospector[with_pyroma]', 'yapf', 'isort'],
+        'docs':  ['sphinx', 'sphinx_rtd_theme'],
         'test':  ['pytest', 'pytest-cov', 'pycodestyle'],
     }
 )
