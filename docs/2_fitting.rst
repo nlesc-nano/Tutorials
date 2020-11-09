@@ -115,6 +115,7 @@ and the Lennard-Jones potential (epsilon_ & sigma_). Let's have a look at the re
                 - '-1.5 < Br < 0'
 
     Here, the to-be optimized charges are those of the nanocrystal core ions (Cs, Pb, Br) and of the ligand anchoring group atoms (carboxylate group of the acetate, i.e. C2O3 and O2D2). Their initial values are obtained:
+
     * For the nanocrystal core ions, from a previous fitting procedure. You can simply use the most stable oxidation state of each ion if you don't have a better starting point.
     * For the anchoring group of the ligand, by adjusting the charges found in the .rtf file of the ligand to have an overall charge neutral system.
     In this case, the core ions charges are constrained to a certain range in order to keep the correct oxidation state (for example cations constrained to values higher than 0).
