@@ -3,18 +3,16 @@
 Forcefield Optimization
 =======================
 The goal here is to obtain the classical forcefield parameters for a lead perovksite nanocrystal (NC) capped by carboxylate ligands. While these parameters are commonly available in literature for the ligands, in the QD field we need to construct our own parameters for a proper description of:
-* the ion-ion interactions inside the nanocrystal core;
-* the ligand anchoring group-core ions interactions at the nanocrystal surface.
 
-To do that, we will start from the *ab-initio* Molecular Dynamics (MD) trajectory of a 2.5 nm sided cubic CsPbBr_3 NC capped by 50% of acetate molecules (see `tutorial <https://nanotutorials.readthedocs.io/en/latest/1_build_qd.html>`_for the Quantum Dot construction).
+    * the ion-ion interactions inside the nanocrystal core;
+    * the ligand anchoring group-core ions interactions at the nanocrystal surface.
+
+To do that, we will start from an *ab-initio* Molecular Dynamics (MD) trajectory (NVT, 300K, 5ps) of a 2.5 nm sided cubic CsPbBr_3 NC capped by 50% of acetate molecules (see `tutorial <https://nanotutorials.readthedocs.io/en/latest/1_build_qd.html>`_ for the Quantum Dot construction).
 
 Before starting the fitting we invite you to read the `documentation <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo.html>`_ relative to Addaptive Rate Monte Carlo (ARMC) in Auto-FOX.
 
-First, let's build the .yaml file containing our ARMC settings.
-The file is composed of the following sections.
+First, let's have a look at the .yaml file containing our ARMC settings.
 
-The param block
----------------
 .. code:: yaml
 
     param:
@@ -70,7 +68,33 @@ The param block
                   HGA3 Pb: 0.270
                   HGA3 Br: 0.235
 
+    psf:
+        rtf_file: acetate.rtf
+        ligand_atoms: [C, O, H]
 
+    pes:
+        rdf:
+            func: FOX.MultiMolecule.init_rdf
+            kwargs:
+                atom_subset: [Cs, Pb, Br, O2D2]
+
+    job:
+        molecule: last5000.xyz
+
+        geometry_opt:
+            template: qmflows.templates.geometry.specific.cp2k_mm
+            settings:
+                prm: acetate.prm
+        md:
+            template: qmflows.templates.md.specific.cp2k_mm
+            settings:
+                prm: acetate.prm
+
+
+Now, let's see in detail the contents of each section of our input file.
+
+The param block
+---------------
 The ``"param"`` key contains all user-specified features concerning the to-be optimized parameters for the Coulomb potential (the charge_)
 and the Lennard-Jones potential (epsilon_ & sigma_). Let's have a look at the relative sub-blocks:
 
@@ -107,7 +131,8 @@ Let's move to the :code:`lennard_jones` block.
               unit: kjmol
               frozen:
                   guess: uff
-    In our fitting the epsilon parameters treated as constants rather than to-be optimized variables (all frozen) and all the values are guessed using the `uff <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo.html#parameter-guessing>`_ procedure. Specifying the epsilon parameters (even without optimizing them) helps achieving a more accurate fitting.
+    In our fitting the epsilon parameters treated as constants rather than to-be optimized variables (all frozen) and all the values are guessed using
+    the `uff <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo.html#parameter-guessing>`_ procedure. Specifying the epsilon parameters (even without optimizing them) helps achieving a more accurate fitting.
 
     .. code:: yaml
 
@@ -149,6 +174,7 @@ Let's move to the :code:`lennard_jones` block.
     Here we need to optimize the sigma parameters for the all pair interactions of interest (provided with the corresponding `atom pairs <https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/MM/FORCEFIELD/NONBONDED/LENNARD-JONES.html#list_ATOMS>`_): 
     the ion-ion interactions inside the nanocrystal core (eg. Cs-Cs) and the acetate anchoring group-core ions interactions (eg. O2D2-Cs).
     The initial parameters for these pairs are obtained from the DFT trajectory by mean of a small python script:
+
     .. code:: python
 
         >>> import pandas as pd
@@ -169,6 +195,15 @@ Let's move to the :code:`lennard_jones` block.
     Finally, we specified the sigma values for the acetate methyl group - core ions interactions (eg. C331 Cs) in the frozen components 
     (so without optimizing them), again to make the fitting procedure smoother. The corresponding frozen values are taken from the previous script.
 
+The psf block
+-------------
+    .. code:: yaml
+
+    psf:
+           rtf_file: acetate.rtf
+           ligand_atoms: [C, O, H]
+
+This 
 
 .. _charge: https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/MM/FORCEFIELD/CHARGE.html#list_CHARGE
 .. _epsilon: https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/MM/FORCEFIELD/NONBONDED/LENNARD-JONES.html#list_EPSILON
