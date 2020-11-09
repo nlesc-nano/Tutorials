@@ -22,7 +22,7 @@
 (Customize these badges with your own links, and check https://shields.io/ or https://badgen.net/ to see which other badges are available.)
 
 .. |GitHub Badge| image:: https://img.shields.io/badge/github-repo-000.svg?logo=github&labelColor=gray&color=blue
-   :target: https://github.com/juliette1996/tutorials
+   :target: https://github.com/nlesc-nano/Tutorials.git
    :alt: GitHub Badge
 
 .. |License Badge| image:: https://img.shields.io/github/license/juliette1996/tutorials
@@ -75,7 +75,7 @@ To install tutorials, do:
 
 .. code-block:: console
 
-  git clone https://github.com/juliette1996/tutorials.git
+  git clone https://github.com/nlesc-nano/Tutorials.git
   cd tutorials
   pip install .
 
