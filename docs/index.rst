@@ -8,13 +8,6 @@ Welcome to Tutorials's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   includeme
+   0_documentation
