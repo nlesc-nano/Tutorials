@@ -191,9 +191,10 @@ Let's move to the :code:`lennard_jones` block.
         >>> param: pd.DataFrame = estimate_lj(rdf)
 
         >>> print(param)
-    
+
     The script provides the sigma values in Angstrom so we divided them by 10 to obtain the corresponding values in nm.
     In order to avoid atoms getting too close one from each other, we limited the sigma parameters with a miminal value (choosen to be 0.02nm lower than the initial value).
+    Finally, we specified the sigma values for the acetate methyl group - core ions interactions, again to make the fitting procedure smoother.
 
 
 
