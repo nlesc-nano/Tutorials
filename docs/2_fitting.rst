@@ -2,38 +2,21 @@
 
 Forcefield Optimization
 =======================
-The goal here is to fit a classical potential energy surface (PES) to an
-*ab-initio* PES by optimizing the classical forcefield parameters.
-This forcefield optimization is conducted using the Addaptive Rate Monte
-Carlo (ARMC) method described by S. Cosseddu *et al* in
-*J. Chem. Theory Comput.*, **2017**, *13*, 297–308.
+The goal here is to obtain the classical forcefield parameters for a double perovksite nanocrystal (NC) capped by carboxylate ligands.
+To do that, we will start from the *ab-initio* Molecular Dynamics (MD) trajectory of a 3nm sided cubic Cs2AgInCl6 NC capped by 50% of acetate molecules (see tutorial for Quantum Dot construction).
 
-You need to start from an *ab-initio* Molecular Dynamics (MD) trajectory.
-In this tutorial, we will start from the DFT .... 
+Before starting the fitting we invite you to read the documentation relative to Addaptive Rate Monte Carlo (ARMC) in Auto-FOX.
 
-Then, we are going to build a .yaml file with the ARMC settings containing the following sections.
+First, let's build the .yaml file with our ARMC settings.
+The file is composed of the following sections.
 
 The param block
 ---------------
-The :attr:`param<param.block>` key in the .yaml input contains all user-specified
-to-be optimized parameters, i.e. the charge (Coulomb potential), and the epsilon and sigma parameters (Lennard-Jones potential).
-
-There are three critical (and two optional) components to the ``"param"`` block:
-
-    * The key of each block (charge_, epsilon_ & sigma_).
-    * The ``"keys"`` sub-block, which points to the section path in the CP2K settings (*e.g.* `['input', 'force_eval', 'mm', 'forcefield', 'charge'] <https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/MM/FORCEFIELD/CHARGE.html>`_).
-    * The sub-blocks containing either singular atoms_ or `atom pairs <https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/MM/FORCEFIELD/NONBONDED/LENNARD-JONES.html#list_ATOMS>`_.
-
-Besides the three above-mentioned mandatory components, one can (optionally) supply the unit of the parameter and/or constrain its value to a certain range. When supplying units, it is the responsibility of the user to ensure the units are supported by CP2K. Furthermore, parameter constraints are, as of the moment, limited to specifying minimum and/or maximum values (e.g. 0 < Cs < 2). Aditionally, one can add a "frozen" component, where the specified parameters will be treated as constants rather than to-be optimized variables.
-
-Here is the ``"param"`` block for the fitting of our double perovskite nanocrystal capped with acetate ligands.
-
 .. code:: yaml
 
     param:
         charge:
             param: charge
-            keys: [input, force_eval, mm, forcefield, charge]
             Cs: 1.0
             Ag: 1.0
             In: 3.0
@@ -48,14 +31,172 @@ Here is the ``"param"`` block for the fitting of our double perovskite nanocryst
         lennard_jones:
             - param: epsilon
               unit: kjmol
-              Cs Cs: 0.1882
-              Cs Pb: 0.7227
-              Pb Pb: 2.7740
-            - unit: nm
-              param: sigma
-              constraints: 'Cs Cs == Pb Pb'
-              Cs Cs: 0.60
-              Cs Pb: 0.50
-              Pb Pb: 0.60
+              frozen:
+                  guess: uff
+            - param: sigma
+              unit: nm
+              Cs Cs:  0.385
+              Cs Ag:  0.310
+              Cs In:  0.370
+              Cs Cl:  0.290
+              Ag Ag:  0.635
+              Ag In:  0.390
+              Ag Cl:  0.215
+              In In:  0.685
+              In Cl:  0.215
+              Cl Cl:  0.295
+              C2O3 Cs: 0.295
+              C2O3 Ag: 0.255
+              C2O3 In: 0.240
+              C2O3 Cl: 0.300
+              O2D2 Cs: 0.245
+              O2D2 Ag: 0.190
+              O2D2 In: 0.195
+              O2D2 Cl: 0.275
+              constraints:
+                  - 'Cs Cs   > 0.365'
+                  - 'Cs Ag   > 0.290'
+                  - 'Cs In   > 0.350'
+                  - 'Cs Cl   > 0.270'
+                  - 'Ag Ag   > 0.615'
+                  - 'Ag In   > 0.370'
+                  - 'Ag Cl   > 0.195'
+                  - 'In In   > 0.665'
+                  - 'In Cl   > 0.195'
+                  - 'Cl Cl   > 0.275'
+                  - 'C2O3 Cs > 0.275'
+                  - 'C2O3 Ag > 0.235'
+                  - 'C2O3 In > 0.220'
+                  - 'C2O3 Cl > 0.280'
+                  - 'O2D2 Cs > 0.225'
+                  - 'O2D2 Ag > 0.170'
+                  - 'O2D2 In > 0.175'
+                  - 'O2D2 Cl > 0.255'
+              frozen:
+                 C331 Cs: 0.295
+                 C331 Ag: 0.255
+                 C331 In: 0.240
+                 C331 Cl: 0.300
+                 HGA3 Cs: 0.245
+                 HGA3 Ag: 0.215
+                 HGA3 In: 0.260
+                 HGA3 Cl: 0.210
+
+The ``"param"`` key contains all user-specified features for the to-be optimized parameters for the Coulomb potential (the charge_) and the Lennard-Jones potential
+(epsilon_ & sigma_).
+Let's have a look at the relative sub-blocks:
+
+1.  Coulomb potential
+
+    .. code:: yaml
+
+            param: charge
+            Cs: 1.0
+            Ag: 1.0
+            In: 3.0
+            Cl: -1.0
+            C2O3:  0.247973
+            O2D2: -0.5739865
+            constraints:
+                - '0 < Cs < 1.5'
+                - '0.2 < Ag < 1.7'
+                - '1.2 < In < 3.5'
+                - '-1.5 < Cl < 0'
+
+    The initial parameters for the charges are simply:
+    * for the nanocrystal core ions (Cs, Ag, In, Cl), the most stable oxidation state;
+    * for the anchoring group of the ligand (COO group of the acetate, i.e. C2O3 and O2D2), the charges are choosen in order to have an overall charge neutral system.
+    In this case, the core ions charges are constrained to a certain range in order to keep the correct oxidation state (for example In is constrained to values higher
+    than 1 to keep the oxidation number +3 it has in a double perovskite). However the constraints component is optional.
+
+Let's move to the :code:`lennard_jones` block.
+
+2.  Lennard-Jones potential
+    This sub-block is divided itself in two components.
+
+    .. code:: yaml
+
+            - param: epsilon
+              unit: kjmol
+              frozen:
+                  guess: uff
+    In our fitting the epsilon parameters treated as constants rather than to-be optimized variables (all frozen) and all the values are guessed using the `uff <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo.html#parameter-guessing>`_ procedure. Specifying the epsilon parameters (even without optimizing them) helps in a more accurate
+    fitting procedure.
+
+    .. code:: yaml
+
+            - param: sigma
+              unit: nm
+              Cs Cs:  0.385
+              Cs Ag:  0.310
+              Cs In:  0.370
+              Cs Cl:  0.290
+              Ag Ag:  0.635
+              Ag In:  0.390
+              Ag Cl:  0.215
+              In In:  0.685
+              In Cl:  0.215
+              Cl Cl:  0.295
+              C2O3 Cs: 0.295
+              C2O3 Ag: 0.255
+              C2O3 In: 0.240
+              C2O3 Cl: 0.300
+              O2D2 Cs: 0.245
+              O2D2 Ag: 0.190
+              O2D2 In: 0.195
+              O2D2 Cl: 0.275
+              constraints:
+                  - 'Cs Cs   > 0.365'
+                  - 'Cs Ag   > 0.290'
+                  - 'Cs In   > 0.350'
+                  - 'Cs Cl   > 0.270'
+                  - 'Ag Ag   > 0.615'
+                  - 'Ag In   > 0.370'
+                  - 'Ag Cl   > 0.195'
+                  - 'In In   > 0.665'
+                  - 'In Cl   > 0.195'
+                  - 'Cl Cl   > 0.275'
+                  - 'C2O3 Cs > 0.275'
+                  - 'C2O3 Ag > 0.235'
+                  - 'C2O3 In > 0.220'
+                  - 'C2O3 Cl > 0.280'
+                  - 'O2D2 Cs > 0.225'
+                  - 'O2D2 Ag > 0.170'
+                  - 'O2D2 In > 0.175'
+                  - 'O2D2 Cl > 0.255'
+              frozen:
+                 C331 Cs: 0.295
+                 C331 Ag: 0.255
+                 C331 In: 0.240
+                 C331 Cl: 0.300
+                 HGA3 Cs: 0.245
+                 HGA3 Ag: 0.215
+                 HGA3 In: 0.260
+                 HGA3 Cl: 0.210
+
+    Here we need to optimize the sigma parameters for the all pair interactions of interest (provided with the corresponding `atom pairs <https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/MM/FORCEFIELD/NONBONDED/LENNARD-JONES.html#list_ATOMS>`_): 
+    the ion-ion interactions inside the nanocrystal core (eg. Cs-Cs) and the acetate anchoring group-core ions interactions (eg. O2D2-Cs).
+    The initial parameters for these pairs are obtained from the DFT trajectory by mean of a small python script:
+
+    .. code:: python
+
+        >>> import pandas as pd
+        >>> from FOX import MultiMolecule, example_xyz, estimate_lj
+
+        >>> xyz_file: str = 'qmworks-cp2k-pos-1_RUN.xyz' # path of DFT trajectory
+        >>> atom_subset = ['Cs', 'Ag', 'In', 'Cl', 'C', 'O'] # core ions and acetate anchoring group
+
+        >>> mol = MultiMolecule.from_xyz(xyz_file)
+        >>> rdf: pd.DataFrame = mol.init_rdf(atom_subset=atom_subset)
+        >>> param: pd.DataFrame = estimate_lj(rdf)
+
+        >>> print(param)
+    
+    The script provides the sigma values in Angstrom so we divided them by 10 to obtain the corresponding values in nm.
+    In order to avoid atoms getting too close one from each other, we limited the sigma parameters with a miminal value (choosen to be 0.02nm lower than the initial value).
 
 
+
+.. _charge: https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/MM/FORCEFIELD/CHARGE.html#list_CHARGE
+.. _epsilon: https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/MM/FORCEFIELD/NONBONDED/LENNARD-JONES.html#list_EPSILON
+.. _sigma: https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/MM/FORCEFIELD/NONBONDED/LENNARD-JONES.html#list_SIGMA
