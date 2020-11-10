@@ -9,7 +9,7 @@ The goal here is to obtain the classical forcefield parameters for a lead perovk
 
 To do that, we will start from an *ab-initio* Molecular Dynamics (MD) trajectory (NVT, 300K, 5ps) of a 2.5 nm sided cubic CsPbBr_3 NC capped by 50% of acetate molecules (see `tutorial <https://nanotutorials.readthedocs.io/en/latest/1_build_qd.html>`_ for the Quantum Dot construction).
 
-Before starting the fitting we invite you to read the `documentation <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo.html>`_ relative to Addaptive Rate Monte Carlo (ARMC) in Auto-FOX.
+Before starting the fitting we invite you to read the `documentation <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo.html>`_ relative to Adaptive Rate Monte Carlo (ARMC) in Auto-FOX.
 
 First, let's have a look at the .yaml file containing our ARMC settings.
 
@@ -124,7 +124,7 @@ Let's move to the :code:`lennard_jones` block.
 
 2.  Lennard-Jones potential
 
-    This sub-block is divided itself in two components.
+    This sub-block is divided itself in two components: epsilon_ and sigma_. Let's have a look at them:
 
     .. code:: yaml
 
@@ -174,7 +174,7 @@ Let's move to the :code:`lennard_jones` block.
 
     Here we need to optimize the sigma parameters for the all pair interactions of interest (provided with the corresponding `atom pairs <https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/MM/FORCEFIELD/NONBONDED/LENNARD-JONES.html#list_ATOMS>`_): 
     the ion-ion interactions inside the nanocrystal core (eg. Cs-Cs) and the acetate anchoring group-core ions interactions (eg. O2D2-Cs).
-    The initial parameters for these pairs are obtained from the DFT trajectory by mean of a small python script:
+    The initial parameters for these pairs are obtained from the DFT trajectory by means of a small python script:
 
     .. code:: python
 
@@ -192,10 +192,11 @@ Let's move to the :code:`lennard_jones` block.
 
     The script provides the sigma values in Angstrom so we divided them by 10 to obtain the corresponding values in nm.
     In order to avoid atoms getting too close one from each other, we constrained the sigma parameters to be higher than a miminal value
-    (choosen as 0.02 nm lower than the initial value).
-    Finally, we specified the sigma values for the acetate methyl group - core ions interactions (eg. C331 Cs) in the frozen components 
-    (so without optimizing them), again to make the fitting procedure smoother. The corresponding frozen values are taken from the previous script.
-
+   (choosen to be exactly 0.02 nm lower than the initial value).
+    Finally, in the ``"frozen"`` subsection,  we specified the sigma values for the acetate methyl group - core ions interactions (eg. C331 Cs) as frozen components 
+    (so without optimizing them). Similarly to the to-be optimized sigmas, the corresponding frozen values are taken from the output of the python script shown above. 
+    Once again, this specification results in a smoother fitting procedure.
+    
 The psf block
 -------------
     .. code:: yaml
