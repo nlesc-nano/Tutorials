@@ -190,12 +190,12 @@ Let's move to the :code:`lennard_jones` block.
 
         >>> print(param)
 
-    The script provides the sigma values in Angstrom so we divided them by 10 to obtain the corresponding values in nm.
-    In order to avoid atoms getting too close one from each other, we constrained the sigma parameters to be higher than a miminal value
-   (choosen to be exactly 0.02 nm lower than the initial value).
-    Finally, in the ``"frozen"`` subsection,  we specified the sigma values for the acetate methyl group - core ions interactions (eg. C331 Cs) as frozen components 
-    (so without optimizing them). Similarly to the to-be optimized sigmas, the corresponding frozen values are taken from the output of the python script shown above. 
-    Once again, this specification results in a smoother fitting procedure.
+
+The script provides the sigma values in Angstrom so we divided them by 10 to obtain the corresponding values in nm.
+In order to avoid atoms getting too close one from each other, we constrained the sigma parameters to be higher than a miminal value (choosen to be exactly 0.02 nm lower than the initial value).
+Finally, in the ``"frozen"`` subsection,  we specified the sigma values for the acetate methyl group - core ions interactions (eg. C331 Cs) as frozen components 
+(so without optimizing them). Similarly to the to-be optimized sigmas, the corresponding frozen values are taken from the output of the python script shown above. 
+Once again, this specification results in a smoother fitting procedure.
     
 The psf block
 -------------
