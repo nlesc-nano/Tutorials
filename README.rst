@@ -2,15 +2,8 @@
 Tutorials
 #########
 
-A collection of tutorials for the analysis of nanocrystals.
+A collection of tutorials for the analysis of nanocrystals. see `documentation <>`_.
 
-
-Documentation
-*************
-
-.. _README:
-
-Include a link to your project's full documentation here.
 
 Contributing
 ************
