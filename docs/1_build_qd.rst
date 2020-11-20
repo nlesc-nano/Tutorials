@@ -60,7 +60,7 @@ CAT input: building the Quantum Dot
 We are now ready to use **CAT** to build our Quantum Dot. We will first of all need to build our 'core' and 'ligand' directories inside our working directory (see the `General Overview <https://cat.readthedocs.io/en/latest/1_get_started.html#default-settings>`_ for further information).
 Therefore, our newly built .xyz file needs to be moved into the 'core' directory.
 
-We will then need to write the .yaml `input file https://cat.readthedocs.io/en/latest/includeme.html#input-files>`_,containing all the desired settings, and to put it in the working directory.
+We will then need to write the .yaml `input file <https://cat.readthedocs.io/en/latest/includeme.html#input-files>`_,containing all the desired settings, and to put it in the working directory.
 
 Let's take a look at the keywords required for our .yaml file:
 
