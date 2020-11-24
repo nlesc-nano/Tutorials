@@ -2,6 +2,8 @@
 
 Build a Quantum Dot Model
 =========================
+The goal of this tutorial is to outline the steps to build a Quantum Dot from scratch. In this tutorial we will build a 4.2 nm sided cubic perovskite CsPbBr_3 nanocrystal capped by 80% of oleate ligands.
+
 Quantum Dots (QDs) are colloidal semiconductor nanocrystals, usually spanning 2-10 nm in diameter. Their optoelectronic properties arise from surface-dependent quantum effects, and are thus dependent on their size and shape. 
 
 These semiconductors are characterized by an intrinsically low photoluminescence quantum yield (PLQY) due to the presence of midgap states known as *surface traps*. A commonly used approach to optimize the activity of these materials consists in covering the photoactive inorganic core with a shell of a wider band gap material, usually an organic ligand.
@@ -9,15 +11,16 @@ These semiconductors are characterized by an intrinsically low photoluminescence
 The properties of the Quantum Dot will then depend on the surface coverage of the ligand on the core and on the degree at which the traps are "filled".
 Due to these premises, QDs are built by capping an appropriately designed crystalline core with a chosen organic ligand. 
 
-The goal of this tutorial is to outline the steps to build a Quantum Dot from scratch. In this tutorial we will build a 4.2 nm sided cubic perovskite CsPbBr_3 QD capped by 80% of oleate molecules.
+
 
 The inorganic core
 ---------------
-For starters, we need to download the Crystallographic Information File (CIF) of the inorganic species we want to use as a framework (CsPbBr_3 in our case) for our QD. The CIF file provides a precise numerical description of the crystallographic structure, and it can be downloaded from several different databases and libraries.
+For starters, we need to download the Crystallographic Information File (CIF) of the bulk CsPbBr_3 that we will use as a starting point to build our inorganic nanocrystal core. The CIF file provides a precise numerical description of the crystallographic structure, and it can be downloaded from several different databases and libraries.
 
-Once the file is updated, it needs to be uploaded in a visualization program. Visualization programs usually show the unit cell of the crystal. This cell will be the starting point to build a supercell of the appropriate dimension. We generated a 8x8x8 cell from a cubic CsPbBr_3 unit cell, but the choice of the supercell dimension is usually a compromise between the computational cost of the follow-up calculations and the necessity to provide a realistic description of the QD of interest. 
+Once the file is downloaded, we need to upload the unit cell in an appropriate visualization program that allows to generate supercells (VESTA, ADF-GUI, ...).
+To build our 4.2 nm sided cubic CsPbBr_3 nanocrystal, we need to generate a 8x8x8 supercell from the cubic CsPbBr_3 unit cell. The choice of the nanocrystal dimension is usually a compromise between the computational cost of the follow-up calculations and the necessity to provide a realistic description of the QD of interest.
 
-In our specific case (i.e. cubic CsPbBr_3 capped by oleate molecules), the available experimental data from the synthesis of the QDs shows that the crystalline framework terminates with the Cs-Br layer. We thus manually deleted the external Pb-Br layers from the supercell so that its ending layers were the Cs-Br ones.
+In our specific case (i.e. cubic CsPbBr_3 capped by oleate molecules), the available experimental data combined with computational models have shown that the nanocrystal core is terminated by (100) facets with the Cs-Br layer. We thus manually deleted the external Pb-Br layers from the supercell so that its ending layers were the Cs-Br ones.
 This is a fairly common procedure used to adapt the crystal framework to mimick the experimentally obtained inorganic cores.
 
 It is now necessary to ensure that the newly built supercell is neutral. Calculating the charge of a supercell is fairly easy, since it can be done by counting its atoms and summing their charges. In our CsPbBr_3 supercell, for example, we used our visualization program to count:
@@ -32,7 +35,7 @@ The charge of the supercell can then be obtained as:
 
 The supercell therefore has an excess of 12 cations in the structure. Neutral charge can then be achieved by manually removing any charged atoms (cations in our specific case) from the surface of the inorganic core. 
 
-The neutral charge requirement ensures that the QD is effectively stoichiometric, so that the band gap is clean and free of midgap states in principle. It is known that the removal of atoms on the corners and edges of the QD minimizes the distortion associated to the crystalline framework. Those atoms (Cs in our specific case) should then be deleted one by one until the charge of the supercell has been balanced. If possible, the removal of the atoms should be done in a symmetrical fashion (e.g. opposite corners, atoms at the same "coordinate" of the edge). In our case we need to remove 12 atoms, so we removed 8 from the corners of the supercell "cube" and 4 from the edges.
+The neutral charge requirement ensures that the QD is effectively stoichiometric, so that the band gap is clean and free of midgap states in principle. It is known that it is energetically favorable to remove the excess ions from the corners and the edges of the nanocrystal. Those atoms (Cs in our specific case) should then be deleted one by one until the charge of the supercell has been balanced. If possible, the removal of the atoms should be done in a symmetrical fashion (e.g. opposite corners, atoms at the same "coordinate" of the edge). In our case we need to remove 12 atoms, so we removed 8 from the corners of the supercell "cube" and 4 from the edges.
 Once the core is neutral we are ready to save and export the resulting cartesian coordinates of the atoms in the supercell to an .xyz file.
 
 Using dummies
