@@ -4,23 +4,14 @@ Build a Quantum Dot Model
 =========================
 The goal of this tutorial is to outline the steps to build a Quantum Dot from scratch. In this tutorial we will build a 4.2 nm sided cubic perovskite CsPbBr_3 nanocrystal capped by 80% of oleate ligands.
 
-Quantum Dots (QDs) are colloidal semiconductor nanocrystals, usually spanning 2-10 nm in diameter. Their optoelectronic properties arise from surface-dependent quantum effects, and are thus dependent on their size and shape. 
-
-These semiconductors are characterized by an intrinsically low photoluminescence quantum yield (PLQY) due to the presence of midgap states known as *surface traps*. A commonly used approach to optimize the activity of these materials consists in covering the photoactive inorganic core with a shell of a wider band gap material, usually an organic ligand.
-
-The properties of the Quantum Dot will then depend on the surface coverage of the ligand on the core and on the degree at which the traps are "filled".
-Due to these premises, QDs are built by capping an appropriately designed crystalline core with a chosen organic ligand. 
-
-
-
 The inorganic core
 ---------------
-For starters, we need to download the Crystallographic Information File (CIF) of the bulk CsPbBr_3 that we will use as a starting point to build our inorganic nanocrystal core. The CIF file provides a precise numerical description of the crystallographic structure, and it can be downloaded from several different databases and libraries.
+The starting point to build our inorganic nanocrystal core we will be to download the Crystallographic Information File (CIF) of the cubic bulk structure of CsPbBr_3. The CIF file provides a precise numerical description of the crystallographic structure, and it can be downloaded from several different databases and libraries.
 
-Once the file is downloaded, we need to upload the unit cell in an appropriate visualization program that allows to generate supercells (VESTA, ADF-GUI, ...).
-To build our 4.2 nm sided cubic CsPbBr_3 nanocrystal, we need to generate a 8x8x8 supercell from the cubic CsPbBr_3 unit cell. The choice of the nanocrystal dimension is usually a compromise between the computational cost of the follow-up calculations and the necessity to provide a realistic description of the QD of interest.
+Once the file is downloaded, we will upload it in an appropriate visualization program (VESTA, ADF-GUI, ...) and generate an 8x8x8 supercell. To create our CsPbBr_3 nanocrystal  model of about 4.2 nm in diameter, we will then cut the cubic supercell along the (100) facets, leaving Cs and Br on the surface.
+To build our 4.2 nm sided cubic CsPbBr_3 nanocrystal, we need to  from the cubic CsPbBr_3 unit cell. The choice of the nanocrystal dimension is usually a compromise between the computational cost of the follow-up calculations and the necessity to provide a realistic description of the QD of interest.
 
-In our specific case (i.e. cubic CsPbBr_3 capped by oleate molecules), the available experimental data combined with computational models have shown that the nanocrystal core is terminated by (100) facets with the Cs-Br layer. We thus manually deleted the external Pb-Br layers from the supercell so that its ending layers were the Cs-Br ones.
+In our specific case (i.e. cubic CsPbBr_3 capped by oleate molecules), the available experimental data combined with computational models have shown that the nanocrystal core is enclosed by (100) facets terminated by Cs and Br ions. on the surfacewith the Cs-Br layer. We thus manually deleted the external Pb-Br layers from the supercell so that its ending layers were the Cs-Br ones.
 This is a fairly common procedure used to adapt the crystal framework to mimick the experimentally obtained inorganic cores.
 
 It is now necessary to ensure that the newly built supercell is neutral. Calculating the charge of a supercell is fairly easy, since it can be done by counting its atoms and summing their charges. In our CsPbBr_3 supercell, for example, we used our visualization program to count:
