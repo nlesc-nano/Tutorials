@@ -8,31 +8,20 @@ The inorganic core
 ---------------
 The starting point to build our inorganic nanocrystal core we will be to download the Crystallographic Information File (CIF) of the cubic bulk structure of CsPbBr_3. The CIF file provides a precise numerical description of the crystallographic structure, and it can be downloaded from several different databases and libraries.
 
-Once the file is downloaded, we will upload it in an appropriate visualization program (VESTA, ADF-GUI, ...) and generate an 8x8x8 supercell. To create our CsPbBr_3 nanocrystal  model of about 4.2 nm in diameter, we will then cut the cubic supercell along the (100) facets, leaving Cs and Br on the surface. The choice of this surface termination is based on a combination of available experimental data and computational models of cubic CsPbBr_3 NCs capped by oleate ligands. 
+To create our CsPbBr_3 nanocrystal  model of about 4.2 nm in diameter, we will upload the CIF file in an appropriate visualization program (VESTA, ADF-GUI, ...) to generate an 8x8x8 supercell. According to available experimental data combined with computational models, cubic CsPbBr_3 NCs capped by oleate ligands are enclosed by (100) facets and terminated by Cs and Br ions. To obtain this surface termination, we will thus cut the cubic supercell along the (100) planes, leaving Cs and Br on the surface by manually deleting the external layers in excess. 
+Notice that the choice of the nanocrystal dimension is usually a compromise between the computational cost of the follow-up calculations and the necessity of providing a realistic description, in line with experiments.
 
-Also notice that the choice of the nanocrystal dimension is usually a compromise between the computational cost of the follow-up calculations and the necessity to provide a realistic description of the QD of interest.
-
-In our specific case (i.e. cubic ), on the surfacewith the Cs-Br layer. We thus manually deleted the external Pb-Br layers from the supercell so that its ending layers were the Cs-Br ones.
-This is a fairly common procedure used to adapt the crystal framework to mimick the experimentally obtained inorganic cores.
-
-It is now necessary to ensure that the newly built supercell is neutral. Calculating the charge of a supercell is fairly easy, since it can be done by counting its atoms and summing their charges. In our CsPbBr_3 supercell, for example, we used our visualization program to count:
-
-- 512 Cs atoms, each carrying charge +1 in the crystal;
-- 343 Pb atoms, each carrying charge +2 in the crystal;
-- 1176 Br atoms, each carrying charge -1 in the crystal;
-
-The charge of the supercell can then be obtained as:
-
+Our nanostructure now features a stoichiometry of Cs512Pb343Br1176, corresponding to a total charge of:
 512x(+1) + 343(+2) + 1176(-1) = 512 + 686 - 1176 = +12
+when each ion is considered in its more stable thermodynamic electronic configuration (i.e. Cs+, Pb2+ and Br-).
+To ensure the charge neutrality of our structure (link), we will compensate this excess of positive charge by removing 12 Cs ions one by one, first from the corners (-8 Cs) and then from the edges (-4 Cs) of the nanocrystal surface. This choice is based on the fact that Cs ions don't participate significantly to the band edge states, so that their removal results in perovskite nanocrystal models with clean band gaps, i.e. free of midgap states. Moreover, it is known that it is energetically favorable to remove the excess ions from the corners and edges of the nanostructure.
 
-The supercell therefore has an excess of 12 cations in the structure. Neutral charge can then be achieved by manually removing any charged atoms (cations in our specific case) from the surface of the inorganic core. 
+Once the core is neutral we will save and export the resulting cartesian coordinates of the ions to an .xyz file called ``'cspbbr3_4.2nm.xyz'``.
 
-The neutral charge requirement ensures that the NC is effectively stoichiometric, so that the band gap is clean and free of midgap states in principle. It is known that it is energetically favorable to remove the excess ions from the corners and the edges of the nanocrystal. Those atoms (Cs in our specific case) should then be deleted one by one until the charge of the supercell has been balanced. If possible, the removal of the atoms should be done in a symmetrical fashion (e.g. opposite corners, atoms at the same "coordinate" of the edge). In our case we need to remove 12 atoms, so we removed 8 from the corners of the supercell "cube" and 4 from the edges.
-Once the core is neutral we are ready to save and export the resulting cartesian coordinates of the atoms in the supercell to an .xyz file.
 
 Using dummies
 ---------------
-In our model, capping the inorganic core with ligands means rplacing a certain amount of the superficial Br anions with  our arged ligands (in our case, this would mean replacing  ). Since neutrality has been mentioned to be a requirement, the replacement has to ensure that the total charge of the final QD is still neutral (i.e. if a certain number *n* of Br- anions are removed, *n* oleate anions need to be added). Moreover, the capping procedure depends on the surface coverage we want our Quantum Dot to have (in our case, we chose to cover 80% of the surface of our perovksite core).
+In order to cap the inorganic core with a certain amount of a oleate ligands, we will replace part of the superficial Br anions with our negatively charged ligands.  (in our case, this would mean replacing  ). Since neutrality has been mentioned to be a requirement, the replacement has to ensure that the total charge of the final QD is still neutral (i.e. if a certain number *n* of Br- anions are removed, *n* oleate anions need to be added). Moreover, the capping procedure depends on the surface coverage we want our Quantum Dot to have (in our case, we chose to cover 80% of the surface of our perovksite core).
 
 All of these requirements can be fulfilled by an intermediate step: the initial replacement of the inorganic ion (Br- in our specific example) with a dummy ion of the same charge. We chose to use Cl- as our dummy ion. The replacement can be done by means of a small python script.
 Please note that the script requires a **CAT** module. We invite you to read the relative `documentation <https://cat.readthedocs.io/en/latest/0_documentation.html#cat-documentation>`_ before continuing this tutorial.
