@@ -12,7 +12,9 @@ To create our CsPbBr_3 nanocrystal  model of about 4.2 nm in diameter, we will u
 Notice that the choice of the nanocrystal dimension is usually a compromise between the computational cost of the follow-up calculations and the necessity of providing a realistic description, in line with experiments.
 
 Our nanostructure now features a stoichiometry of Cs512Pb343Br1176, corresponding to a total charge of:
+
 512x(+1) + 343(+2) + 1176(-1) = 512 + 686 - 1176 = +12
+
 when each ion is considered in its more stable thermodynamic electronic configuration (i.e. Cs+, Pb2+ and Br-).
 To ensure the charge neutrality of our structure (link), we will compensate this excess of positive charge by removing 12 Cs ions one by one, first from the corners (-8 Cs) and then from the edges (-4 Cs) of the nanocrystal surface. This choice is based on the fact that Cs ions don't participate significantly to the band edge states, so that their removal results in perovskite nanocrystal models with clean band gaps, i.e. free of midgap states. Moreover, it is known that it is energetically favorable to remove the excess ions from the corners and edges of the nanostructure.
 
@@ -21,10 +23,8 @@ Once the core is neutral we will save and export the resulting cartesian coordin
 
 Using dummies
 ---------------
-In order to cap the inorganic core with a certain amount of a oleate ligands, we will replace part of the superficial Br anions with our negatively charged ligands.  (in our case, this would mean replacing  ). Since neutrality has been mentioned to be a requirement, the replacement has to ensure that the total charge of the final QD is still neutral (i.e. if a certain number *n* of Br- anions are removed, *n* oleate anions need to be added). Moreover, the capping procedure depends on the surface coverage we want our Quantum Dot to have (in our case, we chose to cover 80% of the surface of our perovksite core).
-
-All of these requirements can be fulfilled by an intermediate step: the initial replacement of the inorganic ion (Br- in our specific example) with a dummy ion of the same charge. We chose to use Cl- as our dummy ion. The replacement can be done by means of a small python script.
-Please note that the script requires a **CAT** module. We invite you to read the relative `documentation <https://cat.readthedocs.io/en/latest/0_documentation.html#cat-documentation>`_ before continuing this tutorial.
+Our next step is to specify the location of our oleate ligands at the nanocrystal surface. To do that, we will mark the desired positions of the ligands anchoring groups with dummy ions. Again, to ensure the charge neutrality if *n* oleate anions are to be added, *n* superficial Br anions will be replaced by *n* dummies. Here we will build our perovskite nanocrystal capped by 80% of oleate ligands by replacing 80% of the surface Br ions, by Cl (our dummy ion) by means of a small python script.
+Please note that the script requires a **CAT** module. We invite thus you to read the relative `documentation <https://cat.readthedocs.io/en/latest/0_documentation.html#cat-documentation>`_ before continuing this tutorial.
 Let's now have a look at the script:
 
 .. code:: python
@@ -35,18 +35,17 @@ Let's now have a look at the script:
     >>> mol_new = replace_surface(mol, symbol='Br', symbol_new='Cl', f=0.8, mode='uniform', displacement_factor=0.7)
     >>> mol_new.write('cspbbr3_4.2nm_80Cl.xyz')
     
-The script is pretty self-explanatory: the .xyz coordinates are imported from our previously-built file (``'cspbbr3_4.2nm.xyz'``). A specifically built recipe, ``replace_surface``, is then able to recognize **only** the requested atoms on the surface of the supercell (``symbol='Br'``) from their chemical symbol in the .xyz file and replace them with dummies (``symbol_new='Cl'``) in a new .xyz file (``'cspbbr3_4.2nm_80Cl.xyz'``). We specifically chose to replace Br atoms with Cl atoms because we aim to use oleate as a ligand, but this setup can be varied if needed.
+The script is pretty self-explanatory: the .xyz coordinates are imported from our previously-built file (``'cspbbr3_4.2nm.xyz'``). A specifically built recipe, ``replace_surface``, is then able to recognize the requested ions from their chemical symbol (``symbol='Br'``) **only** at the nanocrystal surface and replace them with dummies (``symbol_new='Cl'``) in a new .xyz file (``'cspbbr3_4.2nm_80Cl.xyz'``). Since we aim at using oleate as a ligand, we specifically chose to replace Br ions, but this setup can be varied if needed. For example, if one aims at adding cationic ligands, the Cs ions will be replaced instead.
+The file also specifies the `fraction <https://cat.readthedocs.io/en/latest/4_optional.html#optional.core.subset.f>`_ of the atoms that are being replaced (80% in our case, hence the ``f=0.8`` in the script), their `distribution <https://cat.readthedocs.io/en/latest/4_optional.html#optional.core.subset.mode>`_ and the displacement factor used to recognize the surface ions (here 0.7).
 
-The file also specifies the `fraction <https://cat.readthedocs.io/en/latest/4_optional.html#optional.core.subset.f>`_ of the atoms that are being replaced (80% in our case, hence the ``f=0.8`` in the script), their `distribution <https://cat.readthedocs.io/en/latest/4_optional.html#optional.core.subset.mode>`_ and the displacement factor resulting from placing the new dummies on the surface of the core (i.e. 0.7).
 
 CAT input: building the Quantum Dot
 ---------------
-We are now ready to use **CAT** to build our Quantum Dot. We will first of all need to build our 'core' and 'ligand' directories inside our working directory (see the `General Overview <https://cat.readthedocs.io/en/latest/1_get_started.html#default-settings>`_ for further information).
-Therefore, our newly built .xyz file needs to be moved into the 'core' directory.
+We are now ready to use **CAT** to build our Quantum Dot. We will first of all create a 'core' directory inside our working directory (see the `General Overview <https://cat.readthedocs.io/en/latest/1_get_started.html#default-settings>`_ for further information) and move our newly built .xyz file inside it.
 
-We will then need to write the .yaml `input file <https://cat.readthedocs.io/en/latest/includeme.html#input-files>`_, containing all the desired settings, and to put it in the working directory.
+We will then create a ``input_settings.yaml`` `input file <https://cat.readthedocs.io/en/latest/includeme.html#input-files>`_ in the working directory and customize it with the desired settings.
 
-Let's take a look at the keywords required for our .yaml file:
+Let's take a look at our .yaml input:
 
 .. code:: yaml
 
@@ -97,9 +96,9 @@ The sections are all fairly similar: their keywords contain several specificatio
 - whether or not their optimization is required (``optional.ligand.optimize`` and ``optional.core.optimize``);
 - the dummy atom that needs to be replaced with the chosen ligand (``optional.core.anchor``)
 
-Please note that, in this specific case, we chose to opt for ``optional.ligand.split: False`` since the SMILES string we are using in the input (i.e. ``CCCCCCCCC=CCCCCCCCC(=O)[O-]``) refers to an ionic structure.
+Since the SMILES string we are using in the input (i.e. ``CCCCCCCCC=CCCCCCCCC(=O)[O-]``) refers to the anionic ligand, we will opt for ``optional.ligand.split: False``, so no protons are removed from the ligand anchoring group.
 
-Now that all of the files are in their respective directories, we are finally ready to run CAT with the following command: ``init_cat input_settings.yaml``
-After running **CAT** the new .xyz file, containing the coordinates of the desired Quantum Dot, will be exported to the directory we specified in ``optional.qd.dirname`` ( we named it 'qd'). Don't worry, the directory will be created from scratch if it does not yet exist!
+We are finally ready to run CAT with the following command: ``init_cat input_settings.yaml``
+After running **CAT** the .xyz file corresponding to our oleate capped perovskite nanocrystal can be found in the specified directory, 'qd'. Don't worry, the directory will be created from scratch if it does not yet exist!
 
-Make sure to rename the .xyz file so that you know what it is, as its name is randomly generated by **CAT**. Once renamed, the .xyz file is ready to be used.
+Rename the .xyz file, you are now ready to use it!
