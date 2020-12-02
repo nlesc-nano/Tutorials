@@ -2,21 +2,21 @@
 
 Build a Quantum Dot Model
 =========================
-The goal of this tutorial is to outline the steps to build a Quantum Dot from scratch. In this tutorial we will build a 4.2 nm sided cubic perovskite CsPbBr_3 nanocrystal capped by 80% of oleate ligands.
+The goal of this tutorial is to outline the steps to build a Quantum Dot from scratch. In this tutorial we will build a 4.2 nm sided cubic perovskite CsPbBr\ :sub:`3`\  nanocrystal capped by 80% of oleate ligands.
 
 The inorganic core
----------------
-The starting point to build our inorganic nanocrystal core we will be to download the Crystallographic Information File (CIF) of the cubic bulk structure of CsPbBr_3. The CIF file provides a precise numerical description of the crystallographic structure, and it can be downloaded from several different databases and libraries.
+------------------
+The starting point to build our inorganic nanocrystal core we will be to download the Crystallographic Information File (CIF) of the cubic bulk structure of CsPbBr\ :sub:`3`\. The CIF file provides a precise numerical description of the crystallographic structure, and it can be downloaded from several different databases and libraries.
 
-To create our CsPbBr_3 nanocrystal  model of about 4.2 nm in diameter, we will upload the CIF file in an appropriate visualization program (VESTA, ADF-GUI, ...) to generate an 8x8x8 supercell. (1.) According to available experimental data combined with computational models, cubic CsPbBr_3 NCs capped by oleate ligands are enclosed by (100) facets and terminated by Cs and Br ions. To obtain this surface termination, we will thus cut the cubic supercell along the (100) planes, leaving Cs and Br on the surface by manually deleting the external layers in excess. (2.)
+To create our CsPbBr\ :sub:`3`\ nanocrystal  model of about 4.2 nm in diameter, we will upload the CIF file in an appropriate visualization program (VESTA, ADF-GUI, ...) and generate an 8x8x8 supercell (see Figure, 1.). According to available experimental data combined with computational models, cubic CsPbBr\ :sub:`3`\ NCs capped by oleate ligands are enclosed by (100) facets and terminated by Cs and Br ions. To obtain this surface termination, we will thus cut the cubic supercell along the (100) planes, leaving Cs and Br on the surface by manually deleting the external layers in excess (see Figure, 2.).
 Notice that the choice of the nanocrystal dimension is usually a compromise between the computational cost of the follow-up calculations and the necessity of providing a realistic description, in line with experiments.
 
-Our nanostructure now features a stoichiometry of Cs512Pb343Br1176, corresponding to a total charge of:
+Our nanostructure now features a stoichiometry of Cs\ :sub:`512`\ Pb\ :sub:`343`\ Br\ :sub:`1176`\, corresponding to a total charge of:
 
 512x(+1) + 343(+2) + 1176(-1) = 512 + 686 - 1176 = +12
 
-when each ion is considered in its more stable thermodynamic electronic configuration (i.e. Cs+, Pb2+ and Br-).
-To ensure the charge neutrality of our structure (link), we will compensate this excess of positive charge by removing 12 Cs ions one by one, first from the corners (-8 Cs) and then from the edges (-4 Cs) of the nanocrystal surface. (3.) This choice is based on the fact that Cs ions don't participate significantly to the band edge states, so that their removal results in perovskite nanocrystal models with clean band gaps, i.e. free of midgap states. Moreover, it is known that it is energetically favorable to remove the excess ions from the corners and edges of the nanostructure.
+when each ion is considered in its more stable thermodynamic electronic configuration (i.e. Cs\ :sup:`+`\, Pb\ :sup:`2+`\ and Br\ :sup:`-`\).
+To ensure the charge neutrality of our structure (*J. Phys. Chem. Lett.*, **2017**, *8*, 5209-5215), we will compensate this excess of positive charge by removing 12 Cs ions one by one, first from the corners (-8 Cs) and then from the edges (-4 Cs) of the nanocrystal surface (see Figure 3.). This choice is based on the fact that Cs ions don't participate significantly to the band edge states, so that their removal results in perovskite nanocrystal models with clean band gaps, i.e. free of midgap states. Moreover, it is known that it is energetically favorable to remove the excess ions from the corners and edges of the nanostructure.
 
 Once the core is neutral we will save and export the resulting cartesian coordinates of the ions to an .xyz file called ``'cspbbr3_4.2nm.xyz'``.
 
@@ -31,7 +31,7 @@ Once the core is neutral we will save and export the resulting cartesian coordin
 
 Using dummies
 ---------------
-Our next step is to specify the location of our oleate ligands at the nanocrystal surface. To do that, we will mark the desired positions of the ligands anchoring groups with dummy ions. Again, to ensure the charge neutrality if *n* oleate anions are to be added, *n* superficial Br anions will be replaced by *n* dummies. Here we will build our perovskite nanocrystal capped by 80% of oleate ligands by replacing 80% of the surface Br ions, by Cl (our dummy ion) by means of a small python script.
+Our next step is to specify the location of our oleate ligands at the nanocrystal surface. To do that, we will mark the desired positions of the ligands anchoring groups with dummy ions. Again, to ensure the charge neutrality if *n* oleate anions (charge -1) are to be added, *n* superficial Br\ :sup:`-`\ will be replaced by *n* dummies. Here we will build our perovskite nanocrystal capped by 80% of oleate ligands by replacing 80% of the surface Br with Cl (our dummy ion) by means of a small python script.
 Please note that the script requires a **CAT** module. We invite thus you to read the relative `documentation <https://cat.readthedocs.io/en/latest/0_documentation.html#cat-documentation>`_ before continuing this tutorial.
 Let's now have a look at the script:
 
