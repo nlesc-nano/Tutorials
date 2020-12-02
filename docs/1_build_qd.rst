@@ -8,14 +8,14 @@ The inorganic core
 ------------------
 The starting point to build our inorganic nanocrystal core we will be to download the Crystallographic Information File (CIF) of the cubic bulk structure of CsPbBr\ :sub:`3`\. The CIF file provides a precise numerical description of the crystallographic structure, and it can be downloaded from several different databases and libraries.
 
-To create our CsPbBr\ :sub:`3`\ nanocrystal  model of about 4.2 nm in diameter, we will upload the CIF file in an appropriate visualization program (VESTA, ADF-GUI, ...) and generate an 8x8x8 supercell (see Figure, 1.). According to available experimental data combined with computational models, cubic CsPbBr\ :sub:`3`\ NCs capped by oleate ligands are enclosed by (100) facets and terminated by Cs and Br ions. To obtain this surface termination, we will thus cut the cubic supercell along the (100) planes, leaving Cs and Br on the surface by manually deleting the external layers in excess (see Figure, 2.).
+To create our CsPbBr\ :sub:`3`\  nanocrystal  model of about 4.2 nm in diameter, we will upload the CIF file in an appropriate visualization program (VESTA, ADF-GUI, ...) and generate an 8x8x8 supercell (see Figure, 1.). According to available experimental data combined with computational models, cubic CsPbBr\ :sub:`3`\  NCs capped by oleate ligands are enclosed by (100) facets and terminated by Cs and Br ions. To obtain this surface termination, we will thus cut the cubic supercell along the (100) planes, leaving Cs and Br on the surface by manually deleting the external layers in excess (see Figure, 2.).
 Notice that the choice of the nanocrystal dimension is usually a compromise between the computational cost of the follow-up calculations and the necessity of providing a realistic description, in line with experiments.
 
 Our nanostructure now features a stoichiometry of Cs\ :sub:`512`\ Pb\ :sub:`343`\ Br\ :sub:`1176`\, corresponding to a total charge of:
 
 (+1)x512 + (+2)x343 + (-1)x1176 = +22
 
-when each ion is considered in its more stable thermodynamic electronic configuration (i.e. Cs\ :sup:`+`\, Pb\ :sup:`2+`\ and Br\ :sup:`-`\).
+when each ion is considered in its more stable thermodynamic electronic configuration (i.e. Cs\ :sup:`+`\, Pb\ :sup:`2+`\  and Br\ :sup:`-`\).
 To ensure the charge balance of our structure (*J. Phys. Chem. Lett.*, **2017**, *8*, 5209-5215), we will compensate this excess of positive charge by removing 12 Cs ions one by one, first from the corners (-8 Cs) and then from the edges (-14 Cs) of the nanocrystal surface (see Figure 3.). This choice is based on the fact that Cs ions don't participate significantly to the band edge states, so that their removal results in perovskite nanocrystal models with clean band gaps, i.e. free of midgap states. Moreover, it is known that it is energetically favorable to remove the excess ions from the corners and edges of the nanostructure.
 
 Once the core is neutral we will save and export the resulting cartesian coordinates of the ions to an .xyz file called ``'cspbbr3_4.2nm.xyz'``.
@@ -24,9 +24,9 @@ Once the core is neutral we will save and export the resulting cartesian coordin
   :scale: 15%
   :align: center
 
-1. 8x8x8 supercell of the cubic CsPbBr\ :sub:`3`\ bulk structure.
-2. Cubic CsPbBr\ :sub:`3`\ nanostructure of about 4.2 nm in side enclosed by (100) facets and terminated by Cs and Br ions.
-3. Charge balanced Cs\ :sub:`490`\ Pb\ :sub:`343`\ Br\ :sub:`1176`\ nanocrystal.
+1. 8x8x8 supercell of the cubic CsPbBr\ :sub:`3`\  bulk structure.
+2. Cubic CsPbBr\ :sub:`3`\  nanostructure of about 4.2 nm in side enclosed by (100) facets and terminated by Cs and Br ions.
+3. Charge balanced Cs\ :sub:`490`\ Pb\ :sub:`343`\ Br\ :sub:`1176`\  nanocrystal.
 
 
 Using dummies
