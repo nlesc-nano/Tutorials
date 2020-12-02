@@ -13,14 +13,14 @@ Notice that the choice of the nanocrystal dimension is usually a compromise betw
 
 Our nanostructure now features a stoichiometry of Cs\ :sub:`512`\ Pb\ :sub:`343`\ Br\ :sub:`1176`\, corresponding to a total charge of:
 
-512x(+1) + 343(+2) + 1176(-1) = 512 + 686 - 1176 = +12
+512x(+1) + 343(+2) + 1176(-1) = 512 + 686 - 1176 = +22
 
 when each ion is considered in its more stable thermodynamic electronic configuration (i.e. Cs\ :sup:`+`\, Pb\ :sup:`2+`\ and Br\ :sup:`-`\).
-To ensure the charge balance of our structure (*J. Phys. Chem. Lett.*, **2017**, *8*, 5209-5215), we will compensate this excess of positive charge by removing 12 Cs ions one by one, first from the corners (-8 Cs) and then from the edges (-4 Cs) of the nanocrystal surface (see Figure 3.). This choice is based on the fact that Cs ions don't participate significantly to the band edge states, so that their removal results in perovskite nanocrystal models with clean band gaps, i.e. free of midgap states. Moreover, it is known that it is energetically favorable to remove the excess ions from the corners and edges of the nanostructure.
+To ensure the charge balance of our structure (*J. Phys. Chem. Lett.*, **2017**, *8*, 5209-5215), we will compensate this excess of positive charge by removing 12 Cs ions one by one, first from the corners (-8 Cs) and then from the edges (-14 Cs) of the nanocrystal surface (see Figure 3.). This choice is based on the fact that Cs ions don't participate significantly to the band edge states, so that their removal results in perovskite nanocrystal models with clean band gaps, i.e. free of midgap states. Moreover, it is known that it is energetically favorable to remove the excess ions from the corners and edges of the nanostructure.
 
 Once the core is neutral we will save and export the resulting cartesian coordinates of the ions to an .xyz file called ``'cspbbr3_4.2nm.xyz'``.
 
-.. image:: qd.PNG
+.. image:: qd1.PNG
   :scale: 15%
   :align: center
 
