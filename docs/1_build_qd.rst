@@ -16,7 +16,7 @@ Our nanostructure now features a stoichiometry of Cs\ :sub:`512`\ Pb\ :sub:`343`
 512x(+1) + 343(+2) + 1176(-1) = 512 + 686 - 1176 = +12
 
 when each ion is considered in its more stable thermodynamic electronic configuration (i.e. Cs\ :sup:`+`\, Pb\ :sup:`2+`\ and Br\ :sup:`-`\).
-To ensure the charge neutrality of our structure (*J. Phys. Chem. Lett.*, **2017**, *8*, 5209-5215), we will compensate this excess of positive charge by removing 12 Cs ions one by one, first from the corners (-8 Cs) and then from the edges (-4 Cs) of the nanocrystal surface (see Figure 3.). This choice is based on the fact that Cs ions don't participate significantly to the band edge states, so that their removal results in perovskite nanocrystal models with clean band gaps, i.e. free of midgap states. Moreover, it is known that it is energetically favorable to remove the excess ions from the corners and edges of the nanostructure.
+To ensure the charge balance of our structure (*J. Phys. Chem. Lett.*, **2017**, *8*, 5209-5215), we will compensate this excess of positive charge by removing 12 Cs ions one by one, first from the corners (-8 Cs) and then from the edges (-4 Cs) of the nanocrystal surface (see Figure 3.). This choice is based on the fact that Cs ions don't participate significantly to the band edge states, so that their removal results in perovskite nanocrystal models with clean band gaps, i.e. free of midgap states. Moreover, it is known that it is energetically favorable to remove the excess ions from the corners and edges of the nanostructure.
 
 Once the core is neutral we will save and export the resulting cartesian coordinates of the ions to an .xyz file called ``'cspbbr3_4.2nm.xyz'``.
 
@@ -24,9 +24,9 @@ Once the core is neutral we will save and export the resulting cartesian coordin
   :scale: 15%
   :align: center
 
-1. CsPbBr_3 8x8x8 NC supercell.
-2. Cs-Br terminated NC.
-3. Neutral cell.
+1. CsPbBr\ :sub:`3`\ 8x8x8 NC supercell.
+2. Cubic CsPbBr\ :sub:`3`\ nanostructure of about 4.2 nm in side enclosed by (100) facets and terminated by Cs and Br ions.
+3. Charge balanced Cs\ :sub:`500`\ Pb\ :sub:`343`\ Br\ :sub:`1176`\ nanocrystal.
 
 
 Using dummies
