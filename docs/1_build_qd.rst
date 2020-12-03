@@ -58,43 +58,23 @@ Let's take a look at our .yaml input:
 .. code:: yaml
 
     path: null
-
     input_cores:
         - cspbbr3_4.2nm_80Cl.xyz:
             guess_bonds: False
-
     input_ligands:
         - CCCCCCCCC=CCCCCCCCC(=O)[O-]
-
     optional:
-        database:
-            dirname: database
-            read: False
-            write: True
-            overwrite: False
-            thread_safe: False
-            mol_format: xyz
-            mongodb: False
-
         core:
             dirname: core
             anchor: Cl
-            subset: null
-
         ligand:
             dirname: ligand
             optimize: True
             split: False
-            anchor: null
-            cosmo-rs: False
-
         qd:
             dirname: qd
             construct_qd: True
             optimize: False
-            bulkiness: False
-            activation_strain: False
-            dissociate: False
         
 The `path <https://cat.readthedocs.io/en/latest/2_path.html#path>`_, `input_cores & input_ligands <https://cat.readthedocs.io/en/latest/2_path.html#path>`_ and  sections, together with the meaning of the `optional <https://cat.readthedocs.io/en/latest/4_optional.html#optional>`_ keywords and their relative `arguments <https://cat.readthedocs.io/en/latest/4_optional.html#arguments>`_, can be easily found inside the **CAT** `documentation <https://cat.readthedocs.io/en/latest/0_documentation.html#cat-documentation>`_.
 
