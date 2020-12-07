@@ -76,16 +76,19 @@ Let's take a look at our .yaml input:
             construct_qd: True
             optimize: False
         
-The `path <https://cat.readthedocs.io/en/latest/2_path.html#path>`_, `input_cores & input_ligands <https://cat.readthedocs.io/en/latest/2_path.html#path>`_ and  sections, together with the meaning of the `optional <https://cat.readthedocs.io/en/latest/4_optional.html#optional>`_ keywords and their relative `arguments <https://cat.readthedocs.io/en/latest/4_optional.html#arguments>`_, can be easily found inside the **CAT** `documentation <https://cat.readthedocs.io/en/latest/0_documentation.html#cat-documentation>`_.
+The `path <https://cat.readthedocs.io/en/latest/2_path.html#path>`_, `input_cores & input_ligands <https://cat.readthedocs.io/en/latest/3_input_core_ligand.html#input-cores-input-ligands>`_ and  sections, together with the meaning of the `optional <https://cat.readthedocs.io/en/latest/4_optional.html#optional>`_ keywords and their relative `arguments <https://cat.readthedocs.io/en/latest/4_optional.html#arguments>`_, can be easily found inside the **CAT** `documentation <https://cat.readthedocs.io/en/latest/0_documentation.html#cat-documentation>`_. Let's take a look at them in detail:
 
-The sections are all fairly similar: their keywords contain several specifications, such as:
+1. ``path``: The `path <https://cat.readthedocs.io/en/latest/2_path.html#path>`_ section, as suggested, contains the path to the so-called working directory - i.e. where all the files are stored.
+2. ``input_cores``: This section contains the coordinates of the core, specified by our .xyz file (``cspbbr3_4.2nm_80Cl.xyz``). The ``guess_bonds: False`` keyword tells **CAT** that the bonds and bond orders can be guessed from the content of the .xyz file. 
+``input_ligands``: This section contains information on both the structure and the chemistry of the ligand. This information is stored in its `SMILES <https://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system#Description>`_ (Simplified molecular-input line-entry system) string, specifically ``CCCCCCCCC=CCCCCCCCC(=O)[O-]`` for oleate.
+3. ``optional``: The `optional <https://cat.readthedocs.io/en/latest/4_optional.html#optional>`_ section contains three fairly similar subsections: ``core``, ``ligand``, ``qd``. The subsections are all fairly similar: their keywords contain several specifications, such as:
 
-- the directories where our inorganic cores and ligands will be stored (``optional.database.dirname``);
-- whether or not their optimization is required (``optional.ligand.optimize`` and ``optional.core.optimize``);
-- the dummy atom that needs to be replaced with the chosen ligand (``optional.core.anchor``)
+  - the directories where our inorganic cores and ligands will be stored (``optional.*.dirname``);
+  - whether or not their optimization is required (``optional.ligand.optimize`` and ``optional.*.optimize``);
+  - the dummy atom that needs to be replaced with the chosen ligand (``optional.*.anchor``)
+  - whether or not to remove protons from the ligand (``optional.ligand.split``). Specifically, since the SMILES string we are using in the input (i.e. ``CCCCCCCCC=CCCCCCCCC(=O)[O-]``) refers to the anionic ligand, we will opt for ``optional.ligand.split: False``, so no protons have been removed from the ligand anchoring group.
 
-Since the SMILES string we are using in the input (i.e. ``CCCCCCCCC=CCCCCCCCC(=O)[O-]``) refers to the anionic ligand, we will opt for ``optional.ligand.split: False``, so no protons are removed from the ligand anchoring group.
-
+where the ``*`` in the keywords accounts for the name of the subsection it refers to (i.e ``core``, ``ligand``, ``qd``).
 We are finally ready to run CAT with the following command: ``init_cat input_settings.yaml``
 After running **CAT** the .xyz file corresponding to our oleate capped perovskite nanocrystal can be found in the specified directory, 'qd'. Don't worry, the directory will be created from scratch if it does not yet exist!
 
