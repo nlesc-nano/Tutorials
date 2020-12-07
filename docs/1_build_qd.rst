@@ -13,6 +13,7 @@ Notice that the choice of the nanocrystal dimension is usually a compromise betw
 
 Our nanostructure now features a stoichiometry of Cs\ :sub:`512`\ Pb\ :sub:`343`\ Br\ :sub:`1176`\, corresponding to a total charge of:
 
+.. math::
 (+1)x512 + (+2)x343 + (-1)x1176 = +22
 
 when each ion is considered in its more stable thermodynamic electronic configuration (i.e. Cs\ :sup:`+`\, Pb\ :sup:`2+`\  and Br\ :sup:`-`\).
