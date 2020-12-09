@@ -33,7 +33,7 @@ Once the core is neutral we will save and export the resulting cartesian coordin
 Using dummies
 ---------------
 Our next step is to specify the location of our oleate ligands at the nanocrystal surface. To do that, we will mark the desired positions of the ligands anchoring groups with dummy ions. Again, to ensure the charge neutrality if *n* oleate anions (charge -1) are to be added, *n* superficial Br\ :sup:`-`\ will be replaced by *n* dummies. Here we will build our perovskite nanocrystal capped by 80% of oleate ligands by replacing 80% of the surface Br with Cl (our dummy ion) by means of a small python script.
-Please note that the script requires a **CAT** module. We invite thus you to read the relative `documentation <https://cat.readthedocs.io/en/latest/0_documentation.html#cat-documentation>`_ before continuing this tutorial.
+Please note that the script requires the download and use of the **CAT** module, as well as its optional packages **data-CAT** and **nano-CAT**. We invite thus you to read the relative `documentation <https://cat.readthedocs.io/en/latest/0_documentation.html#cat-documentation>`_ before continuing this tutorial.
 Let's now have a look at the script:
 
 .. code:: python
@@ -45,7 +45,7 @@ Let's now have a look at the script:
     >>> mol_new.write('cspbbr3_4.2nm_80Cl.xyz')
     
 The script is pretty self-explanatory: the .xyz coordinates are imported from our previously-built file (``'cspbbr3_4.2nm.xyz'``). A specifically built recipe, ``replace_surface``, is then able to recognize the requested ions from their chemical symbol (``symbol='Br'``) **only** at the nanocrystal surface and replace them with dummies (``symbol_new='Cl'``) in a new .xyz file (``'cspbbr3_4.2nm_80Cl.xyz'``). Since we aim at using oleate as a ligand, we specifically chose to replace Br ions, but this setup can be varied if needed. For example, if one aims at adding cationic ligands, the Cs ions will be replaced instead.
-The file also specifies the `fraction <https://cat.readthedocs.io/en/latest/4_optional.html#optional.core.subset.f>`_ of the atoms that are being replaced (80% in our case, hence the ``f=0.8`` in the script), their `distribution <https://cat.readthedocs.io/en/latest/4_optional.html#optional.core.subset.mode>`_ and the displacement factor used to recognize the surface ions (here 0.7).
+The file also specifies the `fraction <https://cat.readthedocs.io/en/latest/4_optional.html#optional.core.subset.f>`_ of the atoms that are being replaced (80% in our case, hence the ``f=0.8`` in the script), their `distribution <https://cat.readthedocs.io/en/latest/4_optional.html#optional.core.subset.mode>`_ and the displacement factor used to recognize the surface ions (here 0.7). This latter parameter depends on the choice of the core so we suggest testing it first, as to ensure that the replacement of the surface ions by the dummies goes according to plan. (i.e. they are reasonably desplaced on the surface).
 
 
 CAT input: building the Quantum Dot
