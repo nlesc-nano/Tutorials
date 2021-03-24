@@ -2,19 +2,133 @@
 
 Forcefield Optimization
 =======================
-The goal here is to obtain the classical forcefield parameters for a lead perovksite nanocrystal (NC) capped by carboxylate ligands. While these parameters are commonly available in literature for the ligands, in the QD field we need to construct our own parameters for a proper description of:
+The goal of this tutorial is to obtain the classical forcefield parameters for a lead perovksite nanocrystal core and for the nanocrystal (NC) obtained by capping the fitted core with carboxylate ligands. In fact, the construction of a forcefield for a Quantum Dot (QD) requires parameters for a proper description of:
 
     * the ion-ion interactions inside the nanocrystal core;
     * the ligand anchoring group-core ions interactions at the nanocrystal surface.
+    
+The third "category" of parameters, accounting for the organic ligands, are commonly available in literature and we thus won't need to fit them.
 
-To do that, we will start from an *ab-initio* Molecular Dynamics (MD) trajectory (NVT, 300K, 5ps) of a 2.5 nm sided cubic CsPbBr_3 NC capped by 50% of acetate molecules (see `tutorial <https://nanotutorials.readthedocs.io/en/latest/1_build_qd.html>`_ for the Quantum Dot construction).
+To fit the parameters, we will start from an *ab-initio* Molecular Dynamics (MD) trajectory (NVT, 300K, 5ps) of a 2.5 nm sided cubic CsPbBr_3 NC capped by 50% of acetate molecules (see `tutorial <https://nanotutorials.readthedocs.io/en/latest/1_build_qd.html>`_ for the Quantum Dot construction).
 
 Before starting the fitting we invite you to read the `documentation <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo.html>`_ relative to Adaptive Rate Monte Carlo (ARMC) in Auto-FOX.
 
 First, let's have a look at the .yaml file containing our ARMC settings.
 
 .. code:: yaml
+param:
+    charge:
+        param: charge
+        Cs: 0.4174
+        Pb: 0.8348
+        Br: -0.4174
+        constraints:
+            - '0 < Cs < 1.5'
+            - '0 < Pb < 2'
+            - '-1.5 < Br < 0'
+            - 'Cs == -1 * Br'
+            - 'Pb == -2 * Br'
 
+    lennard_jones:
+        - param: epsilon
+          unit: kjmol
+          frozen:
+              guess: uff
+        - param: sigma
+          unit: nm
+          Cs Cs:  0.553
+          Cs Pb:  0.367
+          Br Cs:  0.363
+          Pb Pb:  0.610
+          Br Pb:  0.298
+          Br Br:  0.379
+          constraints:
+              - 'Cs Cs   > 0.433'
+              - 'Cs Pb   > 0.247'
+              - 'Br Cs   > 0.243'
+              - 'Pb Pb   > 0.490'
+              - 'Br Pb   > 0.178'
+              - 'Br Br   > 0.259'
+
+pes:
+    rdf:
+        func: FOX.MultiMolecule.init_rdf
+        kwargs:
+            atom_subset: [Cs, Pb, Br]
+
+job:
+    molecule: 2.3nm_cspbbr3_NVT_300K-pos-1.xyz
+
+#        settings:
+#            prm: acetate.prm
+#    path: /scratch-shared/pascazio/acetate_spme
+    md_settings:
+        template: qmflows.templates.md.specific.cp2k_mm
+        settings:
+            input:
+                global:
+                    print_level: LOW
+                force_eval:
+                    mm:
+                      poisson:
+                         periodic: xyz
+                         ewald:
+                           ewald_type: spme
+                           gmax: '62 62 62'
+                           o_spline: 4
+                    subsys:
+                        cell:
+                            abc: '[angstrom] 100.0 100.0 100.0'
+                            periodic: xyz
+
+                motion:
+                    print:
+                        restart:
+                           each:
+                              md: 10
+                        trajectory:
+                           each:
+                              md: 10
+                        velocities:
+                           each:
+                              md: 10
+                        forces:
+                           each:
+                              md: 10
+                    md:
+                        ensemble: NVT
+                        temperature: 300.0
+                        timestep: 2.5
+                        steps: 10000
+                        thermostat:
+                            type: csvr
+                            csvr:
+                                timecon: 10000
+
+monte_carlo:
+    type: FOX.armc.ARMC
+    iter_len: 50000
+    sub_iter_len: 10
+    logfile: armc.log
+    hdf5_file: armc.hdf5
+    path: ./
+    folder: MM_MD_workdir
+    keep_files: True
+
+
+
+.......
+
+
+
+
+
+
+
+
+
+
+.. code:: yaml
     param:
         charge:
             param: charge
