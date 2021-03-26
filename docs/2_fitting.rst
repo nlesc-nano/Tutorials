@@ -42,19 +42,19 @@ First, let's have a look at the .yaml file containing our ARMC settings for the 
                   guess: uff
             - param: sigma
               unit: nm
-              Cs Cs:  0.553
+              Cs Cs:  0.453
               Cs Pb:  0.367
               Br Cs:  0.363
               Pb Pb:  0.610
               Br Pb:  0.298
-              Br Br:  0.379
+              Br Br:  0.369
               constraints:
                   - 'Cs Cs   > 0.433'
-                  - 'Cs Pb   > 0.247'
-                  - 'Br Cs   > 0.243'
-                  - 'Pb Pb   > 0.490'
-                  - 'Br Pb   > 0.178'
-                  - 'Br Br   > 0.259'
+                  - 'Cs Pb   > 0.347'
+                  - 'Br Cs   > 0.343'
+                  - 'Pb Pb   > 0.590'
+                  - 'Br Pb   > 0.278'
+                  - 'Br Br   > 0.349'
 
         pes:
             rdf:
@@ -165,20 +165,20 @@ Let's move to the :code:`lennard_jones` block.
 
             - param: sigma
               unit: nm
-              Cs Cs:  0.553
+              Cs Cs:  0.453
               Cs Pb:  0.367
               Br Cs:  0.363
               Pb Pb:  0.610
               Br Pb:  0.298
-              Br Br:  0.379
+              Br Br:  0.369
               constraints:
                   - 'Cs Cs   > 0.433'
-                  - 'Cs Pb   > 0.247'
-                  - 'Br Cs   > 0.243'
-                  - 'Pb Pb   > 0.490'
-                  - 'Br Pb   > 0.178'
-                  - 'Br Br   > 0.259'
-
+                  - 'Cs Pb   > 0.347'
+                  - 'Br Cs   > 0.343'
+                  - 'Pb Pb   > 0.590'
+                  - 'Br Pb   > 0.278'
+                  - 'Br Br   > 0.349'
+                  
     Here we need to optimize the sigma parameters for the pair interactions of interest (provided with the corresponding `atom pairs <https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/MM/FORCEFIELD/NONBONDED/LENNARD-JONES.html#list_ATOMS>`_), i.e.
     the ion-ion interactions inside the nanocrystal core (eg. Cs-Cs).
     The initial parameters for these pairs are obtained from the DFT trajectory by means of a small python script:
@@ -216,7 +216,7 @@ The `pes <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo_args.html?high
 
 The job block
 -------------
-The `job <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo_args.html?highlight=job#job>`_ section specifies the  settings of the calculation we want to perform (in our case the MD simulation). The parameters can be tailored according to need: for instance, in our 
+The `job <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo_args.html?highlight=job#job>`_ section specifies the settings of the calculation we want to perform (in our case the MD simulation). The parameters can be tailored according to need: for instance, in our 
 
     .. code:: yaml
     
@@ -315,12 +315,12 @@ Once we obtain reliable parameters (i.e. when the comparison between our referen
                       guess: uff
                 - param: sigma
                   unit: nm
-                  Cs Cs:  0.553
-                  Cs Pb:  0.367
-                  Br Cs:  0.363
-                  Pb Pb:  0.610
-                  Br Pb:  0.298
-                  Br Br:  0.379
+                  Cs Cs:  0.433
+                  Cs Pb:  0.362
+                  Br Cs:  0.389
+                  Pb Pb:  0.636
+                  Br Pb:  0.316
+                  Br Br:  0.369
                   C2O3 Cs: 0.437
                   C2O3 Pb: 0.348
                   Br C2O3: 0.383
@@ -329,17 +329,17 @@ Once we obtain reliable parameters (i.e. when the comparison between our referen
                   Br O2D2: 0.369
                   constraints:
                       - 'Cs Cs   > 0.523'
-                      - 'Cs Pb   > 0.337'
-                      - 'Br Cs   > 0.333'
-                      - 'Pb Pb   > 0.580'
-                      - 'Br Pb   > 0.268'
+                      - 'Cs Pb   > 0.342'
+                      - 'Br Cs   > 0.369'
+                      - 'Pb Pb   > 0.616'
+                      - 'Br Pb   > 0.296'
                       - 'Br Br   > 0.349'
-                      - 'C2O3 Cs > 0.407'
-                      - 'C2O3 Pb > 0.318'
-                      - 'Br C2O3 > 0.353'
-                      - 'Cs O2D2 > 0.301'
-                      - 'O2D2 Pb > 0.234'
-                      - 'Br O2D2 > 0.339'
+                      - 'C2O3 Cs > 0.417'
+                      - 'C2O3 Pb > 0.328'
+                      - 'Br C2O3 > 0.363'
+                      - 'Cs O2D2 > 0.311'
+                      - 'O2D2 Pb > 0.244'
+                      - 'Br O2D2 > 0.349'
                   frozen:
                       C331 Cs: 0.295
                       C331 Pb: 0.265
@@ -410,9 +410,6 @@ Once we obtain reliable parameters (i.e. when the comparison between our referen
                                     energy:
                                         each:
                                            md: 10
-                                barostat:
-                                    pressure: 1.01
-                                    timecon: 10000
         
         monte_carlo:
             type: FOX.armc.ARMC
@@ -563,7 +560,68 @@ The .rtf file is used for assigning atom types and charges to ligands. In fact, 
 As we can see, this file contains a block indicating the masses of the ligand atoms and one containing their charges. The line ``RESI LIG -1.000000`` highlights the total charge on each ligand, which is the sum of the charges of its constituent atoms (i.e. -0.37 + 0.288746 + (-0.328684) + 0.288746 + 3*0.09 = -1).
 Since any information on the ligand which isn't contained in the .yaml input is read from its .rtf file, we can modulate the charge for our anchoring group (``C2O3`` and ``O2D2``) in our yaml input, and they will be overwritten. More specifically, the total charge on each acetate molecule needs to balance the charge we indicated for Br atoms (i.e. ``Br  -0.4``), so that the charge of the system is kept neutral during the replacement. This means that the sum of the charges needs to be adjusted to satisfy the relationship: -0.37 + C2O3 + 2O2D2 + 3*0.09 = -0.4. We have thus chosen the values ``C2O3  0.25`` and ``O2D2  -0.275`` in the .yaml input because they satisfied these requirements mantaining the correct proportions between the atoms in the anchoring group.
 
-The other sections are structured in a parallel fashion to the previous input. We will once again perform the fitting procedure by opening our conda environment containing **Auto-FOX**, FOX, and computing the command prompt ``init_armc settings.yaml``.
+The job block
+-------------
+
+        job:
+            molecule: last5000.xyz
+        
+            md_settings:
+                template: qmflows.templates.md.specific.cp2k_mm
+                settings:
+                    prm: acetate.prm
+                    input:
+                        global:
+                            print_level: LOW
+                        force_eval:
+                            mm:
+                              poisson:
+                                 periodic: xyz
+                                 ewald:
+                                   ewald_type: spme
+                                   gmax: '62 62 62'
+                                   o_spline: 4
+                            subsys:
+                                cell:
+                                    abc: '[angstrom] 100.0 100.0 100.0'
+                                    periodic: xyz
+                        motion:
+                            print:
+                                cell:
+                                   each:
+                                      md: 10
+                                restart:
+                                   each:
+                                      md: 10
+                                trajectory:
+                                   each:
+                                      md: 10
+                                velocities:
+                                   each:
+                                      md: 10
+                                forces:
+                                   each:
+                                      md: 10
+                            md:
+                                ensemble: NVT
+                                temperature: 300.0
+                                timestep: 1
+                                steps: 10000
+                                thermostat:
+                                    type: csvr
+                                    csvr:
+                                        timecon: 10000
+                                print:
+                                    energy:
+                                        each:
+                                           md: 10
+
+The main differences with the previous `job <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo_args.html?highlight=job#job>`_ section are:
+
+1. The presence of the ``settings.prm`` subsection, containing the homonymous file for the ligand;
+2. The choice of a 1 ps timestep in the MDs, which is motivated by the need of an appropriate description of the vibration of the organic bonds in the ligands.
+
+The remainder of the sections are structured in a parallel fashion to the previous input. We will once again perform the fitting procedure by opening our conda environment containing **Auto-FOX**, FOX, and computing the command prompt ``init_armc settings.yaml``.
 
 .. _charge: https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/MM/FORCEFIELD/CHARGE.html#list_CHARGE
 .. _epsilon: https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/MM/FORCEFIELD/NONBONDED/LENNARD-JONES.html#list_EPSILON
