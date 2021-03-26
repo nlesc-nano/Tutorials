@@ -2,7 +2,7 @@
 
 Forcefield Optimization
 =======================
-The goal of this tutorial is to obtain the classical forcefield parameters for a lead perovksite nanocrystal core and for the nanocrystal (NC) obtained by capping the fitted core with carboxylate ligands. In fact, the construction of a forcefield for a Quantum Dot (QD) requires parameters for a proper description of:
+The goal of this tutorial is to obtain the classical forcefield parameters for a lead perovksite core and for the nanocrystal (NC) obtained by capping the fitted core with carboxylate ligands. In fact, the construction of a forcefield for a Quantum Dot (QD) requires parameters for a proper description of:
 
     * the ion-ion interactions inside the nanocrystal core;
     * the ligand anchoring group-core ions interactions at the nanocrystal surface.
@@ -200,8 +200,94 @@ Let's move to the :code:`lennard_jones` block.
 
 The script provides the sigma values in Angstrom so we divided them by 10 to obtain the corresponding values in nm.
 In order to avoid atoms getting too close one from each other, we constrained the sigma parameters to be higher than a minimal value (choosen to be exactly 0.02 nm lower than the initial value).
+
+The pes block
+-------------
+The `pes <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo_args.html?highlight=rtf#pes>`_ block contains the setting and descriptors aimed at the construction of the Potential Energy Surface (PES) of the atoms we aim to fit, specified in the kwargs_ subsection. We chose to calculate their radial distribution function (rdf_).
+
+    .. code:: yaml
     
-code for the NC with ligands:
+        pes:
+            rdf:
+                func: FOX.MultiMolecule.init_rdf
+                kwargs:
+                    atom_subset: [Cs, Pb, Br]
+                    
+
+The job block
+-------------
+The `job <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo_args.html?highlight=job#job>`_ section specifies the  settings of the calculation we want to perform (in our case the MD simulation). The parameters can be tailored according to need: for instance, in our 
+
+    .. code:: yaml
+    
+        job:
+            molecule: 2.3nm_cspbbr3_NVT_300K-pos-1.xyz
+        
+            md_settings:
+                template: qmflows.templates.md.specific.cp2k_mm
+                settings:
+                    input:
+                        global:
+                            print_level: LOW
+                        force_eval:
+                            mm:
+                              poisson:
+                                 periodic: xyz
+                                 ewald:
+                                   ewald_type: spme
+                                   gmax: '62 62 62'
+                                   o_spline: 4
+                            subsys:
+                                cell:
+                                    abc: '[angstrom] 100.0 100.0 100.0'
+                                    periodic: xyz
+        
+                        motion:
+                            print:
+                                restart:
+                                   each:
+                                      md: 10
+                                trajectory:
+                                   each:
+                                      md: 10
+                                velocities:
+                                   each:
+                                      md: 10
+                                forces:
+                                   each:
+                                      md: 10
+                            md:
+                                ensemble: NVT
+                                temperature: 300.0
+                                timestep: 2.5
+                                steps: 10000
+                                thermostat:
+                                    type: csvr
+                                    csvr:
+                                        timecon: 10000
+
+
+
+The monte_carlo block
+-------------
+Last, the `monte_carlo <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo_args.html?highlight=md_settings#monte-carlo>`_ contains all the settings required to operate the Monte Carlo procedure (in our case, we are making use of the ` Adaptive Rate Monte Carlo <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo.html#addaptive-rate-monte-carlo>`_ algorithm), including the total number of iterations and sub_iterations in the procedure, the name and path of the logfile containing the summary of the performed jobs and their respective errors calculated through a comparison with our chosen PES descriptor (rdf), the paths of the working directory and whether or not the directories containing the single MD jobs are being kept in the main working directory (``keep_files: True`` or ``False``).
+    .. code:: yaml
+    
+        monte_carlo:
+            type: FOX.armc.ARMC
+            iter_len: 50000
+            sub_iter_len: 10
+            logfile: armc.log
+            hdf5_file: armc.hdf5
+            path: ./
+            folder: MM_MD_workdir
+            keep_files: True
+
+We will thus perform the fitting procedure by opening our conda environment containing **Auto-FOX**, FOX, and computing the command prompt ``init_armc settings.yaml``.
+
+The nanocrystal
+---------------
+Once we obtain reliable parameters (i.e. when the comparison between our reference function, the MM radial distribution function calculated with the fitted parameters, and the QM-computed radial distribution function displays a very low error, we can use these parameters as a starting point to build a new yaml input for the fitting of the forcefield parameters of the nanocrystal obtained by capping the fitted CsPbBr_3 core with acetate ligands. Let's have a brief look at the new input file.
 
     .. code:: yaml
     
@@ -432,6 +518,7 @@ In this case, the output of this python script provides both the sigma values fo
 The psf block
 -------------
 
+The `psf <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo_args.html?highlight=psf#psf>`_ section contains the settings required for the construction of the protein structure files. In our case the required data is the name of the .rtf file and a list identifying the atoms of the ligands.
 
     .. code:: yaml
 
@@ -439,9 +526,47 @@ The psf block
                rtf_file: acetate.rtf
                ligand_atoms: [C, O, H]
            
-           
-This             
+The .rtf file is used for assigning atom types and charges to ligands. In fact, any information on the ligand which isn't contained in the .yaml input is read from its .rtf file. Let's see an example of its structure in detail for our acetate ligands:
+
+::
+
+  harmm RTF built by MATCH
+  *
+    22     0
+  MASS   122 C2O3  12.01100 C
+  MASS   123 C331  12.01100 C
+  MASS   124 HGA3  1.008000 H
+  MASS   125 O2D2  15.99900 O
+  
+  AUTO ANGLES DIHE
+  
+  RESI  LIG   -1.000000
+  GROUP
+  ATOM C    C331  -0.370000
+  ATOM C2   C2O3   0.288746
+  ATOM O    O2D2  -0.328684
+  ATOM O5   O2D2   0.288746
+  ATOM H6   HGA3   0.090000
+  ATOM H7   HGA3   0.090000
+  ATOM H    HGA3   0.090000
+  BOND C2   C
+  BOND C    H
+  BOND C    H6
+  BOND C    H7
+  BOND C2   O
+  BOND C2   O5
+  IMPR C2   C    O    O5
+  PATCH FIRST NONE LAST NONE
+  
+  END
+
+As we can see, this file contains a block indicating the masses of the ligand atoms and one containing their charges. The line ``RESI LIG -1.000000`` highlights the total charge on each ligand, which is the sum of the charges of its constituent atoms (i.e. -0.37 + 0.288746 + (-0.328684) + 0.288746 + 3*0.09 = -1).
+Since any information on the ligand which isn't contained in the .yaml input is read from its .rtf file, we can modulate the charge for our anchoring group (``C2O3`` and ``O2D2``) in our yaml input, and they will be overwritten. More specifically, the total charge on each acetate molecule needs to balance the charge we indicated for Br atoms (i.e. ``Br  -0.4``), so that the charge of the system is kept neutral during the replacement. This means that the sum of the charges needs to be adjusted to satisfy the relationship: -0.37 + C2O3 + 2O2D2 + 3*0.09 = -0.4. We have thus chosen the values ``C2O3  0.25`` and ``O2D2  -0.275`` in the .yaml input because they satisfied these requirements mantaining the correct proportions between the atoms in the anchoring group.
+
+The other sections are structured in a parallel fashion to the previous input. We will once again perform the fitting procedure by opening our conda environment containing **Auto-FOX**, FOX, and computing the command prompt ``init_armc settings.yaml``.
 
 .. _charge: https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/MM/FORCEFIELD/CHARGE.html#list_CHARGE
 .. _epsilon: https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/MM/FORCEFIELD/NONBONDED/LENNARD-JONES.html#list_EPSILON
 .. _sigma: https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/MM/FORCEFIELD/NONBONDED/LENNARD-JONES.html#list_SIGMA
+.. _kwargs: https://auto-fox.readthedocs.io/en/latest/4_monte_carlo_args.html?highlight=rtf#pes.block.kwargs
+.. _rdf: https://auto-fox.readthedocs.io/en/latest/1_rdf.html?highlight=init_rdf#radial-angular-distribution-function
