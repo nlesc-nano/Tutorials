@@ -216,7 +216,10 @@ The `pes <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo_args.html?high
 
 The job block
 -------------
-The `job <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo_args.html?highlight=job#job>`_ section specifies the settings of the calculation we want to perform (in our case the MD simulation). The parameters can be tailored according to need: for instance, in our 
+The `job <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo_args.html?highlight=job#job>`_ section is divided into two subsections:
+
+    * ``molecule``, containing the reference .xyz file with the reference QM rdf;
+    * ``md_settings``, specifying the the settings of the calculation we want to perform (in our case the MD simulations).     
 
     .. code:: yaml
     
@@ -267,10 +270,12 @@ The `job <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo_args.html?high
                                         timecon: 10000
 
 
+This section containts the actual parameters that will figure in the CP2K input file: for further inquiries on the keywords, we invite you to refer to the relative `documentation <https://manual.cp2k.org/cp2k-7_1-branch/CP2K_INPUT.html>`_. These parameters can be tailored according to need: for example, in our case, we tailored the value of ``gmax`` on the dimension of our cubic cell (whose periodic parameters are thus provided as ``abc``) and we chose which properties - the trajectory, velocities and forces - to print over each MD run depending on the future calculations we aimed to perform. Moreover, we performed NVT MD simulations on systems at room temperature and, in the absence of organic molecules, we opted for 2.5 fs integration timesteps. 
 
 The monte_carlo block
 -------------
-Last, the `monte_carlo <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo_args.html?highlight=md_settings#monte-carlo>`_ contains all the settings required to operate the Monte Carlo procedure (in our case, we are making use of the ` Adaptive Rate Monte Carlo <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo.html#addaptive-rate-monte-carlo>`_ algorithm), including the total number of iterations and sub_iterations in the procedure, the name and path of the logfile containing the summary of the performed jobs and their respective errors calculated through a comparison with our chosen PES descriptor (rdf), the paths of the working directory and whether or not the directories containing the single MD jobs are being kept in the main working directory (``keep_files: True`` or ``False``).
+The `monte_carlo <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo_args.html?highlight=md_settings#monte-carlo>`_ block contains all the settings required to operate the Monte Carlo procedure (in our case, we are making use of the `Adaptive Rate Monte Carlo <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo.html#addaptive-rate-monte-carlo>`_ algorithm), including the total number of iterations and sub_iterations in the procedure, the name and path of the logfile containing the summary of the performed jobs and their respective errors calculated through a comparison with our chosen PES descriptor (rdf), the paths of the working directory and whether or not the directories containing the single MD jobs are being kept in the main working directory (``keep_files: True`` or ``False``).
+
     .. code:: yaml
     
         monte_carlo:
@@ -283,11 +288,11 @@ Last, the `monte_carlo <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo_
             folder: MM_MD_workdir
             keep_files: True
 
-We will thus perform the fitting procedure by opening our conda environment containing **Auto-FOX**, FOX, and computing the command prompt ``init_armc settings.yaml``.
+We will thus perform the fitting procedure by opening our conda environment containing **Auto-FOX** and computing the command prompt ``init_armc settings.yaml``.
 
 The nanocrystal
 ---------------
-Once we obtain reliable parameters (i.e. when the comparison between our reference function, the MM radial distribution function calculated with the fitted parameters, and the QM-computed radial distribution function displays a very low error, we can use these parameters as a starting point to build a new yaml input for the fitting of the forcefield parameters of the nanocrystal obtained by capping the fitted CsPbBr_3 core with acetate ligands. Let's have a brief look at the new input file.
+Once we obtain reliable parameters (i.e. when the comparison between our reference function, the MM radial distribution function calculated with the fitted parameters, and the QM-computed radial distribution function displays a very low error), we can use these parameters as a starting point to build a new .yaml input for the fitting of the forcefield parameters of the NC obtained by capping the fitted CsPbBr_3 core with acetate ligands. Let's have a brief look at the new input file.
 
     .. code:: yaml
     
@@ -619,7 +624,7 @@ The job block
 The main differences with the previous `job <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo_args.html?highlight=job#job>`_ section are:
 
 1. The presence of the ``settings.prm`` subsection, containing the homonymous file for the ligand;
-2. The choice of a 1 ps timestep in the MDs, which is motivated by the need of an appropriate description of the vibration of the organic bonds in the ligands.
+2. The choice of a 1 fs timestep in the MDs, which is motivated by the need of an appropriate description of the vibration of the organic bonds in the ligands.
 
 The remainder of the sections are structured in a parallel fashion to the previous input. We will once again perform the fitting procedure by opening our conda environment containing **Auto-FOX**, FOX, and computing the command prompt ``init_armc settings.yaml``.
 
