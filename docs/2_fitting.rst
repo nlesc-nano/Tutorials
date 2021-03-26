@@ -125,7 +125,7 @@ The param block
 The ``"param"`` key contains all user-specified features concerning the to-be optimized parameters for the Coulomb potential (the charge_)
 and the Lennard-Jones potential (epsilon_ & sigma_). Let's have a look at the relative sub-blocks:
 
-1.  Coulomb potential
+1.  **Coulomb potential**
 
     .. code:: yaml
     
@@ -147,7 +147,7 @@ and the Lennard-Jones potential (epsilon_ & sigma_). Let's have a look at the re
 
 Let's move to the :code:`lennard_jones` block.
 
-2.  Lennard-Jones potential
+2.  **Lennard-Jones potential**
 
     This sub-block is divided in two further components: epsilon_ and sigma_. Let's have a look at them:
 
@@ -199,7 +199,7 @@ Let's move to the :code:`lennard_jones` block.
 
 
 The script provides the sigma values in Angstrom so we divided them by 10 to obtain the corresponding values in nm.
-In order to avoid atoms getting too close one from each other, we constrained the sigma parameters to be higher than a miminal value (choosen to be exactly 0.02 nm lower than the initial value).
+In order to avoid atoms getting too close one from each other, we constrained the sigma parameters to be higher than a minimal value (choosen to be exactly 0.02 nm lower than the initial value).
     
 code for the NC with ligands:
 
@@ -410,8 +410,7 @@ Here, the Coulomb potential sub-block shows both the charges of the nanocrystal 
                       HGA3 Pb: 0.270
                       Br HGA3: 0.235
 
-    In the :code:`lennard_jones` block we will need to optimize the sigma parameters for all the `atom pair <https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/MM/FORCEFIELD/NONBONDED/LENNARD-JONES.html#list_ATOMS>`_ interactions of interest, including both the ion-ion interactions inside the nanocrystal core (eg. Cs-Cs) and the acetate anchoring group-core ions interactions (eg. O2D2-Cs).
-    The initial parameters for these pairs are obtained from the DFT trajectory by means of a small python script:
+    In the :code:`lennard_jones` block we will need to optimize the sigma parameters for all the `atom pair <https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/MM/FORCEFIELD/NONBONDED/LENNARD-JONES.html#list_ATOMS>`_ interactions of interest, including both the ion-ion interactions inside the nanocrystal core (eg. Cs-Cs) and the acetate anchoring group-core ions interactions (eg. O2D2-Cs). In addition, the sigmas between the ions in the inorganic core and the ligand atoms which are not in the anchoring group are treated as frozen (non-optimized, constant parameters): their values are thus inserted in the ``"frozen"`` subsection. The initial parameters for these pairs are obtained from the DFT trajectory by means of a small python script:
 
     .. code:: python
 
@@ -428,7 +427,7 @@ Here, the Coulomb potential sub-block shows both the charges of the nanocrystal 
         >>> print(param)
 
 
-In this case, the output of this python script provides both the sigma values for both to the to-be optimized sigmas and the frozen (constant, not optimized) components which can be found in the respective ``"frozen"`` subsection. Once again, in order to avoid atoms getting too close one from each other, we constrained the sigma parameters to be 0.02 nm lower than their estimated value. Once again, this specification results in a smoother fitting procedure.
+In this case, the output of this python script provides both the sigma values for both to the to-be optimized sigmas and the frozen components. Once again, in order to avoid atoms getting too close one from each other, we constrained the sigma parameters to be 0.02 nm lower than their estimated value: resulting in a smoother fitting procedure.
 
 The psf block
 -------------
