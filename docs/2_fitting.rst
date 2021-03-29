@@ -270,7 +270,7 @@ The `job <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo_args.html?high
                                         timecon: 10000
 
 
-This section containts the actual parameters that will figure in the CP2K input file: for further inquiries on the keywords, we invite you to refer to the relative `documentation <https://manual.cp2k.org/cp2k-7_1-branch/CP2K_INPUT.html>`_. These parameters can be tailored according to need: for example, in our case, we tailored the value of ``gmax`` on the dimension of our cubic cell (whose periodic parameters are thus provided as ``abc``) and we chose which properties - the trajectory, velocities and forces - to print over each MD run depending on the future calculations we aimed to perform. Moreover, we performed NVT MD simulations on systems at room temperature and, in the absence of organic molecules, we opted for 2.5 fs integration timesteps. 
+This section containts the actual parameters that will figure in the CP2K input file: for further inquiries on the keywords, we invite you to refer to the relative `documentation <https://manual.cp2k.org/cp2k-7_1-branch/CP2K_INPUT.html>`_. These parameters can be tailored according to need: for example, in our case, we tailored the MDs to improve the visualization of the grid by adjusting the value of ``gmax`` to the dimension of our cubic cell (whose periodic parameters are thus provided as ``abc``) and we chose which properties - the trajectory, velocities and forces - to print over each MD run depending on the future calculations we aimed to perform. Moreover, we performed NVT MD simulations on systems at room temperature and, in the absence of organic molecules, we opted for 2.5 fs integration timesteps. 
 
 The monte_carlo block
 -------------
@@ -563,10 +563,12 @@ The .rtf file is used for assigning atom types and charges to ligands. In fact, 
   END
 
 As we can see, this file contains a block indicating the masses of the ligand atoms and one containing their charges. The line ``RESI LIG -1.000000`` highlights the total charge on each ligand, which is the sum of the charges of its constituent atoms (i.e. -0.37 + 0.288746 + (-0.328684) + 0.288746 + 3*0.09 = -1).
-Since any information on the ligand which isn't contained in the .yaml input is read from its .rtf file, we can modulate the charge for our anchoring group (``C2O3`` and ``O2D2``) in our yaml input, and they will be overwritten. More specifically, the total charge on each acetate molecule needs to balance the charge we indicated for Br atoms (i.e. ``Br  -0.4``), so that the charge of the system is kept neutral during the replacement. This means that the sum of the charges needs to be adjusted to satisfy the relationship: -0.37 + C2O3 + 2O2D2 + 3*0.09 = -0.4. We have thus chosen the values ``C2O3  0.25`` and ``O2D2  -0.275`` in the .yaml input because they satisfied these requirements mantaining the correct proportions between the atoms in the anchoring group.
+Since any information on the ligand which isn't contained in the .yaml input is read from its .rtf file, we can modulate the charge for our anchoring group (``C2O3`` and ``O2D2``) in our yaml input, and they will be overwritten. More specifically, the total charge on each acetate molecule needs to balance the charge we indicated for Br atoms (i.e. ``Br  -0.4``), so that the charge of the system is kept neutral during the replacement. This means that the sum of the charges needs to be adjusted to satisfy the relationship: -0.37 + C2O3 + 2*O2D2 + 3*0.09 = -0.4. We have thus chosen the values ``C2O3  0.25`` and ``O2D2  -0.275`` in the .yaml input because they satisfied these requirements mantaining the correct proportions between the charges of the atoms in the anchoring group.
 
 The job block
 -------------
+
+    .. code:: yaml   
 
         job:
             molecule: last5000.xyz
@@ -626,7 +628,7 @@ The main differences with the previous `job <https://auto-fox.readthedocs.io/en/
 1. The presence of the ``settings.prm`` subsection, containing the homonymous file for the ligand;
 2. The choice of a 1 fs timestep in the MDs, which is motivated by the need of an appropriate description of the vibration of the organic bonds in the ligands.
 
-The remainder of the sections are structured in a parallel fashion to the previous input. We will once again perform the fitting procedure by opening our conda environment containing **Auto-FOX**, FOX, and computing the command prompt ``init_armc settings.yaml``.
+The remainder of the sections are structured in a parallel fashion to the previous input. We will once again perform the fitting procedure by opening our conda environment containing **Auto-FOX** and computing the command prompt ``init_armc settings.yaml``.
 
 .. _charge: https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/MM/FORCEFIELD/CHARGE.html#list_CHARGE
 .. _epsilon: https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/MM/FORCEFIELD/NONBONDED/LENNARD-JONES.html#list_EPSILON
