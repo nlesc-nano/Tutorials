@@ -14,7 +14,7 @@ Notice that the choice of the nanocrystal dimension is usually a compromise betw
 Our nanostructure now features a stoichiometry of Cs\ :sub:`512`\ Pb\ :sub:`343`\ Br\ :sub:`1176`\, corresponding to a total charge of:
 
 .. math::
-(+1)x512 + (+2)x343 + (-1)x1176 = +22
+   (+1)x512 + (+2)x343 + (-1)x1176 = +22
 
 when each ion is considered in its more stable thermodynamic electronic configuration (i.e. Cs\ :sup:`+`\, Pb\ :sup:`2+`\  and Br\ :sup:`-`\).
 To ensure the charge balance of our structure (*J. Phys. Chem. Lett.*, **2017**, *8*, 5209-5215), we will compensate this excess of positive charge by removing 12 Cs ions one by one, first from the corners (-8 Cs) and then from the edges (-14 Cs) of the nanocrystal surface (see Figure 3.). This choice is based on the fact that Cs ions don't participate significantly to the band edge states, so that their removal results in perovskite nanocrystal models with clean band gaps, i.e. free of midgap states. Moreover, it is known that it is energetically favorable to remove the excess ions from the corners and edges of the nanostructure.
@@ -49,7 +49,7 @@ The file also specifies the `fraction <https://cat.readthedocs.io/en/latest/4_op
 
 
 CAT input: building the Quantum Dot
----------------
+-----------------------------------
 We are now ready to use **CAT** to build our Quantum Dot. We will first of all create a 'core' directory inside our working directory (see the `General Overview <https://cat.readthedocs.io/en/latest/1_get_started.html#default-settings>`_ for further information) and move our newly built .xyz file inside it.
 
 We will then create a ``input_settings.yaml`` `input file <https://cat.readthedocs.io/en/latest/includeme.html#input-files>`_ in the working directory and customize it with the desired settings.
@@ -81,8 +81,8 @@ The `path <https://cat.readthedocs.io/en/latest/2_path.html#path>`_, `input_core
 
 1. ``path``: The `path <https://cat.readthedocs.io/en/latest/2_path.html#path>`_ section, as suggested, contains the path to the so-called working directory - i.e. where all the files are stored.
 2. ``input_cores``: This section contains the coordinates of the core, specified by our .xyz file (``cspbbr3_4.2nm_80Cl.xyz``). The ``guess_bonds: False`` keyword tells **CAT** that the bonds and bond orders can be guessed from the content of the .xyz file. 
-``input_ligands``: This section contains information on both the structure and the chemistry of the ligand. This information is stored in its `SMILES <https://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system#Description>`_ (Simplified molecular-input line-entry system) string, specifically ``CCCCCCCCC=CCCCCCCCC(=O)[O-]`` for oleate.
-3. ``optional``: The `optional <https://cat.readthedocs.io/en/latest/4_optional.html#optional>`_ section contains three fairly similar subsections: ``core``, ``ligand``, ``qd``. The subsections are all fairly similar: their keywords contain several specifications, such as:
+3. ``input_ligands``: This section contains information on both the structure and the chemistry of the ligand. This information is stored in its `SMILES <https://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system#Description>`_ (Simplified molecular-input line-entry system) string, specifically ``CCCCCCCCC=CCCCCCCCC(=O)[O-]`` for oleate.
+4. ``optional``: The `optional <https://cat.readthedocs.io/en/latest/4_optional.html#optional>`_ section contains three fairly similar subsections: ``core``, ``ligand``, ``qd``. The subsections are all fairly similar: their keywords contain several specifications, such as:
 
   - the directories where our inorganic cores and ligands will be stored (``optional.*.dirname``);
   - whether or not their optimization is required (``optional.ligand.optimize`` and ``optional.*.optimize``);
