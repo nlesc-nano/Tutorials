@@ -1,11 +1,11 @@
 .. _build_qd:
 
 Building a Quantum Dot Model
-=========================
+============================
 The goal of this tutorial is to outline the steps to build a Quantum Dot (QD) model from scratch. As an example, we will build a 4.2 nm sided cubic perovskite CsPbBr\ :sub:`3`\ nanocrystal capped by 80% oleate ligands.
 
 Installation Requirements
-------------------
+-------------------------
 CAT 
 nano-CAT
 data-CAT
@@ -37,7 +37,7 @@ Once the core is charge-balanced we will save and export the resulting .xyz into
 
 
 Surface Anchoring Points
----------------
+------------------------
 Our next step is to specify where the oleate ligands will be placed at the nanocrystal surface. To do that, we will mark the desired positions of the ligands anchoring groups with dummy ions. Again, to ensure the charge neutrality if *n* oleate anions (charge -1) are to be added, *n* superficial Br\ :sup:`-`\ will be replaced by *n* dummies. Here we will build our perovskite nanocrystal capped by 80% of oleate ligands by replacing 80% of the surface Br with Cl (our dummy ion) by means of a small python script (see below). Note that the choice of naming the dummy ions as Cl is completely arbitrary. 
 Please also note that the script requires the download and use of the **CAT** module, as well as its optional packages **data-CAT** and **nano-CAT**. We invite thus you to read the relative `documentation <https://cat.readthedocs.io/en/latest/0_documentation.html#cat-documentation>`_ before continuing this tutorial.
 Let's now have a look at the script:
