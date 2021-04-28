@@ -16,7 +16,7 @@ To fit the parameters, we will start from an *ab-initio* Molecular Dynamics (MD)
 Before starting the fitting we invite you to read the `documentation <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo.html>`_ relative to Adaptive Rate Monte Carlo (ARMC) in Auto-FOX.
 
 The inorganic core
----------------
+-------------------
 
 First, let's have a look at the .yaml file containing our ARMC settings for the fitting of the forcefield parameters of our CsPbBr_3 core from its previously calculated quantum mechanic, Density Functional Theory (DFT) trajectory.
 
