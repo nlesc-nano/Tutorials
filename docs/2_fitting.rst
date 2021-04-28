@@ -13,7 +13,7 @@ The third "category" of parameters, accounting for the organic ligands, are comm
 
 To fit the parameters, we will start from an *ab-initio* Molecular Dynamics (MD) trajectory (NVT, 300K, 5ps) of a 2.3 nm sided cubic CsPbBr_3 core (see `tutorial <https://nanotutorials.readthedocs.io/en/latest/1_build_qd.html>`_ for the Quantum Dot construction using **CAT**).
 
-Before starting the fitting we invite you to read the `documentation <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo.html>`_ relative to Adaptive Rate Monte Carlo (ARMC) in Auto-FOX.
+Before starting the fitting we invite you to read the `documentation <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo.html>`__ relative to Adaptive Rate Monte Carlo (ARMC) in Auto-FOX.
 
 The inorganic core
 -------------------
