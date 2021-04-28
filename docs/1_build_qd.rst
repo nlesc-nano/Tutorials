@@ -94,13 +94,13 @@ The `path <https://cat.readthedocs.io/en/latest/2_path.html#path>`_, `input_core
   - the directories where inorganic cores/ligands/qd will be stored (``optional.*.dirname``);
   - whether or not their optimization is required (``optional.ligand.optimize`` and ``optional.*.optimize``);
   - the dummy atom that needs to be replaced with the chosen ligand (``optional.*.anchor``)
-  - whether or not to remove protons from the ligand (``optional.ligand.split``). Specifically, since the SMILES string we are using in the input (i.e. ``CCCCCCCCC=CCCCCCCCC(=O)[O-]``) refers to the anionic ligand, we will opt for ``optional.ligand.split: False``, so no protons have been removed from the ligand anchoring group. Conversely, if the SMILES is provided in the neutral form, then the ``optional.ligand.split: True``, to ensure that the ligand is still added in its anionic form. 
+  - whether or not to remove protons from the ligand (``optional.ligand.split``). Specifically, since the SMILES string we are using in the input (i.e. ``CCCCCCCCC=CCCCCCCCC(=O)[O-]``) refers to the anionic ligand, we will opt for ``optional.ligand.split: False``, so no protons have been removed from the ligand anchoring group. Conversely, if the SMILES is provided in the neutral form, then ``optional.ligand.split: True``, meaning that a proton is cleaved from the functional group (in this case carboxylate) to ensure that the ligand is still added in its anionic form. Note that the latter form is preferrable when the ligand present more than one functional group.  
 
 In all cases, the ``*`` in the keywords accounts for the name of the subsection it refers to (i.e ``core``, ``ligand``, ``qd``).
 
 We are finally ready to run CAT with the following command: ``init_cat input_settings.yaml``
 After running **CAT** the .xyz file corresponding to our oleate capped perovskite nanocrystal can be found in the specified directory, 'qd'. Don't worry, the directory will be created from scratch if it does not yet exist!
 
-An important point here is that CAT automatically browse the provided ligand for the following functional groups: . If there is more than one present, e.g. 3, then CAT will build 3 QD models with the ligands bound from different anchoring groups. 
+An important point here is that CAT automatically browse the provided ligand for "default" functional groups - the complete list is provided `here <https://github.com/nlesc-nano/CAT/blob/f887908cfca0bd0b128e608f7f0f4e7a593420ae/CAT/data/templates/smiles.yaml#L1-L25>`_. If there is more than one present, e.g. 3, then CAT will build 3 QD models with the ligands bound from different anchoring groups. 
 
 Rename the .xyz file, you are now ready to use it!
