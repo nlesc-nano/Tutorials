@@ -528,7 +528,7 @@ The `psf <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo_args.html?high
             rtf_file: acetate.rtf
             ligand_atoms: [C, O, H]
            
-The .rtf file is used for assigning atom types and charges to ligands. In fact, any information on the ligand which isn't contained in the .yaml input is read from its .rtf file. Let's see an example of its structure in detail for our acetate ligands:
+The CHARMM .rtf file is used for assigning atom types and charges to ligands. In fact, any information on the ligand which isn't contained in the .yaml input is read from its .rtf file. Let's see an example of its structure in detail for our acetate ligands:
 
 ::
 
