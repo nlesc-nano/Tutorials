@@ -197,6 +197,18 @@ Let's move to the :code:`lennard_jones` block.
 
         >>> print(param)
 
+The output should then look like this:
+
+    .. code:: yaml
+
+                    epsilon  sigma
+       Atom pairs
+       Cs Cs       0.683841   4.40
+       Cs Pb       0.955072   3.70
+       Cs Br       1.058045   2.95
+       Pb Pb       1.044792   5.30
+       Pb Br       1.474410   2.55
+       Br Br       0.851541   3.35
 
 The script provides the sigma values in Angstrom so we divided them by 10 to obtain the corresponding values in nm.
 In order to avoid atoms getting too close one from each other, we constrained the sigma parameters to be higher than a minimal value (choosen to be exactly 0.02 nm lower than the initial value).
