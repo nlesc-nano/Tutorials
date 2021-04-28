@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 import os
 
 from setuptools import setup
@@ -19,7 +18,7 @@ setup(
     version=version['__version__'],
     description="A collection of tutorials for the analysis of nanocrystals.",
     long_description=readme + '\n\n',
-    author="Juliette Zito",
+    author=["Juliette Zito", "felipe zapata"], 
     author_email='juliette.zito@hotmail.fr',
     url='https://github.com/nlesc-nano/Tutorials',
     packages=[
@@ -42,7 +41,7 @@ setup(
         'Topic :: Scientific/Engineering :: Chemistry'
     ],
     test_suite='tests',
-    install_requires=[],  # FIXME: add your package's dependencies to this list
+    install_requires=[],
     tests_require=[
         'pytest',
         'pytest-cov',
