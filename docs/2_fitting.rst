@@ -454,7 +454,7 @@ The param block
 Here, the Coulomb potential sub-block shows both the charges of the nanocrystal core ions (Cs, Pb, Br) and those of the ligand anchoring group atoms (in this specific case, the carboxylate group of the acetate, i.e. C2O3 and O2D2). Their initial values are usually obtained: 
     
     * For the nanocrystal core ions, from the approximated results of the previous fitting procedure used for the inorganic core or by their most stable oxidation state, in absence of more accurate parameters.
-    * For the anchoring group of the ligand, by adjusting the charges (found both in the .yaml input and in the .rtf file of the ligand) to achieve the overall charge neutrality of the system. More specifically, the total charge of the ligand needs to equal the charge of the atom it replaces: in this specific case, our ligand is an acetate group, and it thus needs to balance the charge of the Br atom (-0.4). We will provide an example of this procedure in the following section.
+    * For the anchoring group of the ligand, by adjusting the charges (found both in the .yaml input and in the CHARMM .rtf file of the ligand) to achieve the overall charge neutrality of the system. More specifically, the total charge of the ligand needs to equal the charge of the atom it replaces: in this specific case, our ligand is an acetate group, and it thus needs to balance the charge of the Br atom (-0.4). We will provide an example of this procedure in the following section.
     
     .. code:: yaml    
     
