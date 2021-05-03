@@ -6,7 +6,7 @@ The goal of this tutorial is to obtain the classical forcefield parameters for a
 
 Installation Requirements
 -------------------------
-The script requires the download and use of the **CAT**, **data-CAT** and **nano-CAT** packages for the construction of the model. We invite you to read the relative `documentation <https://cat.readthedocs.io/en/latest/0_documentation.html#cat-documentation>`_ before continuing this tutorial. The tutorial makes use of the Adaptive Rate Monte Carlo (ARMC) algorithm as implemented in the **Auto-FOX** package (the ARMC settings are available at the following `link <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo.html>`__.
+The script requires the download and use of the **CAT**, **data-CAT** and **nano-CAT** packages for the construction of the model. We invite you to read the relative `documentation <https://cat.readthedocs.io/en/latest/0_documentation.html#cat-documentation>`__ before continuing this tutorial. The tutorial makes use of the Adaptive Rate Monte Carlo (ARMC) algorithm as implemented in the **Auto-FOX** package (the ARMC settings are available at the following `link <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo.html>`__.
 
 The inorganic core
 -------------------
