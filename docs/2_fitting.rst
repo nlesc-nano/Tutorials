@@ -8,8 +8,8 @@ Installation Requirements
 -------------------------
 The script requires the download and use of the **CAT**, **data-CAT** and **nano-CAT** packages for the construction of the model. We invite you to read the relative `documentation <https://cat.readthedocs.io/en/latest/0_documentation.html#cat-documentation>`__ before continuing this tutorial. The tutorial makes use of the Adaptive Rate Monte Carlo (ARMC) algorithm as implemented in the **Auto-FOX** package (the ARMC settings are available at the following `link <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo.html>`__.
 
-The inorganic core
--------------------
+Basic - The core
+----------------
 
 We will start from an *ab-initio* Molecular Dynamics (MD) trajectory (NVT, 300K, 5ps) of a 2.3 nm sided cubic CsPbBr\ :sub:`3`\ core. This Density Functional Theory (DFT) based trajectory will provide the QM basis for the fitting our forcefield parameters using the ARMC scheme. Let's have a look at the .yaml file containing our ARMC settings.
 
@@ -114,7 +114,7 @@ We will start from an *ab-initio* Molecular Dynamics (MD) trajectory (NVT, 300K,
 Now, let's see in detail the contents of each section of our input file.
 
 The param block
----------------
+^^^^^^^^^^^^^^^
 The ``"param"`` key contains all user-specified features concerning the to-be optimized parameters for the Coulomb potential (the charge_)
 and the Lennard-Jones potential (epsilon_ & sigma_). Let's have a look at the relative sub-blocks:
 
@@ -207,7 +207,7 @@ The script provides the sigma values in Angstrom so we divided them by 10 to obt
 In order to avoid atoms getting too close one from each other, we constrained the sigma parameters to be higher than a minimal value (choosen to be exactly 0.02 nm lower than the initial value).
 
 The pes block
--------------
+^^^^^^^^^^^^^
 The `pes <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo_args.html?highlight=rtf#pes>`_ block contains the setting and descriptors aimed at the construction of the Potential Energy Surface (PES) of the atoms we aim to fit, specified in the kwargs_ subsection. We chose to calculate their radial distribution function (rdf_).
 
     .. code:: yaml
@@ -220,7 +220,7 @@ The `pes <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo_args.html?high
                     
 
 The job block
--------------
+^^^^^^^^^^^^^
 The `job <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo_args.html?highlight=job#job>`_ section is divided into two subsections:
 
     * ``molecule``, containing the reference .xyz file with the reference QM rdf;
@@ -278,7 +278,7 @@ The `job <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo_args.html?high
 This section containts the actual parameters that will figure in the CP2K input file: for further inquiries on the keywords, we invite you to refer to the relative `documentation <https://manual.cp2k.org/cp2k-7_1-branch/CP2K_INPUT.html>`_. These parameters can be tailored according to need: for example, in our case, we tailored the MDs to improve the visualization of the grid by adjusting the value of ``gmax`` to the dimension of our cubic cell (whose periodic parameters are thus provided as ``abc``) and we chose which properties - the trajectory, velocities and forces - to print over each MD run depending on the future calculations we aimed to perform. Moreover, we performed NVT MD simulations on systems at room temperature and, in the absence of organic molecules, we opted for 2.5 fs integration timesteps. 
 
 The monte_carlo block
------------------------
+^^^^^^^^^^^^^^^^^^^^^
 The `monte_carlo <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo_args.html?highlight=md_settings#monte-carlo>`_ block contains all the settings required to operate the Monte Carlo procedure (in our case, we are making use of the `Adaptive Rate Monte Carlo <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo.html#addaptive-rate-monte-carlo>`_ algorithm), including the total number of iterations and sub_iterations in the procedure, the name and path of the logfile containing the summary of the performed jobs and their respective errors calculated through a comparison with our chosen PES descriptor (rdf), the paths of the working directory and whether or not the directories containing the single MD jobs are being kept in the main working directory (``keep_files: True`` or ``False``).
 
     .. code:: yaml
@@ -296,8 +296,8 @@ The `monte_carlo <https://auto-fox.readthedocs.io/en/latest/4_monte_carlo_args.h
 We will thus perform the fitting procedure by opening our conda environment containing **Auto-FOX** and computing the command prompt ``init_armc settings.yaml``.
 Once we obtain reliable parameters for the core (i.e. when the comparison between our reference function, the MM radial distribution function calculated with the fitted parameters, and the QM-computed radial distribution function displays a very low error), it is possible to move to the fitting of more complex models.
 
-Advanced settings - The nanocrystal
------------------------------------
+Advanced - The nanocrystal
+--------------------------
 We will now move to fitting the forcefield parameters for the nanocrystal (NC) obtained by capping our - now fitted - CsPbBr\ :sub:`3`\ core with carboxylate ligands (see `tutorial <https://nanotutorials.readthedocs.io/en/latest/1_build_qd.html>`_ for the Quantum Dot construction using **CAT**).
 The construction of a forcefield for a Quantum Dot (QD) is a bit more challenging than the forcefield of its "naked" core, because it requires additional parameters to achieve a proper description of:
 
