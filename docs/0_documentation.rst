@@ -8,3 +8,4 @@ Three tutorial examples are presented here.
     2_fitting
     3_classical_md
     4_filter_and_compute
+    5_simulation_box
