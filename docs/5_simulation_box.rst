@@ -5,10 +5,10 @@ Preparing a Simulation Box
 
 The goal of this tutorial is to prepare a 11.5 nm simulation box for Classical Molecular Dynamics (CMD) simulations. We have chosen to simulate the products of a synthesis procedure to obtain monodisperse CsPbBr\ :sub:`3`\ NCs, described by L. Protesescu *et al* in *Nano Letters*, **2015**, *15(6)*, 3692-3696.
 The box specifically contains:
-    * One CsPbBr\ :sub:`3`\ core capped by 20% oleate (OA) and 20% oleylammonium (OLA) ligands;
-    * 2293 octadecene (ODA) molecules, used as solvent for the reaction;
-    * 287 oleylamine (OLAM) molecules, used as a reagent in the synthesis;
-    * 75 ionic oleate-oleylammonium couples (by-products obtained from the reaction).
+- One CsPbBr\ :sub:`3`\ core capped by 20% oleate (OA) and 20% oleylammonium (OLA) ligands;
+- 2293 octadecene (ODA) molecules, used as solvent for the reaction;
+- 287 oleylamine (OLAM) molecules, used as a reagent in the synthesis;
+- 75 ionic oleate-oleylammonium couples (by-products obtained from the reaction).
     
 Installation Requirements
 -------------------------
@@ -56,11 +56,11 @@ This section contains the coordinates of the "minimal", biatomic core, specified
 3. ``input_ligands``: This section contains information on both the structure and the chemistry of the ligand. This information is stored in its `SMILES <https://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system#Description>`_ (Simplified molecular-input line-entry system) string, specifically ``CCCCCCCCC=CCCCCCCCC(=O)[O-]`` for oleate.
 4. ``optional``: The `optional <https://cat.readthedocs.io/en/latest/4_optional.html#optional>`_ section contains three fairly similar subsections: ``core``, ``ligand``, ``qd``. The subsections contain keywords with several specifications, such as:
 
-  - the directories where inorganic cores/ligands/qd (or, in this case, the .xyz file containing our new molecule) will be stored (``optional.*.dirname``);
-  - whether or not their optimization is required (``optional.ligand.optimize`` and ``optional.*.optimize``);
-  - the dummy atom that needs to be replaced with the chosen ligand (``optional.*.anchor``);
-  - how the to-be attached ligands should be alligned with the core (``optional.*.allignment``). In our case, since we're building a molecule instead of a nanocrystal (NC), this key is mandatorily set to``optional.core.allignment: sphere``.
-  - whether or not to remove protons from the ligand (``optional.ligand.split``). Specifically, since the SMILES string we are using in the input (i.e. ``CCCCCCCCC=CCCCCCCCC(=O)[O-]``) refers to the anionic ligand, we will opt for ``optional.ligand.split: False``, so no protons have been removed from the ligand anchoring group. Conversely, if the SMILES is provided in the neutral form, then ``optional.ligand.split: True``, meaning that a proton is cleaved from the functional group (in this case carboxylate) to ensure that the ligand is still added in its anionic form. Note that the latter form is preferrable when the ligand present more than one functional group.  
+- the directories where inorganic cores/ligands/qd (or, in this case, the .xyz file containing our new molecule) will be stored (``optional.*.dirname``);
+- whether or not their optimization is required (``optional.ligand.optimize`` and ``optional.*.optimize``);
+- the dummy atom that needs to be replaced with the chosen ligand (``optional.*.anchor``);
+- how the to-be attached ligands should be alligned with the core (``optional.*.allignment``). In our case, since we're building a molecule instead of a nanocrystal (NC), this key is mandatorily set to``optional.core.allignment: sphere``.
+- whether or not to remove protons from the ligand (``optional.ligand.split``). Specifically, since the SMILES string we are using in the input (i.e. ``CCCCCCCCC=CCCCCCCCC(=O)[O-]``) refers to the anionic ligand, we will opt for ``optional.ligand.split: False``, so no protons have been removed from the ligand anchoring group. Conversely, if the SMILES is provided in the neutral form, then ``optional.ligand.split: True``, meaning that a proton is cleaved from the functional group (in this case carboxylate) to ensure that the ligand is still added in its anionic form. Note that the latter form is preferrable when the ligand present more than one functional group.  
 
 In all cases, the ``*`` in the keywords accounts for the name of the subsection it refers to (i.e ``core``, ``ligand``, ``qd``).
 
@@ -69,8 +69,8 @@ After running **CAT** the .xyz file corresponding to our cesium oleate molecule 
 After having renamed the .xyz file, we can just remove the counterion Cs from the molecule and we'll have the complete .xyz file for OA.
 
 In a parallel fashion, the same script can be used to build the remaining .xyz files as follows:
-    * OLA molecules can be built by replacing the ligand SMILES string to that of oleylammonium (``CCCCCCCCC=CCCCCCCCC[NH3+]``) and the core anchor to ``Cl``, in order to obtain oleylammonium bromide. The Cl atom will then be replaced from the resulting .xyz file;
-    * OLAM molecules can be obtained in a similar fashion by replacing the ligand SMILES string to that of oleylammine (``CCCCCCCCC=CCCCCCCCCN``), by setting ``optional.ligand.split: False`` and the core anchor to ``Cl``, in order to obtain an .xyz containing oleylamine and bromide. The Cl atom will then be replaced from the resulting .xyz file to obtain OLAM.
-    * The QD can be built in a very similar fashion using this script. We invite you to refer to the `tutorial <https://nanotutorials.readthedocs.io/en/latest/1_build_qd.html>`__ for the step-by-step construction of the structure from scratch.
+* OLA molecules can be built by replacing the ligand SMILES string to that of oleylammonium (``CCCCCCCCC=CCCCCCCCC[NH3+]``) and the core anchor to ``Cl``, in order to obtain oleylammonium bromide. The Cl atom will then be replaced from the resulting .xyz file;
+* OLAM molecules can be obtained in a similar fashion by replacing the ligand SMILES string to that of oleylammine (``CCCCCCCCC=CCCCCCCCCN``), by setting ``optional.ligand.split: False`` and the core anchor to ``Cl``, in order to obtain an .xyz containing oleylamine and bromide. The Cl atom will then be replaced from the resulting .xyz file to obtain OLAM.
+* The QD can be built in a very similar fashion using this script. We invite you to refer to the `tutorial <https://nanotutorials.readthedocs.io/en/latest/1_build_qd.html>`__ for the step-by-step construction of the structure from scratch.
 
 All of the remaining molecules (such as the CsCl.xyz and the .xyz file for ODA) can be built 
