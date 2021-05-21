@@ -69,8 +69,8 @@ After running **CAT** the .xyz file corresponding to our cesium oleate molecule 
 After having renamed the .xyz file, we can just remove the counterion Cs from the molecule and we'll have the complete .xyz file for OA.
 
 In a parallel fashion, the same script can be used to build the remaining .xyz files as follows:
-* OLA molecules can be built by replacing the ligand SMILES string to that of oleylammonium (``CCCCCCCCC=CCCCCCCCC[NH3+]``) and the core anchor to ``Cl``, in order to obtain oleylammonium bromide. The Cl atom will then be replaced from the resulting .xyz file;
-* OLAM molecules can be obtained in a similar fashion by replacing the ligand SMILES string to that of oleylammine (``CCCCCCCCC=CCCCCCCCCN``), by setting ``optional.ligand.split: False`` and the core anchor to ``Cl``, in order to obtain an .xyz containing oleylamine and bromide. The Cl atom will then be replaced from the resulting .xyz file to obtain OLAM.
-* The QD can be built in a very similar fashion using this script. We invite you to refer to the `tutorial <https://nanotutorials.readthedocs.io/en/latest/1_build_qd.html>`__ for the step-by-step construction of the structure from scratch.
+- OLA molecules can be built by replacing the ligand SMILES string to that of oleylammonium (``CCCCCCCCC=CCCCCCCCC[NH3+]``) and the core anchor to ``Cl``, in order to obtain oleylammonium bromide. The Cl atom will then be replaced from the resulting .xyz file;
+- OLAM molecules can be obtained in a similar fashion by replacing the ligand SMILES string to that of oleylammine (``CCCCCCCCC=CCCCCCCCCN``), by setting ``optional.ligand.split: False`` and the core anchor to ``Cl``, in order to obtain an .xyz containing oleylamine and bromide. The Cl atom will then be replaced from the resulting .xyz file to obtain OLAM.
+- The QD can be built in a very similar fashion using this script. We invite you to refer to the `tutorial <https://nanotutorials.readthedocs.io/en/latest/1_build_qd.html>`__ for the step-by-step construction of the structure from scratch.
 
 All of the remaining molecules (such as the CsCl.xyz and the .xyz file for ODA) can be built 
