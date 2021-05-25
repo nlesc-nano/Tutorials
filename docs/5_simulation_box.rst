@@ -133,12 +133,108 @@ To sum up, we will now have the following .pdb files:
     - olam.pdb;
     - octadecene.pdb.
     
-2. *.psf and .rtf files*: Each .pdb file we created now needs to be converted to the following formats:
+2. *.prm and .rtf files*: Each .pdb file we created now needs to be converted to the following formats:
 
-    - The Protein Structure File (.psf), containing the molecular-level information required to apply any force field to our simulation box;
     - The CHARMM forcefield Parameter (.prm) file, including all of the numerical constants needed to evaluate forces and energies;
     - The Residue Topology File (.rtf) This file defines the main groups (atoms, properties, bond and charge information) for our molecular structures.
     
-These three formats can be easily obtained from our .pdb files by inserting our .pdb files in `MATCH <https://openbabel.org/docs/dev/Installation/install.html>`__. This online server will convert our files into the three required formats, which we will download as a zipped directory. Once renamed the files we are ready to use them in our next steps!
-    
+These formats can be easily obtained from our .pdb files by inserting our .pdb files in `MATCH <https://openbabel.org/docs/dev/Installation/install.html>`__. This online server will convert our files into the three required formats, which we will download as a zipped directory. We will first of all need to rename the new files to match their molecular formulas (2 for each .pdb file, for a total of 6 new files).
+The .rtf files are ready for our next step, so we can put them aside for the present moment. Let's instead focus on the .prm files. An example of a .prm file (here we chose OLAM) looks like this:
 
+.. code:: yaml
+
+    * prm file built by MATCH
+    *
+    
+    BONDS
+    C324   N3P3   200.00     1.4800
+    HGP2   N3P3   403.00     1.0400
+    C321   C324   222.50     1.5300
+    C324   HGA2   284.50     1.1000
+    C321   C321   222.50     1.5300
+    C321   HGA2   309.00     1.1110
+    C321   C331   222.50     1.5280
+    C2D1   C321   365.00     1.5020
+    C331   HGA3   322.00     1.1110
+    C2D1   C2D1   440.00     1.3400
+    C2D1   HGA4   360.50     1.1000
+    
+    ANGLES
+    C321   C324   N3P3   67.70      110.00
+    HGA2   C324   N3P3   45.00      107.50
+    C324   N3P3   HGP2   30.00      109.50
+    HGP2   N3P3   HGP2   44.00      109.50
+    C321   C321   C324   58.35      110.50
+    HGA2   C321   C324   26.50      110.10
+    C321   C324   HGA2   26.50      111.80
+    HGA2   C324   HGA2   35.50      109.00
+    HGA2   C321   C321   26.50      110.10
+    C321   C321   C321   58.35      113.60
+    HGA2   C321   HGA2   35.50      109.00
+    C321   C321   C331   58.00      115.00
+    C321   C321   C2D1   32.00      112.20
+    HGA2   C321   C331   34.60      110.10
+    C321   C331   HGA3   34.60      110.10
+    C2D1   C2D1   C321   48.00      123.50
+    HGA4   C2D1   C321   40.00      116.00
+    C2D1   C321   HGA2   45.00      111.50
+    HGA3   C331   HGA3   35.50      108.40
+    HGA4   C2D1   C2D1   52.00      119.50
+    
+    DIHEDRALS
+    C321   C321   C324   N3P3   0.1950     3      0.00
+    HGA2   C321   C324   N3P3   0.1950     3      0.00
+    C321   C324   N3P3   HGP2   0.1000     3      0.00
+    HGA2   C324   N3P3   HGP2   0.1000     3      0.00
+    C321   C321   C321   C324   0.1950     3      0.00
+    HGA2   C321   C321   C324   0.1950     3      0.00
+    C321   C321   C324   HGA2   0.1950     3      0.00
+    HGA2   C321   C324   HGA2   0.1950     3      0.00
+    HGA2   C321   C321   C321   0.1950     3      0.00
+    HGA2   C321   C321   HGA2   0.2200     3      0.00
+    C321   C321   C321   C321   0.14975    3      180.00
+    C321   C321   C321   C321   0.09458    4      0.00
+    C321   C321   C321   C321   0.11251    5      0.00
+    C321   C321   C321   C321   0.06450    2      0.00
+    C321   C321   C321   C331   0.08133    3      180.00
+    C321   C321   C321   C331   0.10824    4      0.00
+    C321   C321   C321   C331   0.20391    5      0.00
+    C321   C321   C321   C331   0.15051    2      0.00
+    C321   C321   C321   C2D1   0.1700     2      0.0
+    C321   C321   C321   C2D1   0.0500     3      180.0
+    C321   C321   C321   C2D1   0.1400     1      180.0
+    HGA2   C321   C321   C331   0.1800     3      0.00
+    C321   C321   C331   HGA3   0.1600     3      0.00
+    HGA2   C321   C321   C2D1   0.1950     3      0.00
+    C321   C321   C2D1   C2D1   0.6000     1      180.00
+    C321   C321   C2D1   HGA4   0.1200     3      0.00
+    HGA2   C321   C331   HGA3   0.1600     3      0.00
+    C321   C2D1   C2D1   C321   8.5000     2      180.00
+    C321   C2D1   C2D1   C321   0.4500     1      180.00
+    HGA4   C2D1   C2D1   C321   1.0000     2      180.00
+    C2D1   C2D1   C321   HGA2   0.3000     3      180.00
+    HGA4   C2D1   C321   HGA2   0.0000     3      0.00
+    HGA4   C2D1   C2D1   HGA4   1.0000     2      180.00
+    
+    IMPROPER
+    
+    NONBONDED nbxmod  5 atom cdiel shift vatom vdistance vswitch -
+    cutnb 14.0 ctofnb 12.0 ctonnb 10.0 eps 1.0 e14fac 1.0 wmin 1.5
+    C324   0.0000     -0.0550    2.1750
+    N3P3   0.0000     -0.2000    1.8500
+    HGP2   0.0000     -0.0460    0.2245
+    C321   0.0000     -0.0560    2.0100
+    HGA2   0.0000     -0.0350    1.3400
+    C331   0.0000     -0.0780    2.0500
+    C2D1   0.0000     -0.0680    2.0900
+    HGA3   0.0000     -0.0240    1.3400
+    HGA4   0.0000     -0.0310    1.2500
+
+The input for our MD simulation, however, requires only **one** .prm file, so we will need to merge all of our .prm files in a single, global one. We will achieve this by manually copying and pasting the lines of each individual .prm file into a "global" one section by section. Pay attention to this step: the .prm file won't be read correctly if lines are missing or repeated twice. Take your time with this step and check twice to make sure everything has been pasted appropriately!
+Now that our .prm and .rtf files are ready, we are _finally_ ready to proceed to the next step!
+    
+Preparing the box
+-----------------
+
+
+    - The Protein Structure File (.psf), containing the molecular-level information required to apply any force field to our simulation box;
