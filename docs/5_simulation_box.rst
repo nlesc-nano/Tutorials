@@ -230,11 +230,52 @@ The .rtf files are ready for our next step, so we can put them aside for the pre
     HGA3   0.0000     -0.0240    1.3400
     HGA4   0.0000     -0.0310    1.2500
 
-The input for our MD simulation, however, requires only **one** .prm file, so we will need to merge all of our .prm files in a single, global one. We will achieve this by manually copying and pasting the lines of each individual .prm file into a "global" one section by section. Pay attention to this step: the .prm file won't be read correctly if lines are missing or repeated twice. Take your time with this step and check twice to make sure everything has been pasted appropriately!
+The input for our MD simulation, however, requires only **one** .prm file, so we will need to merge all of our .prm files in a single, global one. We will achieve this by manually copying and pasting the lines of each individual .prm file into a "global" one section by section (BONDS, ANGLES, DIHEDRALS etc). Pay attention to this step: the .prm file won't be read correctly if lines are missing or repeated twice. Take your time with this step and check twice to make sure everything has been pasted appropriately!
 Now that our .prm and .rtf files are ready, we are _finally_ ready to proceed to the next step!
     
 Preparing the box
 -----------------
+Once all of our .xyz files are ready, we need to build our final .xyz file by randomly inserting our molecules into a pre-shaped box. An useful tool for this purpose is provided by the **Packmol** package - again, the following `link <http://leandro.iqm.unicamp.br/m3g/packmol/home.shtml>`__ provides all the information we need for its installation. We will need to move all of our .xyz files into our working directory. For simplicity, let's assume that the packmol.exe executable is in the same directory. The box will then be built by running a small script, characterized by the .inp extension, on the program. Let's take a brief look at our settings.inp file:
 
+.. code:: yaml
 
-    - The Protein Structure File (.psf), containing the molecular-level information required to apply any force field to our simulation box;
+    tolerance 2.0
+    
+    filetype xyz
+    
+    structure qd.xyz
+      number 1
+      inside cube -80. -80. -80. 80.
+      center
+      fixed 0. 0. 0. 0. 0. 0.
+    end structure
+    
+    structure oaola.xyz
+      number 75
+      inside cube -80. -80. -80. 80.
+    end structure
+    
+    structure olam.xyz
+      number 287
+      inside cube -80. -80. -80. 80.
+    end structure
+    
+    structure octadecene.xyz
+      number 2293
+      inside cube -80. -80. -80. 80.
+    end structure
+    
+    output box.xyz
+
+The used keywords can be very easily found in the relative  `User Guide <http://leandro.iqm.unicamp.br/m3g/packmol/userguide.shtml>`__. Here is a very brief explanation:
+
+- The line ``tolerance 2.0`` specifies the tolerance required for the distances between molecules. Here, the value has been set at 2.0 Å, a common value for systems at room temperature and pressure;
+- The ``filetype xyz``key specifies the formats of the provided molecular inputs;
+- Individual blocks containing several specifications for the molecules which will figure in the box, such as their .xyz file and the number of molecules of each type that will be placed inside the box. In our case, as specified by the ``inside cube -80. -80. -80. 80.`` key, we will be placing the molecules inside a cube with minimum coordinates (x,y,z) = (-80,-80,-80) and maximum coordinates (80,80,80): in other words, we will fill a cube of side 160.0 Å with our molecules. We set the coordinates between -80 and 80 (instead of, for example, 0 to 160) because, as specified by the keywords ``center`` and ``fixed 0. 0. 0. 0. 0. 0.``, we wanted to place our NC model in the center of our box.
+
+Once our input is ready, we can simply run the following command: ``./packmol < settings.inp``. Please note that if the executable is in another directory, we will need to provide the respective path to correctly "reach" it.
+Once the script has run, the .xyz output containing the box will be inside the working directory.
+
+Generating the .psf file
+------------------------
+The Protein Structure File (.psf), containing the molecular-level information required to apply any force field to our simulation box.
