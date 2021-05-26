@@ -270,7 +270,7 @@ Once all of our .xyz files are ready, we need to build our final .xyz file by ra
 The used keywords can be very easily found in the relative  `User Guide <http://leandro.iqm.unicamp.br/m3g/packmol/userguide.shtml>`__. Here is a very brief explanation:
 
 - The line ``tolerance 2.0`` specifies the tolerance required for the distances between molecules. Here, the value has been set at 2.0 Å, a common value for systems at room temperature and pressure;
-- The ``filetype xyz``key specifies the formats of the provided molecular inputs;
+- The ``filetype xyz`` key specifies the formats of the provided molecular inputs;
 - Individual blocks containing several specifications for the molecules which will figure in the box, such as their .xyz file and the number of molecules of each type that will be placed inside the box. In our case, as specified by the ``inside cube -80. -80. -80. 80.`` key, we will be placing the molecules inside a cube with minimum coordinates (x,y,z) = (-80,-80,-80) and maximum coordinates (80,80,80): in other words, we will fill a cube of side 160.0 Å with our molecules. We set the coordinates between -80 and 80 (instead of, for example, 0 to 160) because, as specified by the keywords ``center`` and ``fixed 0. 0. 0. 0. 0. 0.``, we wanted to place our NC model in the center of our box.
 
 Once our input is ready, we can simply run the following command: ``./packmol < settings.inp``. Please note that if the executable is in another directory, we will need to provide the respective path to correctly "reach" it.
