@@ -32,94 +32,62 @@ The .xyz files
 ^^^^^^^^^^^^^^
 First of all, let's create the .xyz files containing the geometries of our molecules. 
 We'll achieve this by running a small .yaml script with **CAT**. First of all, we need to create an .xyz file according to our needs and to move the newly created .xyz file inside our working directory (see the `General Overview <https://cat.readthedocs.io/en/latest/1_get_started.html#default-settings>`_ for further information). We will then create a ``input_settings.yaml`` `input file <https://cat.readthedocs.io/en/latest/includeme.html#input-files>`_ in the working directory and customize it with the desired settings.
-We hereby provide a .yaml input example for the construction of a cesium oleate molecule from scratch. Let's take a look:
+First of all, let's start by building the NC capped with two different ligands (OA and OLA). We invite you to refer to the `tutorial <https://nanotutorials.readthedocs.io/en/latest/1_build_qd.html>`__ for the step-by-step construction of the structure from scratch.
+Let's take a look at the .yaml input:
 
 .. code:: yaml
 
     path: null
     input_cores:
-        - CsCl.xyz:
-            guess_bonds: False
-    input_ligands:
-        - CCCCCCCC/C=C\CCCCCCCC(=O)[O-]
-    optional:
-    core:
-        dirname: core
-        anchor: Cl
-        allignment: sphere
-    ligand:
-        dirname: ligand
-        optimize: True
-        split: True 
-    qd:
-        dirname: qd
-        construct_qd: True
-        optimize: False
-            
-The `path <https://cat.readthedocs.io/en/latest/2_path.html#path>`_, `input_cores & input_ligands <https://cat.readthedocs.io/en/latest/3_input_core_ligand.html#input-cores-input-ligands>`_ and  sections, together with the meaning of the `optional <https://cat.readthedocs.io/en/latest/4_optional.html#optional>`_ keywords and their relative `arguments <https://cat.readthedocs.io/en/latest/4_optional.html#arguments>`_, can be easily found inside the **CAT** `documentation <https://cat.readthedocs.io/en/latest/0_documentation.html#cat-documentation>`_. Let's take a look at some of them in detail:
-
-1. ``path``: The `path <https://cat.readthedocs.io/en/latest/2_path.html#path>`_ section, as suggested, contains the path to the so-called working directory - i.e. where all the files are stored.
-2. ``input_cores``: This section requires a little more insight: **CAT** is originally born as a program to build nanocrystals consisting of cores and ligands. When we build the .xyz files of our molecules, we thus treat them as if we're replacing the superficial ions of a "minimal" core made of two atoms. This section contains the coordinates of the "minimal", biatomic core, specified by our .xyz file (``CsCl.xyz``). The ``guess_bonds: False`` keyword tells **CAT** that, since our core is ionic, it is not necessary the bonds and bond orders from the content of the .xyz file (i.e. it is not required to generate the internal coordinates of the system).
-3. ``input_ligands``: This section contains information on both the structure and the chemistry of the ligand. This information is stored in its canonical `SMILES <https://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system#Description>`_ (Simplified molecular-input line-entry system) string, specifically ``CCCCCCCC/C=C\CCCCCCCC(=O)[O-]`` for oleate.
-4. ``optional``: The `optional <https://cat.readthedocs.io/en/latest/4_optional.html#optional>`_ section contains three fairly similar subsections: ``core``, ``ligand``, ``qd``. The subsections contain keywords with several specifications, such as:
-
-- the directories where inorganic cores/ligands/qd (or, in this case, the .xyz file containing our new molecule) will be stored (``optional.*.dirname``);
-- the dummy atom that needs to be replaced with the chosen ligand (``optional.*.anchor``);
-- how the to-be attached ligands should be alligned with the core (``optional.*.allignment``). In our case, since we're building a molecule instead of a nanocrystal (NC), this key is mandatorily set to``optional.core.allignment: sphere``.
-- whether or not to remove protons from the ligand (``optional.ligand.split``). Specifically, since the SMILES string we are using in the input (i.e. ``CCCCCCCC/C=C\CCCCCCCC(=O)[O-]``) refers to the anionic ligand, we will opt for ``optional.ligand.split: False``, so no protons have been removed from the ligand anchoring group. Conversely, if the SMILES is provided in the neutral form, then ``optional.ligand.split: True``, meaning that a proton is cleaved from the functional group (in this case carboxylate) to ensure that the ligand is still added in its anionic form. Note that the latter form is preferrable when the ligand present more than one functional group.  
-
-In all cases, the ``*`` in the keywords accounts for the name of the subsection it refers to (i.e ``core``, ``ligand``, ``qd``).
-
-We are finally ready to run CAT with the following command: ``init_cat input_settings.yaml``
-After running **CAT** the .xyz file corresponding to our cesium oleate molecule can be found in the specified directory, 'qd'. Don't worry, the directory will be created from scratch if it does not yet exist!
-After having renamed the .xyz file, we can just remove the counterion Cs from the molecule and we'll have the complete .xyz file for OA.
-
-In a parallel fashion, the same script can be used to build the remaining .xyz files as follows:
-- OA+OLA molecules (i.e. our ionic oleate-oleylammonium couples) can be obtained by means of a similar script, which we hereby report and comment briefly:
-
-.. code:: yaml
-
-    path: null
-    input_cores:
-        - rbcl.xyz:
+        - core.xyz:
             guess_bonds: False
     
     input_ligands:
-        - CCCCCCCC/C=C\CCCCCCCC(=O)[O-]
+        - CCCCCCCCC=CCCCCCCCC(=O)O
     
     optional:
         core:
             dirname: core
             anchor: Cl
-            allignment: sphere
     
         ligand:
             dirname: ligand
             optimize: True
-            split: False
+            split: True
     
         qd:
             dirname: qd
             construct_qd: True
             multi_ligand:
                ligands:
-                 - CCCCCCCC/C=C\CCCCCCCC[NH3+]
+                 - CCCCCCCCC=CCCCCCCCC[NH3+]
                anchor:
                  - Rb
             optimize: False
+            
+The `path <https://cat.readthedocs.io/en/latest/2_path.html#path>`_, `input_cores & input_ligands <https://cat.readthedocs.io/en/latest/3_input_core_ligand.html#input-cores-input-ligands>`_ and  sections, together with the meaning of the `optional <https://cat.readthedocs.io/en/latest/4_optional.html#optional>`_ keywords and their relative `arguments <https://cat.readthedocs.io/en/latest/4_optional.html#arguments>`_, can be easily found inside the **CAT** `documentation <https://cat.readthedocs.io/en/latest/0_documentation.html#cat-documentation>`_. Let's take a look at some of them:
 
-the only difference from the previous script is the presence of the ``optional.qd.multiligand`` key and of its relative specifications. All the keys under this section are completely parallel to the ``optional.ligand`` key block: Rb atoms are being replaced by oleylammonium molecules.
+1. ``input_cores``: This section contains the coordinates of the core, specified by our .xyz file (``core.xyz``). The ``guess_bonds: False`` keyword tells **CAT** that, since our core is ionic, it does not need to guess the bonds and bond orders from the content of the .xyz file.
+2. ``input_ligands``: This section contains information on both the structure and the chemistry of the ligand. This information is stored in its canonical `SMILES <https://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system#Description>`_ (Simplified molecular-input line-entry system) string (``CCCCCCCC/C=C\CCCCCCCC(=O)[O-]`` for oleate, ``CCCCCCCC/C=C\CCCCCCCC[NH3+]`` for oleylammonium);
+3. ``optional``: The `optional <https://cat.readthedocs.io/en/latest/4_optional.html#optional>`_ section contains three fairly similar subsections: ``core``, ``ligand``, ``qd``. The subsections contain keywords with several specifications, such as:
+
+- the dummy atom that needs to be replaced with the chosen ligand (``optional.core.anchor``);
+- whether or not to remove protons from the ligand (``optional.ligand.split``). Specifically, since the SMILES string we are using in the input (i.e. ``CCCCCCCC/C=C\CCCCCCCC(=O)[O-]``) refers to the anionic ligand, we will opt for ``optional.ligand.split: False``, so no protons have been removed from the ligand anchoring group. Conversely, if the SMILES is provided in the neutral form, then ``optional.ligand.split: True``, meaning that a proton is cleaved from the functional group (in this case carboxylate) to ensure that the ligand is still added in its anionic form. Note that the latter form is preferrable when the ligand present more than one functional group;
+- the ``optional.qd.multiligand`` block. All the keys under this section are completely parallel to the aforementioned ones: Rb atoms are now being replaced by oleylammonium molecules.
 **Please note** that, in order to work effectively, this block acccepts SMILES strings by assuming a ``split: True`` specification.
-- OLAM can be obtained by replacing the ligand SMILES string in the first script to that of oleylammine (``CCCCCCCC/C=C\CCCCCCCCN``), by setting ``optional.ligand.split: False`` and the core anchor to ``Cl``, in order to obtain an .xyz containing oleylamine and bromide. The Cl atom will then be replaced from the resulting .xyz file to obtain OLAM.
-- The QD can be built in a very similar fashion using this script. We invite you to refer to the `tutorial <https://nanotutorials.readthedocs.io/en/latest/1_build_qd.html>`__ for the step-by-step construction of the structure from scratch.
 
-All of the remaining molecules (such as the CsCl.xyz and the .xyz file for ODA) can be built using any (commonly available) molecular structure processing program, such as `Molden <https://www3.cmbi.umcn.nl/molden/>`__.
+We are finally ready to run CAT with the following command: ``init_cat input_settings.yaml``
+After running **CAT** the .xyz file corresponding to our NC can be found in the specified directory, 'qd'. Don't worry, the directory will be created from scratch if it does not yet exist. Remember to rename the file before using it!
+
+In a parallel fashion, the same script can be used to build the .xyz file containing OA+OLA molecules (i.e. our ionic oleate-oleylammonium couples) with two main differences: we will use a RbCl molecule as our "minimal", biatomic core, specified by our .xyz file (``RbCl.xyz``), and the use of the ``optional.core.allignment: sphere`` key, which is mandatory on **CAT** when diatomic molecules are set as cores in the script;
+
+All of the remaining molecules (such as the .xyz files for ODA and OLAM) can be built using any (commonly available) molecular structure processing program, such as `Molden <https://www3.cmbi.umcn.nl/molden/>`__.
 To sum up, in our case, we have now successfully built **these** files (the names have been chosen to represent their chemical formula for simplicity):
 
 - qd.xyz, containing our ligand-capped NC;
 - oaola.xyz;
 - olam.xyz;
-- octadecene.xyz.
+- oda.xyz.
 
 Other file extensions
 ^^^^^^^^^^^^^^^^^^^^^
@@ -131,7 +99,7 @@ To sum up, we will now have the following .pdb files:
 
     - oaola.pdb;
     - olam.pdb;
-    - octadecene.pdb.
+    - oda.pdb.
     
 2. *.prm and .rtf files*: Each .pdb file we created now needs to be converted to the following formats:
 
@@ -273,9 +241,38 @@ The used keywords can be very easily found in the relative  `User Guide <http://
 - The ``filetype xyz`` key specifies the formats of the provided molecular inputs;
 - Individual blocks containing several specifications for the molecules which will figure in the box, such as their .xyz file and the number of molecules of each type that will be placed inside the box. In our case, as specified by the ``inside cube -80. -80. -80. 80.`` key, we will be placing the molecules inside a cube with minimum coordinates (x,y,z) = (-80,-80,-80) and maximum coordinates (80,80,80): in other words, we will fill a cube of side 160.0 Å with our molecules. We set the coordinates between -80 and 80 (instead of, for example, 0 to 160) because, as specified by the keywords ``center`` and ``fixed 0. 0. 0. 0. 0. 0.``, we wanted to place our NC model in the center of our box.
 
-Once our input is ready, we can simply run the following command: ``./packmol < settings.inp``. Please note that if the executable is in another directory, we will need to provide the respective path to correctly "reach" it.
-Once the script has run, the .xyz output containing the box will be inside the working directory.
+Once our input is ready, we can simply run the following command: ``packmol < settings.inp``.
+Once the script has run, the .xyz output containing the box will be inside the working directory. 
 
 Generating the .psf file
 ------------------------
-The Protein Structure File (.psf), containing the molecular-level information required to apply any force field to our simulation box.
+The Protein Structure File (.psf), containing the molecular-level information required to apply any force field to our simulation box (you can take a look at this `website <https://www.ks.uiuc.edu/Training/Tutorials/namd/namd-tutorial-unix-html/node23.html>`__ to get an idea of its structure. 
+The .psf file for our .xyz molecule can be easily built using the **Auto-FOX** package by means of a straightforward python script:
+
+.. code:: python
+
+Here is an example of what its first lines look like:
+
+::
+
+    PSF EXT
+    
+             2 !NTITLE
+       REMARKS PSF file generated with Auto-FOX
+       REMARKS https://github.com/nlesc-nano/Auto-FOX
+    
+    
+        153333 !NATOM
+             1 MOL1     1        COR      Cs       Cs      0.000000      132.905450        0
+             2 MOL1     1        COR      Cs       Cs      0.000000      132.905450        0
+             3 MOL1     1        COR      Cs       Cs      0.000000      132.905450        0
+             ..........
+
+As mentioned in the website, each line in a .psf file is structured according to the following fields:
+- atom ID (the number of the atom in the .xyz file);
+- segment name (the number associated to each molecule: in this case ``1`` is the whole NC, ``2`` is the **first** OA molecule, ``3`` is the second OA..)
+- residue ID (in our case, ``MOL1`` to ``MOL3`` are the atoms of the NC core, ``MOL4`` is OA, ``MOL5`` is OLA, ``MOL6`` is OLAM and ``MOL7`` is ODA);
+- residue name (COR specifically refers to our NC);
+- the remaining fields, which we won't take into account in this tutorial: atom name, atom type, charge, mass, and an unused 0.
+
+Before moving on to the next step, which is saving our new .psf file, we need to remember that the **Packmol** package has packed our molecules in the order we specified in our input. This means that, when building our .psf file, our molecules will be in a "mixed" order (for example, each OAOLA molecule has got an OA and an OLA in its .xyz file, so the .psf file would alternate between two residueIDs: ``MOL4`` and ``MOL5``!). In order to build an ordered .psf file, we thus need to reorder our
