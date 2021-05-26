@@ -141,7 +141,7 @@ To sum up, we will now have the following .pdb files:
 These formats can be easily obtained from our .pdb files by inserting our .pdb files in `MATCH <https://openbabel.org/docs/dev/Installation/install.html>`__. This online server will convert our files into the three required formats, which we will download as a zipped directory. We will first of all need to rename the new files to match their molecular formulas (2 for each .pdb file, for a total of 6 new files).
 The .rtf files are ready for our next step, so we can put them aside for the present moment. Let's instead focus on the .prm files. An example of a .prm file (here we chose OLAM) looks like this:
 
-.. code:: yaml
+::
 
     * prm file built by MATCH
     *
