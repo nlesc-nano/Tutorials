@@ -76,7 +76,9 @@ The `path <https://cat.readthedocs.io/en/latest/2_path.html#path>`_, `input_core
 - the ``optional.qd.multiligand`` block. All the keys under this section are completely parallel to the aforementioned ones: Rb atoms are now being replaced by oleylammonium molecules.
 **Please note** that, in order to work effectively, this block acccepts SMILES strings by assuming a ``split: True`` specification.
 
-We are finally ready to run CAT with the following command: ``init_cat input_settings.yaml``
+An important concept to remember here, which we will need in a while, is that **CAT** builds the .xyz file in the following order: all the core atoms in the exact order we gave in the ``core.xyz``, followed by a certain number of ligand molecules (depending on the chosen coverage). If the model comprises more than one ligand, we will first have all of the molecules of the first ligand, followed by those of the second ligand. In our specific case, the order of our .xyz file will therefore be: Cs, Pb, Br, OA, OLA.
+
+We are finally ready to run CAT with the following command: ``init_cat input_settings.yaml``.
 After running **CAT** the .xyz file corresponding to our NC can be found in the specified directory, 'qd'. Don't worry, the directory will be created from scratch if it does not yet exist. Remember to rename the file before using it!
 
 In a parallel fashion, the same script can be used to build the .xyz file containing OA+OLA molecules (i.e. our ionic oleate-oleylammonium couples) with two main differences: we will use a RbCl molecule as our "minimal", biatomic core, specified by our .xyz file (``RbCl.xyz``), and the use of the ``optional.core.allignment: sphere`` key, which is mandatory on **CAT** when diatomic molecules are set as cores in the script;
@@ -237,12 +239,7 @@ Once the script has run, the .xyz output containing the box will be inside the w
 
 Generating the .psf file
 ------------------------
-The Protein Structure File (.psf), containing the molecular-level information required to apply any force field to our simulation box (you can take a look at this `website <https://www.ks.uiuc.edu/Training/Tutorials/namd/namd-tutorial-unix-html/node23.html>`__ to get an idea of its structure. 
-The .psf file for our .xyz molecule can be easily built using the **Auto-FOX** package by means of a straightforward python script:
-
-.. code:: python
-
-Here is an example of what its first lines look like:
+The Protein Structure File (.psf), containing the molecular-level information required to apply any force field to our simulation box (you can take a look at this `website <https://www.ks.uiuc.edu/Training/Tutorials/namd/namd-tutorial-unix-html/node23.html>`__ to get an idea of its structure). Here is an example of what its first lines look like:
 
 ::
 
@@ -266,4 +263,123 @@ As mentioned in the website, each line in a .psf file is structured according to
 - residue name (COR specifically refers to our NC);
 - the remaining fields, which we won't take into account in this tutorial: atom name, atom type, charge, mass, and an unused 0.
 
-Before moving on to the next step, which is saving our new .psf file, we need to remember that the **Packmol** package has packed our molecules in the order we specified in our input. This means that, when building our .psf file, our molecules will be in a "mixed" order (for example, each OAOLA molecule has got an OA and an OLA in its .xyz file, so the .psf file would alternate between two residueIDs: ``MOL4`` and ``MOL5``!). In order to build an ordered .psf file, we thus need to reorder our
+The .psf file for our .xyz molecule can be easily built using the **Auto-FOX** package by means of a straightforward python script. Let's take a look at it:
+
+.. code:: python
+
+    from scm.plams import Molecule
+    from FOX import PSFContainer
+    from FOX.io.read_psf import overlay_rtf_file
+    from FOX.recipes import generate_psf2
+    
+    qd = Molecule('box.xyz') 
+    ligands = ('CCCCCCCCC=CCCCCCCCC(=O)[O-]', 'CCCCCCCCC=CCCCCCCCC[NH3+]', 'CCCCCCCCC=CCCCCCCCCN', 'CCCCCCCCCCCCCCCCC=C')
+    psf = generate_psf2(qd, *ligands, ret_failed_lig=True)
+    psf.write('box.psf')
+    
+    segment_dict = {"MOL4": Molecule('oa.xyz'), "MOL5": Molecule('ola.xyz'),  "MOL6": Molecule('olam.xyz'),  "MOL7": Molecule('oda.xyz')}
+    psf_new, argsort = psf.sort_values(["segment name", "residue ID"], return_argsort=True)
+    qd.atoms = [qd.atoms[i] for i in argsort]
+    qd.write('box_ordered.xyz')
+    
+    for mol in segment_dict.values():
+        mol.guess_bonds()
+        
+    psf_new.generate_bonds(segment_dict=segment_dict)
+    psf_new.generate_angles(segment_dict=segment_dict)
+    psf_new.generate_dihedrals(segment_dict=segment_dict)
+    psf_new.generate_impropers(segment_dict=segment_dict)
+    
+    overlay_rtf_file(psf_new, 'oa.rtf', list(range(2, 129)))
+    overlay_rtf_file(psf_new, 'ola.rtf', list(range(129, 245)))
+    overlay_rtf_file(psf_new, 'olam.rtf', list(range(245, 532)))
+    overlay_rtf_file(psf_new, 'oda.rtf', list(range(532, 2825)))
+    
+    psf_new.write('box_ordered.psf')
+
+We'll now provide a step-by-step explanation of the purpose of the most important blocks in the script.
+
+.. code:: python
+
+    from scm.plams import Molecule
+    from FOX import PSFContainer
+    from FOX.io.read_psf import overlay_rtf_file
+    from FOX.recipes import generate_psf2
+    
+    qd = Molecule('box.xyz') 
+    ligands = ('CCCCCCCCC=CCCCCCCCC(=O)[O-]', 'CCCCCCCCC=CCCCCCCCC[NH3+]', 'CCCCCCCCC=CCCCCCCCCN', 'CCCCCCCCCCCCCCCCC=C')
+    psf = generate_psf2(qd, *ligands, ret_failed_lig=True)
+    psf.write('box.psf')
+    
+This section includes the generation of the .psf file in the order provided by our .xyz input. The ``generate_psf2`` key is motivated by the fact that our NC is capped by multiple ligands. You can find a very exhaustive documentation for this section in the `FOX.recipes.psf <https://auto-fox.readthedocs.io/en/latest/7_recipes.html?highlight=generate_psf#FOX.recipes.generate_psf2>`__ section of the documentation.
+
+.. code:: python
+    
+    segment_dict = {"MOL4": Molecule('oa.xyz'), "MOL5": Molecule('ola.xyz'),  "MOL6": Molecule('olam.xyz'),  "MOL7": Molecule('oda.xyz')}
+    psf_new, argsort = psf.sort_values(["segment name", "residue ID"], return_argsort=True)
+    qd.atoms = [qd.atoms[i] for i in argsort]
+    qd.write('box_ordered.xyz')
+
+Before using our newly generated .psf file, we need to remember that the atoms/molecules in box.xyz have been packed by **Packmol** in the order specified by our input (settings.inp). As we've mentioned earlier, in our qd.xyz file this order is Cs, Pb, Br, OA, OLA: the residueIDs for the NC will thus be in ascending order (``MOL1`` to ``MOL5``) in the .psf file. On the other hand, each OAOLA molecule has got an OA and an OLA in its .xyz file, so their lines in the .psf file will alternate between two residueIDs: ``MOL4`` and ``MOL5``), for example:
+
+::
+
+      2959 MOL4     56       LIG      C        C321   -0.180000       12.010600        0
+      2960 MOL4     56       LIG      C        C321   -0.180000       12.010600        0
+      ....
+      3011 MOL4     56       LIG      H        HGA2    0.090000        1.007980        0
+      3012 MOL5     57       LIG      N        N3P3   -0.300000       14.006850        0
+      3013 MOL5     57       LIG      C        C324    0.210000       12.010600        0
+      ....
+      3066 MOL5     57       LIG      N        N3P3   -0.300000       14.006850        0
+      3067 MOL4     58       LIG      C        C321   -0.180000       12.010600        0
+      3068 MOL4     58       LIG      C        C321   -0.180000       12.010600        0
+
+In order to build an ordered .psf file, we thus need to reorder our .xyz file so that all the molecules - as well as their residueIDs - are provided in ascending order. 
+To do so, we created a dictionary (``segment_dict``) connecting every residueID in our box.psf file to the matching .xyz file. After that, we proceeded to reorder our .psf file by means of the ``sort_values`` key (you can find it in the `PSFContainer <https://auto-fox.readthedocs.io/en/latest/8_psf.html?highlight=sort_values#module-FOX.io.read_psf>`__ section). Specifically, the ``["segment name", "residue ID"]`` segment establishes that the molecules are ordered according to their residueIDs, for example:
+
+::
+
+      2959 MOL4     56       LIG      C        C321   -0.180000       12.010600        0
+      2960 MOL4     56       LIG      C        C321   -0.180000       12.010600        0
+      ....
+      3011 MOL4     56       LIG      H        HGA2    0.090000        1.007980        0
+      3012 MOL4     58       LIG      C        C321   -0.180000       12.010600        0
+      3013 MOL4     58       LIG      C        C321   -0.180000       12.010600        0
+      ....
+      3064 MOL4     58       LIG      H        HGA2    0.090000        1.007980        0
+      3065 MOL5     57       LIG      N        N3P3   -0.300000       14.006850        0
+      3066 MOL5     57       LIG      C        C324    0.210000       12.010600        0
+      ....
+      3121 MOL5     57       LIG      N        N3P3   -0.300000       14.006850        0
+      
+**and** that, at the same time, their segment names are then reset to match this new order, as in:
+
+::
+
+      2959 MOL4     56       LIG      C        C321   -0.180000       12.010600        0
+      2960 MOL4     56       LIG      C        C321   -0.180000       12.010600        0
+      ....
+      3011 MOL4     56       LIG      H        HGA2    0.090000        1.007980        0
+      3012 MOL4     57       LIG      C        C321   -0.180000       12.010600        0
+      3013 MOL4     57       LIG      C        C321   -0.180000       12.010600        0
+      ....
+      3064 MOL4     57       LIG      H        HGA2    0.090000        1.007980        0
+      3065 MOL5     58       LIG      N        N3P3   -0.300000       14.006850        0
+      3066 MOL5     58       LIG      C        C324    0.210000       12.010600        0
+      ....
+      3121 MOL5     58       LIG      N        N3P3   -0.300000       14.006850        0
+
+we then proceeded to order the atoms in our box.xyz file (``qd.atoms``) in the same manner, and we saved our new .xyz file (``box_ordered.xyz``).
+
+.. code:: python
+    
+    for mol in segment_dict.values():
+        mol.guess_bonds()
+        
+    psf_new.generate_bonds(segment_dict=segment_dict)
+    psf_new.generate_angles(segment_dict=segment_dict)
+    psf_new.generate_dihedrals(segment_dict=segment_dict)
+    psf_new.generate_impropers(segment_dict=segment_dict)
+    
+    
