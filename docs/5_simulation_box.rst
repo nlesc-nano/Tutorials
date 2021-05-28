@@ -261,7 +261,7 @@ As mentioned in the website, each line in a .psf file is structured according to
 - segment name (the number associated to each molecule: in this case ``1`` is the whole NC, ``2`` is the **first** OA molecule, ``3`` is the second OA..)
 - residue ID (in our case, ``MOL1`` to ``MOL3`` are the atoms of the NC core, ``MOL4`` is OA, ``MOL5`` is OLA, ``MOL6`` is OLAM and ``MOL7`` is ODA);
 - residue name (COR specifically refers to our NC);
-- the remaining fields, which we won't take into account in this tutorial: atom name, atom type, charge, mass, and an unused 0.
+- the remaining fields: atom name (e.g. C, H), atom type (e.g. C324, HGP2), charge, mass, and an unused 0.
 
 The .psf file for our .xyz molecule can be easily built using the **Auto-FOX** package by means of a straightforward python script. Let's take a look at it:
 
@@ -324,36 +324,76 @@ Before using our newly generated .psf file, we need to remember that the atoms/m
 
 ::
 
-      2959 MOL4     56       LIG      C        C321   -0.180000       12.010600        0
-      2960 MOL4     56       LIG      C        C321   -0.180000       12.010600        0
+      2959 MOL4     56       LIG      C        C   -0.180000       12.010600        0
+      2960 MOL4     56       LIG      C        C   -0.180000       12.010600        0
       ....
-      3011 MOL4     56       LIG      H        HGA2    0.090000        1.007980        0
-      3012 MOL5     57       LIG      N        N3P3   -0.300000       14.006850        0
-      3013 MOL5     57       LIG      C        C324    0.210000       12.010600        0
+      3011 MOL4     56       LIG      H        H    0.090000        1.007980        0
+      3012 MOL5     57       LIG      N        N   -0.300000       14.006850        0
+      3013 MOL5     57       LIG      C        C    0.210000       12.010600        0
       ....
-      3066 MOL5     57       LIG      N        N3P3   -0.300000       14.006850        0
-      3067 MOL4     58       LIG      C        C321   -0.180000       12.010600        0
-      3068 MOL4     58       LIG      C        C321   -0.180000       12.010600        0
+      3066 MOL5     57       LIG      H        H    0.330000        1.007980        0
+      3067 MOL4     58       LIG      C        C   -0.180000       12.010600        0
+      3068 MOL4     58       LIG      C        C   -0.180000       12.010600        0
 
 In order to build an ordered .psf file, we thus need to reorder our .xyz file so that all the molecules - as well as their residueIDs - are provided in ascending order. 
 To do so, we created a dictionary (``segment_dict``) connecting every residueID in our box.psf file to the matching .xyz file. After that, we proceeded to reorder our .psf file by means of the ``sort_values`` key (you can find it in the `PSFContainer <https://auto-fox.readthedocs.io/en/latest/8_psf.html?highlight=sort_values#module-FOX.io.read_psf>`__ section). Specifically, the ``["segment name", "residue ID"]`` segment establishes that the molecules are ordered according to their residueIDs, for example:
 
 ::
 
-      2959 MOL4     56       LIG      C        C321   -0.180000       12.010600        0
-      2960 MOL4     56       LIG      C        C321   -0.180000       12.010600        0
+      2959 MOL4     56       LIG      C        C   -0.180000       12.010600        0
+      2960 MOL4     56       LIG      C        C   -0.180000       12.010600        0
       ....
-      3011 MOL4     56       LIG      H        HGA2    0.090000        1.007980        0
-      3012 MOL4     58       LIG      C        C321   -0.180000       12.010600        0
-      3013 MOL4     58       LIG      C        C321   -0.180000       12.010600        0
+      3011 MOL4     56       LIG      H        H    0.090000        1.007980        0
+      3012 MOL4     58       LIG      C        C   -0.180000       12.010600        0
+      3013 MOL4     58       LIG      C        C   -0.180000       12.010600        0
       ....
-      3064 MOL4     58       LIG      H        HGA2    0.090000        1.007980        0
-      3065 MOL5     57       LIG      N        N3P3   -0.300000       14.006850        0
-      3066 MOL5     57       LIG      C        C324    0.210000       12.010600        0
+      3064 MOL4     58       LIG      H        H    0.090000        1.007980        0
+      3065 MOL5     57       LIG      N        N   -0.300000       14.006850        0
+      3066 MOL5     57       LIG      C        C    0.210000       12.010600        0
       ....
-      3121 MOL5     57       LIG      N        N3P3   -0.300000       14.006850        0
+      3121 MOL5     57       LIG      H        H    0.330000        1.007980        0
       
 **and** that, at the same time, their segment names are then reset to match this new order, as in:
+
+::
+
+      2959 MOL4     56       LIG      C        C   -0.180000       12.010600        0
+      2960 MOL4     56       LIG      C        C   -0.180000       12.010600        0
+      ....
+      3011 MOL4     56       LIG      H        H    0.090000        1.007980        0
+      3012 MOL4     57       LIG      C        C   -0.180000       12.010600        0
+      3013 MOL4     57       LIG      C        C   -0.180000       12.010600        0
+      ....
+      3064 MOL4     57       LIG      H        H    0.090000        1.007980        0
+      3065 MOL5     58       LIG      N        N   -0.300000       14.006850        0
+      3066 MOL5     58       LIG      C        C    0.210000       12.010600        0
+      ....
+      3121 MOL5     58       LIG      H        H    0.330000        1.007980        0
+
+we then proceeded to order the atoms in our box.xyz file (``qd.atoms``) in the same manner, and we saved our new .xyz file (``box_ordered.xyz``).
+
+.. code:: python
+    
+    for mol in segment_dict.values():
+        mol.guess_bonds()
+        
+    psf_new.generate_bonds(segment_dict=segment_dict)
+    psf_new.generate_angles(segment_dict=segment_dict)
+    psf_new.generate_dihedrals(segment_dict=segment_dict)
+    psf_new.generate_impropers(segment_dict=segment_dict)
+    
+The contents of this section are pretty self-explanatory: the MultiMolecule `guess_bond <https://auto-fox.readthedocs.io/en/latest/3_multimolecule.html?highlight=guess_bonds#FOX.MultiMolecule.guess_bonds>`__ instance was used to guess the bonds in the file based on their atom types and inter-atomic distances. The bonds, angles, dihedrals and improper angles were then generated in the ordered .psf file for each residueID in ``segment_dict``.
+
+.. code:: python
+
+    overlay_rtf_file(psf_new, 'oa.rtf', list(range(2, 129)))
+    overlay_rtf_file(psf_new, 'ola.rtf', list(range(129, 245)))
+    overlay_rtf_file(psf_new, 'olam.rtf', list(range(245, 532)))
+    overlay_rtf_file(psf_new, 'oda.rtf', list(range(532, 2825)))
+    
+    psf_new.write('box_ordered.psf')
+    
+We're almost there! The following section of the script, which is specific for the organic molecules in our structure, matches each atom name in the .psf to its corresponding atom type, which is specified in its .rtf file. The resulting .psf file, which looks like this:
 
 ::
 
@@ -368,18 +408,6 @@ To do so, we created a dictionary (``segment_dict``) connecting every residueID 
       3065 MOL5     58       LIG      N        N3P3   -0.300000       14.006850        0
       3066 MOL5     58       LIG      C        C324    0.210000       12.010600        0
       ....
-      3121 MOL5     58       LIG      N        N3P3   -0.300000       14.006850        0
+      3121 MOL5     58       LIG      H        HGP2    0.330000        1.007980        0
 
-we then proceeded to order the atoms in our box.xyz file (``qd.atoms``) in the same manner, and we saved our new .xyz file (``box_ordered.xyz``).
-
-.. code:: python
-    
-    for mol in segment_dict.values():
-        mol.guess_bonds()
-        
-    psf_new.generate_bonds(segment_dict=segment_dict)
-    psf_new.generate_angles(segment_dict=segment_dict)
-    psf_new.generate_dihedrals(segment_dict=segment_dict)
-    psf_new.generate_impropers(segment_dict=segment_dict)
-    
-    
+is then saved by means of the ``write`` method.
