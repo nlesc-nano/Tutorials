@@ -3,7 +3,7 @@
 Preparing a Simulation Box
 ==========================
 
-The goal of this tutorial is to prepare a 11.5 nm simulation box for Classical Molecular Dynamics (CMD) simulations. We have chosen to simulate the products of a synthesis procedure to obtain monodisperse CsPbBr\ :sub:`3`\  NCs, described by L. Protesescu *et al* in *Nano Letters*, **2015**, *15(6)*, 3692-3696.
+The goal of this tutorial is to prepare a 11.5 nm simulation box for Classical Molecular Dynamics (CMD) simulations. We have chosen to simulate the products of a synthesis procedure to obtain monodisperse CsPbBr\ :sub:`3`\  NCs, described by M. Imran *et al* in *J. Am. Chem. Soc.*, **2018**, *140*, 2656−2664.
 The box specifically contains:
 
 - One CsPbBr\ :sub:`3`\ core capped by 20% oleate (OA) and 20% oleylammonium (OLA) ligands;
@@ -32,94 +32,63 @@ The .xyz files
 ^^^^^^^^^^^^^^
 First of all, let's create the .xyz files containing the geometries of our molecules. 
 We'll achieve this by running a small .yaml script with **CAT**. First of all, we need to create an .xyz file according to our needs and to move the newly created .xyz file inside our working directory (see the `General Overview <https://cat.readthedocs.io/en/latest/1_get_started.html#default-settings>`_ for further information). We will then create a ``input_settings.yaml`` `input file <https://cat.readthedocs.io/en/latest/includeme.html#input-files>`_ in the working directory and customize it with the desired settings.
-We hereby provide a .yaml input example for the construction of a cesium oleate molecule from scratch. Let's take a look:
+First of all, let's start by building the NC capped with two different ligands (OA and OLA). We invite you to refer to the `tutorial <https://nanotutorials.readthedocs.io/en/latest/1_build_qd.html>`__ for the step-by-step construction of the structure from scratch.
+Let's take a look at the .yaml input:
 
 .. code:: yaml
 
     path: null
     input_cores:
-        - CsCl.xyz:
-            guess_bonds: False
-    input_ligands:
-        - CCCCCCCC/C=C\CCCCCCCC(=O)[O-]
-    optional:
-    core:
-        dirname: core
-        anchor: Cl
-        allignment: sphere
-    ligand:
-        dirname: ligand
-        optimize: True
-        split: True 
-    qd:
-        dirname: qd
-        construct_qd: True
-        optimize: False
-            
-The `path <https://cat.readthedocs.io/en/latest/2_path.html#path>`_, `input_cores & input_ligands <https://cat.readthedocs.io/en/latest/3_input_core_ligand.html#input-cores-input-ligands>`_ and  sections, together with the meaning of the `optional <https://cat.readthedocs.io/en/latest/4_optional.html#optional>`_ keywords and their relative `arguments <https://cat.readthedocs.io/en/latest/4_optional.html#arguments>`_, can be easily found inside the **CAT** `documentation <https://cat.readthedocs.io/en/latest/0_documentation.html#cat-documentation>`_. Let's take a look at some of them in detail:
-
-1. ``path``: The `path <https://cat.readthedocs.io/en/latest/2_path.html#path>`_ section, as suggested, contains the path to the so-called working directory - i.e. where all the files are stored.
-2. ``input_cores``: This section requires a little more insight: **CAT** is originally born as a program to build nanocrystals consisting of cores and ligands. When we build the .xyz files of our molecules, we thus treat them as if we're replacing the superficial ions of a "minimal" core made of two atoms. This section contains the coordinates of the "minimal", biatomic core, specified by our .xyz file (``CsCl.xyz``). The ``guess_bonds: False`` keyword tells **CAT** that, since our core is ionic, it is not necessary the bonds and bond orders from the content of the .xyz file (i.e. it is not required to generate the internal coordinates of the system).
-3. ``input_ligands``: This section contains information on both the structure and the chemistry of the ligand. This information is stored in its canonical `SMILES <https://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system#Description>`_ (Simplified molecular-input line-entry system) string, specifically ``CCCCCCCC/C=C\CCCCCCCC(=O)[O-]`` for oleate.
-4. ``optional``: The `optional <https://cat.readthedocs.io/en/latest/4_optional.html#optional>`_ section contains three fairly similar subsections: ``core``, ``ligand``, ``qd``. The subsections contain keywords with several specifications, such as:
-
-- the directories where inorganic cores/ligands/qd (or, in this case, the .xyz file containing our new molecule) will be stored (``optional.*.dirname``);
-- the dummy atom that needs to be replaced with the chosen ligand (``optional.*.anchor``);
-- how the to-be attached ligands should be alligned with the core (``optional.*.allignment``). In our case, since we're building a molecule instead of a nanocrystal (NC), this key is mandatorily set to``optional.core.allignment: sphere``.
-- whether or not to remove protons from the ligand (``optional.ligand.split``). Specifically, since the SMILES string we are using in the input (i.e. ``CCCCCCCC/C=C\CCCCCCCC(=O)[O-]``) refers to the anionic ligand, we will opt for ``optional.ligand.split: False``, so no protons have been removed from the ligand anchoring group. Conversely, if the SMILES is provided in the neutral form, then ``optional.ligand.split: True``, meaning that a proton is cleaved from the functional group (in this case carboxylate) to ensure that the ligand is still added in its anionic form. Note that the latter form is preferrable when the ligand present more than one functional group.  
-
-In all cases, the ``*`` in the keywords accounts for the name of the subsection it refers to (i.e ``core``, ``ligand``, ``qd``).
-
-We are finally ready to run CAT with the following command: ``init_cat input_settings.yaml``
-After running **CAT** the .xyz file corresponding to our cesium oleate molecule can be found in the specified directory, 'qd'. Don't worry, the directory will be created from scratch if it does not yet exist!
-After having renamed the .xyz file, we can just remove the counterion Cs from the molecule and we'll have the complete .xyz file for OA.
-
-In a parallel fashion, the same script can be used to build the remaining .xyz files as follows:
-- OA+OLA molecules (i.e. our ionic oleate-oleylammonium couples) can be obtained by means of a similar script, which we hereby report and comment briefly:
-
-.. code:: yaml
-
-    path: null
-    input_cores:
-        - rbcl.xyz:
+        - core.xyz:
             guess_bonds: False
     
     input_ligands:
-        - CCCCCCCC/C=C\CCCCCCCC(=O)[O-]
+        - CCCCCCCCC=CCCCCCCCC(=O)O
     
     optional:
         core:
             dirname: core
             anchor: Cl
-            allignment: sphere
     
         ligand:
             dirname: ligand
             optimize: True
-            split: False
+            split: True
     
         qd:
             dirname: qd
             construct_qd: True
             multi_ligand:
                ligands:
-                 - CCCCCCCC/C=C\CCCCCCCC[NH3+]
+                 - CCCCCCCCC=CCCCCCCCC[NH3+]
                anchor:
                  - Rb
             optimize: False
+            
+The `path <https://cat.readthedocs.io/en/latest/2_path.html#path>`_, `input_cores & input_ligands <https://cat.readthedocs.io/en/latest/3_input_core_ligand.html#input-cores-input-ligands>`_ and  sections, together with the meaning of the `optional <https://cat.readthedocs.io/en/latest/4_optional.html#optional>`_ keywords and their relative `arguments <https://cat.readthedocs.io/en/latest/4_optional.html#arguments>`_, can be easily found inside the **CAT** `documentation <https://cat.readthedocs.io/en/latest/0_documentation.html#cat-documentation>`_. Let's take a look at some of them:
 
-the only difference from the previous script is the presence of the ``optional.qd.multiligand`` key and of its relative specifications. All the keys under this section are completely parallel to the ``optional.ligand`` key block: Rb atoms are being replaced by oleylammonium molecules.
-**Please note** that, in order to work effectively, this block acccepts SMILES strings by assuming a ``split: True`` specification.
-- OLAM can be obtained by replacing the ligand SMILES string in the first script to that of oleylammine (``CCCCCCCC/C=C\CCCCCCCCN``), by setting ``optional.ligand.split: False`` and the core anchor to ``Cl``, in order to obtain an .xyz containing oleylamine and bromide. The Cl atom will then be replaced from the resulting .xyz file to obtain OLAM.
-- The QD can be built in a very similar fashion using this script. We invite you to refer to the `tutorial <https://nanotutorials.readthedocs.io/en/latest/1_build_qd.html>`__ for the step-by-step construction of the structure from scratch.
+1. ``input_cores``: This section contains the coordinates of the core, specified by our .xyz file (``core.xyz``). The ``guess_bonds: False`` keyword tells **CAT** that, since our core is ionic, it does not need to guess the bonds and bond orders from the content of the .xyz file.
+2. ``input_ligands``: This section contains information on both the structure and the chemistry of the ligand. This information is stored in its canonical `SMILES <https://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system#Description>`_ (Simplified molecular-input line-entry system) string (``CCCCCCCC/C=C\CCCCCCCC(=O)[O-]`` for oleate, ``CCCCCCCC/C=C\CCCCCCCC[NH3+]`` for oleylammonium);
+3. ``optional``: The `optional <https://cat.readthedocs.io/en/latest/4_optional.html#optional>`_ section contains three fairly similar subsections: ``core``, ``ligand``, ``qd``. The subsections contain keywords with several specifications, such as:
 
-All of the remaining molecules (such as the CsCl.xyz and the .xyz file for ODA) can be built using any (commonly available) molecular structure processing program, such as `Molden <https://www3.cmbi.umcn.nl/molden/>`__.
+- the dummy atom that needs to be replaced with the chosen ligand (``optional.core.anchor``);
+- whether or not to remove protons from the ligand (``optional.ligand.split``). Specifically, since the SMILES string we are using in the input (i.e. ``CCCCCCCC/C=C\CCCCCCCC(=O)[O-]``) refers to the anionic ligand, we will opt for ``optional.ligand.split: False``, so no protons have been removed from the ligand anchoring group. Conversely, if the SMILES is provided in the neutral form, then ``optional.ligand.split: True``, meaning that a proton is cleaved from the functional group (in this case carboxylate) to ensure that the ligand is still added in its anionic form. Note that the latter form is preferrable when the ligand present more than one functional group;
+- the ``optional.qd.multiligand`` block. All the keys under this section are completely parallel to the aforementioned ones: Rb atoms are now being replaced by oleylammonium molecules. **Please note** that, in order to work effectively, this block acccepts SMILES strings by assuming a ``split: True`` specification.
+
+An important concept to remember here, which we will need in a while, is that **CAT** builds the .xyz file in the following order: all the core atoms in the exact order we gave in the ``core.xyz``, followed by a certain number of ligand molecules (depending on the chosen coverage). If the model comprises more than one ligand, we will first have all of the molecules of the first ligand, followed by those of the second ligand. In our specific case, the order of our .xyz file will therefore be: Cs, Pb, Br, OA, OLA.
+
+We are finally ready to run CAT with the following command: ``init_cat input_settings.yaml``.
+After running **CAT** the .xyz file corresponding to our NC can be found in the specified directory, 'qd'. Don't worry, the directory will be created from scratch if it does not yet exist. Remember to rename the file before using it!
+
+In a parallel fashion, the same script can be used to build the .xyz file containing OA+OLA molecules (i.e. our ionic oleate-oleylammonium couples) with two main differences: we will use a RbCl molecule as our "minimal", biatomic core, specified by our .xyz file (``RbCl.xyz``), and the use of the ``optional.core.allignment: sphere`` key, which is mandatory on **CAT** when diatomic molecules are set as cores in the script;
+
+All of the remaining molecules (such as the .xyz files for ODA and OLAM) can be built using any (commonly available) molecular structure processing program, such as `Molden <https://www3.cmbi.umcn.nl/molden/>`__.
 To sum up, in our case, we have now successfully built **these** files (the names have been chosen to represent their chemical formula for simplicity):
 
 - qd.xyz, containing our ligand-capped NC;
 - oaola.xyz;
 - olam.xyz;
-- octadecene.xyz.
+- oda.xyz.
 
 Other file extensions
 ^^^^^^^^^^^^^^^^^^^^^
@@ -129,14 +98,14 @@ Now that we've obtained our .xyz files, we need to convert it to other extension
 1. *.pdb file*: The Protein Data Bank (.pdb) extension provides a description of the atomic coordinates, secondary structure assignments and atomic connectivity of a molecule. An .xyz file can be easily converted to this format by means of `Open Babel <https://openbabel.org/docs/dev/Installation/install.html>`__, a commonly employed chemical format converter. You can follow this link and follow the instructions for the installation (or just look for any Open Babel-based format converters available online). Once the program is correctly installed, the .xyz files can be converted to the .pdb format by running this simple command for each _organic_ molecule (*NOTE that this step does **NOT** apply to our qd.xyz file): ``obabel -ixyz file.xyz -opdb file.pdb``.
 To sum up, we will now have the following .pdb files:
 
-    - oaola.pdb;
-    - olam.pdb;
-    - octadecene.pdb.
+- oaola.pdb;
+- olam.pdb;
+- oda.pdb.
     
 2. *.prm and .rtf files*: Each .pdb file we created now needs to be converted to the following formats:
 
-    - The CHARMM forcefield Parameter (.prm) file, including all of the numerical constants needed to evaluate forces and energies;
-    - The Residue Topology File (.rtf) This file defines the main groups (atoms, properties, bond and charge information) for our molecular structures.
+- The CHARMM forcefield Parameter (.prm) file, including all of the numerical constants needed to evaluate forces and energies;
+- The Residue Topology File (.rtf) This file defines the main groups (atoms, properties, bond and charge information) for our molecular structures.
     
 These formats can be easily obtained from our .pdb files by inserting our .pdb files in `MATCH <https://openbabel.org/docs/dev/Installation/install.html>`__. This online server will convert our files into the three required formats, which we will download as a zipped directory. We will first of all need to rename the new files to match their molecular formulas (2 for each .pdb file, for a total of 6 new files).
 The .rtf files are ready for our next step, so we can put them aside for the present moment. Let's instead focus on the .prm files. An example of a .prm file (here we chose OLAM) looks like this:
@@ -147,91 +116,82 @@ The .rtf files are ready for our next step, so we can put them aside for the pre
     *
     
     BONDS
-    C324   N3P3   200.00     1.4800
-    HGP2   N3P3   403.00     1.0400
-    C321   C324   222.50     1.5300
-    C324   HGA2   284.50     1.1000
-    C321   C321   222.50     1.5300
-    C321   HGA2   309.00     1.1110
-    C321   C331   222.50     1.5280
-    C2D1   C321   365.00     1.5020
-    C331   HGA3   322.00     1.1110
-    C2D1   C2D1   440.00     1.3400
-    C2D1   HGA4   360.50     1.1000
+    C321   C321   222.50     1.5300     
+    C321   HGA2   309.00     1.1110     
+    C321   C331   222.50     1.5280     
+    C321   N321   263.00     1.4740     
+    C2D1   C321   365.00     1.5020     
+    C331   HGA3   322.00     1.1110     
+    HPA2   N321   453.10     1.0140     
+    C2D1   C2D1   440.00     1.3400     
+    C2D1   HGA4   360.50     1.1000     
     
     ANGLES
-    C321   C324   N3P3   67.70      110.00
-    HGA2   C324   N3P3   45.00      107.50
-    C324   N3P3   HGP2   30.00      109.50
-    HGP2   N3P3   HGP2   44.00      109.50
-    C321   C321   C324   58.35      110.50
-    HGA2   C321   C324   26.50      110.10
-    C321   C324   HGA2   26.50      111.80
-    HGA2   C324   HGA2   35.50      109.00
-    HGA2   C321   C321   26.50      110.10
-    C321   C321   C321   58.35      113.60
-    HGA2   C321   HGA2   35.50      109.00
-    C321   C321   C331   58.00      115.00
-    C321   C321   C2D1   32.00      112.20
-    HGA2   C321   C331   34.60      110.10
-    C321   C331   HGA3   34.60      110.10
-    C2D1   C2D1   C321   48.00      123.50
-    HGA4   C2D1   C321   40.00      116.00
-    C2D1   C321   HGA2   45.00      111.50
-    HGA3   C331   HGA3   35.50      108.40
-    HGA4   C2D1   C2D1   52.00      119.50
+    C321   C321   C321   58.35      113.60     
+    HGA2   C321   C321   26.50      110.10     
+    HGA2   C321   HGA2   35.50      109.00     
+    C321   C321   C331   58.00      115.00     
+    C321   C321   N321   32.00      112.20     
+    C321   C321   C2D1   32.00      112.20     
+    HGA2   C321   C331   34.60      110.10     
+    C321   C331   HGA3   34.60      110.10     
+    HGA2   C321   N321   32.40      109.50     
+    C321   N321   HPA2   41.00      112.10     
+    C2D1   C2D1   C321   48.00      123.50     
+    HGA4   C2D1   C321   40.00      116.00     
+    C2D1   C321   HGA2   45.00      111.50     
+    HGA3   C331   HGA3   35.50      108.40     
+    HPA2   N321   HPA2   29.50      105.85     
+    HGA4   C2D1   C2D1   52.00      119.50     
     
     DIHEDRALS
-    C321   C321   C324   N3P3   0.1950     3      0.00
-    HGA2   C321   C324   N3P3   0.1950     3      0.00
-    C321   C324   N3P3   HGP2   0.1000     3      0.00
-    HGA2   C324   N3P3   HGP2   0.1000     3      0.00
-    C321   C321   C321   C324   0.1950     3      0.00
-    HGA2   C321   C321   C324   0.1950     3      0.00
-    C321   C321   C324   HGA2   0.1950     3      0.00
-    HGA2   C321   C324   HGA2   0.1950     3      0.00
-    HGA2   C321   C321   C321   0.1950     3      0.00
-    HGA2   C321   C321   HGA2   0.2200     3      0.00
-    C321   C321   C321   C321   0.14975    3      180.00
-    C321   C321   C321   C321   0.09458    4      0.00
-    C321   C321   C321   C321   0.11251    5      0.00
-    C321   C321   C321   C321   0.06450    2      0.00
-    C321   C321   C321   C331   0.08133    3      180.00
-    C321   C321   C321   C331   0.10824    4      0.00
-    C321   C321   C321   C331   0.20391    5      0.00
-    C321   C321   C321   C331   0.15051    2      0.00
-    C321   C321   C321   C2D1   0.1700     2      0.0
-    C321   C321   C321   C2D1   0.0500     3      180.0
-    C321   C321   C321   C2D1   0.1400     1      180.0
-    HGA2   C321   C321   C331   0.1800     3      0.00
-    C321   C321   C331   HGA3   0.1600     3      0.00
-    HGA2   C321   C321   C2D1   0.1950     3      0.00
-    C321   C321   C2D1   C2D1   0.6000     1      180.00
-    C321   C321   C2D1   HGA4   0.1200     3      0.00
-    HGA2   C321   C331   HGA3   0.1600     3      0.00
-    C321   C2D1   C2D1   C321   8.5000     2      180.00
-    C321   C2D1   C2D1   C321   0.4500     1      180.00
-    HGA4   C2D1   C2D1   C321   1.0000     2      180.00
-    C2D1   C2D1   C321   HGA2   0.3000     3      180.00
-    HGA4   C2D1   C321   HGA2   0.0000     3      0.00
-    HGA4   C2D1   C2D1   HGA4   1.0000     2      180.00
+    C321   C321   C321   C321   0.14975    3      180.00     
+    C321   C321   C321   C321   0.09458    4      0.00       
+    C321   C321   C321   C321   0.11251    5      0.00       
+    C321   C321   C321   C321   0.06450    2      0.00       
+    HGA2   C321   C321   C321   0.1950     3      0.00       
+    HGA2   C321   C321   HGA2   0.2200     3      0.00       
+    C321   C321   C321   C331   0.08133    3      180.00     
+    C321   C321   C321   C331   0.10824    4      0.00       
+    C321   C321   C321   C331   0.20391    5      0.00       
+    C321   C321   C321   C331   0.15051    2      0.00       
+    C321   C321   C321   N321   0.1700     2      0.0        
+    C321   C321   C321   N321   0.0500     3      180.0      
+    C321   C321   C321   N321   0.1400     1      180.0      
+    C321   C321   C321   C2D1   0.1700     2      0.0        
+    C321   C321   C321   C2D1   0.0500     3      180.0      
+    C321   C321   C321   C2D1   0.1400     1      180.0      
+    HGA2   C321   C321   C331   0.1800     3      0.00       
+    C321   C321   C331   HGA3   0.1600     3      0.00       
+    HGA2   C321   C321   N321   0.1950     3      0.00       
+    C321   C321   N321   HPA2   0.1600     3      0.00       
+    HGA2   C321   C321   C2D1   0.1950     3      0.00       
+    C321   C321   C2D1   C2D1   0.6000     1      180.00     
+    C321   C321   C2D1   HGA4   0.1200     3      0.00       
+    HGA2   C321   C331   HGA3   0.1600     3      0.00       
+    HGA2   C321   N321   HPA2   0.0100     3      0.00       
+    C321   C2D1   C2D1   C321   8.5000     2      180.00     
+    C321   C2D1   C2D1   C321   0.4500     1      180.00     
+    HGA4   C2D1   C2D1   C321   1.0000     2      180.00     
+    C2D1   C2D1   C321   HGA2   0.3000     3      180.00     
+    HGA4   C2D1   C321   HGA2   0.0000     3      0.00       
+    HGA4   C2D1   C2D1   HGA4   1.0000     2      180.00     
     
     IMPROPER
     
     NONBONDED nbxmod  5 atom cdiel shift vatom vdistance vswitch -
     cutnb 14.0 ctofnb 12.0 ctonnb 10.0 eps 1.0 e14fac 1.0 wmin 1.5
-    C324   0.0000     -0.0550    2.1750
-    N3P3   0.0000     -0.2000    1.8500
-    HGP2   0.0000     -0.0460    0.2245
-    C321   0.0000     -0.0560    2.0100
-    HGA2   0.0000     -0.0350    1.3400
-    C331   0.0000     -0.0780    2.0500
-    C2D1   0.0000     -0.0680    2.0900
-    HGA3   0.0000     -0.0240    1.3400
-    HGA4   0.0000     -0.0310    1.2500
+    C321   0.0000     -0.0560    2.0100     
+    HGA2   0.0000     -0.0350    1.3400     
+    C331   0.0000     -0.0780    2.0500     
+    N321   0.0000     -0.0600    1.9900     
+    C2D1   0.0000     -0.0680    2.0900     
+    HGA3   0.0000     -0.0240    1.3400     
+    HPA2   0.0000     -0.0100    0.8750     
+    HGA4   0.0000     -0.0310    1.2500     
 
 The input for our MD simulation, however, requires only **one** .prm file, so we will need to merge all of our .prm files in a single, global one. We will achieve this by manually copying and pasting the lines of each individual .prm file into a "global" one section by section (BONDS, ANGLES, DIHEDRALS etc). Pay attention to this step: the .prm file won't be read correctly if lines are missing or repeated twice. Take your time with this step and check twice to make sure everything has been pasted appropriately!
-Now that our .prm and .rtf files are ready, we are _finally_ ready to proceed to the next step!
+Now that our .prm and .rtf files are ready, we are finally ready to proceed to the next step!
     
 Preparing the box
 -----------------
@@ -273,9 +233,180 @@ The used keywords can be very easily found in the relative  `User Guide <http://
 - The ``filetype xyz`` key specifies the formats of the provided molecular inputs;
 - Individual blocks containing several specifications for the molecules which will figure in the box, such as their .xyz file and the number of molecules of each type that will be placed inside the box. In our case, as specified by the ``inside cube -80. -80. -80. 80.`` key, we will be placing the molecules inside a cube with minimum coordinates (x,y,z) = (-80,-80,-80) and maximum coordinates (80,80,80): in other words, we will fill a cube of side 160.0 Å with our molecules. We set the coordinates between -80 and 80 (instead of, for example, 0 to 160) because, as specified by the keywords ``center`` and ``fixed 0. 0. 0. 0. 0. 0.``, we wanted to place our NC model in the center of our box.
 
-Once our input is ready, we can simply run the following command: ``./packmol < settings.inp``. Please note that if the executable is in another directory, we will need to provide the respective path to correctly "reach" it.
-Once the script has run, the .xyz output containing the box will be inside the working directory.
+Once our input is ready, we can simply run the following command: ``packmol < settings.inp``.
+Once the script has run, the .xyz output containing the box will be inside the working directory. 
 
 Generating the .psf file
 ------------------------
-The Protein Structure File (.psf), containing the molecular-level information required to apply any force field to our simulation box.
+The Protein Structure File (.psf), containing the molecular-level information required to apply any force field to our simulation box (you can take a look at this `website <https://www.ks.uiuc.edu/Training/Tutorials/namd/namd-tutorial-unix-html/node23.html>`__ to get an idea of its structure). Here is an example of what its first lines look like:
+
+::
+
+    PSF EXT
+    
+             2 !NTITLE
+       REMARKS PSF file generated with Auto-FOX
+       REMARKS https://github.com/nlesc-nano/Auto-FOX
+    
+    
+        153333 !NATOM
+             1 MOL1     1        COR      Cs       Cs      0.000000      132.905450        0
+             2 MOL1     1        COR      Cs       Cs      0.000000      132.905450        0
+             3 MOL1     1        COR      Cs       Cs      0.000000      132.905450        0
+             ..........
+
+As mentioned in the website, each line in a .psf file is structured according to the following fields:
+- atom ID (the number of the atom in the .xyz file);
+- segment name (the number associated to each molecule: in this case ``1`` is the whole NC, ``2`` is the **first** OA molecule, ``3`` is the second OA..)
+- residue ID (in our case, ``MOL1`` to ``MOL3`` are the atoms of the NC core, ``MOL4`` is OA, ``MOL5`` is OLA, ``MOL6`` is OLAM and ``MOL7`` is ODA);
+- residue name (COR specifically refers to our NC);
+- the remaining fields: atom name (e.g. C, H), atom type (e.g. C324, HGP2), charge, mass, and an unused 0.
+
+The .psf file for our .xyz molecule can be easily built using the **Auto-FOX** package by means of a straightforward python script. Let's take a look at it:
+
+.. code:: python
+
+    from scm.plams import Molecule
+    from FOX import PSFContainer
+    from FOX.io.read_psf import overlay_rtf_file
+    from FOX.recipes import generate_psf2
+    
+    qd = Molecule('box.xyz') 
+    ligands = ('CCCCCCCCC=CCCCCCCCC(=O)[O-]', 'CCCCCCCCC=CCCCCCCCC[NH3+]', 'CCCCCCCCC=CCCCCCCCCN', 'CCCCCCCCCCCCCCCCC=C')
+    psf = generate_psf2(qd, *ligands, ret_failed_lig=True)
+    psf.write('box.psf')
+    
+    segment_dict = {"MOL4": Molecule('oa.xyz'), "MOL5": Molecule('ola.xyz'),  "MOL6": Molecule('olam.xyz'),  "MOL7": Molecule('oda.xyz')}
+    psf_new, argsort = psf.sort_values(["segment name", "residue ID"], return_argsort=True)
+    qd.atoms = [qd.atoms[i] for i in argsort]
+    qd.write('box_ordered.xyz')
+    
+    for mol in segment_dict.values():
+        mol.guess_bonds()
+        
+    psf_new.generate_bonds(segment_dict=segment_dict)
+    psf_new.generate_angles(segment_dict=segment_dict)
+    psf_new.generate_dihedrals(segment_dict=segment_dict)
+    psf_new.generate_impropers(segment_dict=segment_dict)
+    
+    overlay_rtf_file(psf_new, 'oa.rtf', list(range(2, 129)))
+    overlay_rtf_file(psf_new, 'ola.rtf', list(range(129, 245)))
+    overlay_rtf_file(psf_new, 'olam.rtf', list(range(245, 532)))
+    overlay_rtf_file(psf_new, 'oda.rtf', list(range(532, 2825)))
+    
+    psf_new.write('box_ordered.psf')
+
+We'll now provide a step-by-step explanation of the purpose of the most important blocks in the script.
+
+.. code:: python
+
+    from scm.plams import Molecule
+    from FOX import PSFContainer
+    from FOX.io.read_psf import overlay_rtf_file
+    from FOX.recipes import generate_psf2
+    
+    qd = Molecule('box.xyz') 
+    ligands = ('CCCCCCCCC=CCCCCCCCC(=O)[O-]', 'CCCCCCCCC=CCCCCCCCC[NH3+]', 'CCCCCCCCC=CCCCCCCCCN', 'CCCCCCCCCCCCCCCCC=C')
+    psf = generate_psf2(qd, *ligands, ret_failed_lig=True)
+    psf.write('box.psf')
+    
+This section includes the generation of the .psf file in the order provided by our .xyz input. The ``generate_psf2`` key is motivated by the fact that our NC is capped by multiple ligands. You can find a very exhaustive documentation for this section in the `FOX.recipes.psf <https://auto-fox.readthedocs.io/en/latest/7_recipes.html?highlight=generate_psf#FOX.recipes.generate_psf2>`__ section of the documentation.
+
+.. code:: python
+    
+    segment_dict = {"MOL4": Molecule('oa.xyz'), "MOL5": Molecule('ola.xyz'),  "MOL6": Molecule('olam.xyz'),  "MOL7": Molecule('oda.xyz')}
+    psf_new, argsort = psf.sort_values(["segment name", "residue ID"], return_argsort=True)
+    qd.atoms = [qd.atoms[i] for i in argsort]
+    qd.write('box_ordered.xyz')
+
+Before using our newly generated .psf file, we need to remember that the atoms/molecules in box.xyz have been packed by **Packmol** in the order specified by our input (settings.inp). As we've mentioned earlier, in our qd.xyz file this order is Cs, Pb, Br, OA, OLA: the residueIDs for the NC will thus be in ascending order (``MOL1`` to ``MOL5``) in the .psf file. On the other hand, each OAOLA molecule has got an OA and an OLA in its .xyz file, so their lines in the .psf file will alternate between two residueIDs: ``MOL4`` and ``MOL5``), for example:
+
+::
+
+      2959 MOL4     56       LIG      C        C   -0.180000       12.010600        0
+      2960 MOL4     56       LIG      C        C   -0.180000       12.010600        0
+      ....
+      3011 MOL4     56       LIG      H        H    0.090000        1.007980        0
+      3012 MOL5     57       LIG      N        N   -0.300000       14.006850        0
+      3013 MOL5     57       LIG      C        C    0.210000       12.010600        0
+      ....
+      3066 MOL5     57       LIG      H        H    0.330000        1.007980        0
+      3067 MOL4     58       LIG      C        C   -0.180000       12.010600        0
+      3068 MOL4     58       LIG      C        C   -0.180000       12.010600        0
+
+In order to build an ordered .psf file, we thus need to reorder our .xyz file so that all the molecules - as well as their residueIDs - are provided in ascending order. 
+To do so, we created a dictionary (``segment_dict``) connecting every residueID in our box.psf file to the matching .xyz file. After that, we proceeded to reorder our .psf file by means of the ``sort_values`` key (you can find it in the `PSFContainer <https://auto-fox.readthedocs.io/en/latest/8_psf.html?highlight=sort_values#module-FOX.io.read_psf>`__ section). Specifically, the ``["segment name", "residue ID"]`` segment establishes that the molecules are ordered according to their residueIDs, for example:
+
+::
+
+      2959 MOL4     56       LIG      C        C   -0.180000       12.010600        0
+      2960 MOL4     56       LIG      C        C   -0.180000       12.010600        0
+      ....
+      3011 MOL4     56       LIG      H        H    0.090000        1.007980        0
+      3012 MOL4     58       LIG      C        C   -0.180000       12.010600        0
+      3013 MOL4     58       LIG      C        C   -0.180000       12.010600        0
+      ....
+      3064 MOL4     58       LIG      H        H    0.090000        1.007980        0
+      3065 MOL5     57       LIG      N        N   -0.300000       14.006850        0
+      3066 MOL5     57       LIG      C        C    0.210000       12.010600        0
+      ....
+      3121 MOL5     57       LIG      H        H    0.330000        1.007980        0
+      
+**and** that, at the same time, their segment names are then reset to match this new order, as in:
+
+::
+
+      2959 MOL4     56       LIG      C        C   -0.180000       12.010600        0
+      2960 MOL4     56       LIG      C        C   -0.180000       12.010600        0
+      ....
+      3011 MOL4     56       LIG      H        H    0.090000        1.007980        0
+      3012 MOL4     57       LIG      C        C   -0.180000       12.010600        0
+      3013 MOL4     57       LIG      C        C   -0.180000       12.010600        0
+      ....
+      3064 MOL4     57       LIG      H        H    0.090000        1.007980        0
+      3065 MOL5     58       LIG      N        N   -0.300000       14.006850        0
+      3066 MOL5     58       LIG      C        C    0.210000       12.010600        0
+      ....
+      3121 MOL5     58       LIG      H        H    0.330000        1.007980        0
+
+we then proceeded to order the atoms in our box.xyz file (``qd.atoms``) in the same manner, and we saved our new .xyz file (``box_ordered.xyz``).
+
+.. code:: python
+    
+    for mol in segment_dict.values():
+        mol.guess_bonds()
+        
+    psf_new.generate_bonds(segment_dict=segment_dict)
+    psf_new.generate_angles(segment_dict=segment_dict)
+    psf_new.generate_dihedrals(segment_dict=segment_dict)
+    psf_new.generate_impropers(segment_dict=segment_dict)
+    
+The contents of this section are pretty self-explanatory: the MultiMolecule `guess_bond <https://auto-fox.readthedocs.io/en/latest/3_multimolecule.html?highlight=guess_bonds#FOX.MultiMolecule.guess_bonds>`__ instance was used to guess the bonds in the file based on their atom types and inter-atomic distances. The bonds, angles, dihedrals and improper angles were then generated in the ordered .psf file for each residueID in ``segment_dict``.
+
+.. code:: python
+
+    overlay_rtf_file(psf_new, 'oa.rtf', list(range(2, 129)))
+    overlay_rtf_file(psf_new, 'ola.rtf', list(range(129, 245)))
+    overlay_rtf_file(psf_new, 'olam.rtf', list(range(245, 532)))
+    overlay_rtf_file(psf_new, 'oda.rtf', list(range(532, 2825)))
+    
+    psf_new.write('box_ordered.psf')
+    
+We're almost there! The following section of the script, which is specific for the organic molecules in our structure, matches each atom name in the .psf to its corresponding atom type, which is specified in its .rtf file. The resulting .psf file, which looks like this:
+
+::
+
+      2959 MOL4     56       LIG      C        C321   -0.180000       12.010600        0
+      2960 MOL4     56       LIG      C        C321   -0.180000       12.010600        0
+      ....
+      3011 MOL4     56       LIG      H        HGA2    0.090000        1.007980        0
+      3012 MOL4     57       LIG      C        C321   -0.180000       12.010600        0
+      3013 MOL4     57       LIG      C        C321   -0.180000       12.010600        0
+      ....
+      3064 MOL4     57       LIG      H        HGA2    0.090000        1.007980        0
+      3065 MOL5     58       LIG      N        N3P3   -0.300000       14.006850        0
+      3066 MOL5     58       LIG      C        C324    0.210000       12.010600        0
+      ....
+      3121 MOL5     58       LIG      H        HGP2    0.330000        1.007980        0
+
+is then saved by means of the ``write`` method.
