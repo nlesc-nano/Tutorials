@@ -18,7 +18,7 @@ setup(
     version=version['__version__'],
     description="A collection of tutorials for the analysis of nanocrystals.",
     long_description=readme + '\n\n',
-    author=["Juliette Zito", "felipe zapata"], 
+    author=["Juliette Zito", "felipe zapata"],
     author_email='juliette.zito@hotmail.fr',
     url='https://github.com/nlesc-nano/Tutorials',
     packages=[
@@ -40,6 +40,7 @@ setup(
         'Topic :: Documentation :: Sphinx',
         'Topic :: Scientific/Engineering :: Chemistry'
     ],
+    package_data={'tutorials': ['*.pyi', 'py.typed']},
     test_suite='tests',
     install_requires=[],
     tests_require=[
