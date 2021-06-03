@@ -418,7 +418,8 @@ First of all, we will open our .psf file on **VMD** (click on File > New Molecul
 Let's now see how to obtain the two file extensions:
 - *.gro file*: This file can be very easily obtained by selecting File > Save Coordinates > File Type: gro. The resulting file is now ready to be used.
 - *.top file*: This extension can be obtained from the **VMD** command line. We will first need to move to the directory containing our .prm file. After that, we can just insert the following commands in the terminal: ``topo writegmxtop box_ordered.top box.prm`` (``box.prm`` being our previously built "global" .prm file). The .top file will be generated in the same directory with the name we specified in the command line. As our very last step before running the simulation, we will need to perform a few small modifications to the file:
-    1. In the ``[ nonbond_params ]`` section each couple of atoms is associated to a sigma and an epsilon. In our case, these parameters account for the description of the Lennard-Jones terms in our force field, and we will need to insert their corresponding values in the column. The section would then look like this:
+    1. The ``[ atomtypes ]`` section is to be updated to include the inorganic atoms (Cs, Pb, Br), as well as their relative parameters (atomic number, mass, charge etc.) in the description;
+    2. In the ``[ nonbond_params ]`` section each couple of atoms is associated to a sigma and an epsilon. In our case, these parameters account for the description of the Lennard-Jones terms in our force field, and we will need to insert their corresponding values in the column. The section would then look like this:
     
     ::
         
@@ -428,8 +429,9 @@ Let's now see how to obtain the two file extensions:
         Br Pb    1  0.31212  1.7068104799678259
         ....
         
-    2. The charges in the ``[ moleculetype ]`` section, containing all the information on the atoms and molecules figuring in the structure, need to be updated as well to coincide to those in our force field. In our case we updated those of the inorganic core (Cs, Pb, Br) as well as those belonging to the anchoring groups of the ligands (C2O3, O2D2 etc). Here's a snippet of what the section should look like:
-        ::
+    3. The charges in the ``[ moleculetype ]`` section, containing all the information on the atoms and molecules figuring in the structure, need to be updated as well to coincide to those in our force field. In our case we updated those of the inorganic core (Cs, Pb, Br) as well as those belonging to the anchoring groups of the ligands (C2O3, O2D2 etc). Here's a snippet of what the section should look like:
+    
+    ::
         
         [ moleculetype ]
         ; Name      nrexcl
@@ -437,5 +439,5 @@ Let's now see how to obtain the two file extensions:
         
         [ atoms ]
         ; nr  type  resnr residue atom cgnr charge  mass
-             1          Cs      1      COR     Cs      1     0.6976   132.9055
+          1   Cs    1     COR     Cs   1    0.6976  132.9055
         ....
