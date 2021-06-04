@@ -80,7 +80,7 @@ An important concept to remember here, which we will need in a while, is that **
 We are finally ready to run CAT with the following command: ``init_cat input_settings.yaml``.
 After running **CAT** the .xyz file corresponding to our NC can be found in the specified directory, 'qd'. Don't worry, the directory will be created from scratch if it does not yet exist. Remember to rename the file before using it!
 
-In a parallel fashion, the same script can be used to build the .xyz file containing OA+OLA molecules (i.e. our ionic oleate-oleylammonium couples) with two main differences: we will use a RbCl molecule as our "minimal", biatomic core, specified by our .xyz file (``RbCl.xyz``), and the use of the ``optional.core.allignment: sphere`` key, which is mandatory on **CAT** when diatomic molecules are set as cores in the script;
+In a parallel fashion, the same script can be used to build the .xyz file containing OA+OLA molecules (i.e. our ionic oleate-oleylammonium couples) with two main differences: we will use a RbCl molecule as our "minimal", biatomic core, specified by our .xyz file (``RbCl.xyz``). In addition, we'll use the ``optional.core.allignment: sphere`` key, which is mandatory on **CAT** when diatomic molecules are set as cores in the script;
 
 All of the remaining molecules (such as the .xyz files for ODA and OLAM) can be built using any (commonly available) molecular structure processing program, such as `Molden <https://www3.cmbi.umcn.nl/molden/>`__.
 To sum up, in our case, we have now successfully built **these** files (the names have been chosen to represent their chemical formula for simplicity):
@@ -95,7 +95,7 @@ Other file extensions
 
 Now that we've obtained our .xyz files, we need to convert it to other extensions in order to complete our 3D structure with additional, "missing" information. Let's see how to obtain the other files:
 
-1. *.pdb file*: The Protein Data Bank (.pdb) extension provides a description of the atomic coordinates, secondary structure assignments and atomic connectivity of a molecule. An .xyz file can be easily converted to this format by means of `Open Babel <https://openbabel.org/docs/dev/Installation/install.html>`__, a commonly employed chemical format converter. You can follow this link and follow the instructions for the installation (or just look for any Open Babel-based format converters available online). Once the program is correctly installed, the .xyz files can be converted to the .pdb format by running this simple command for each _organic_ molecule (*NOTE that this step does **NOT** apply to our qd.xyz file): ``obabel -ixyz file.xyz -opdb file.pdb``.
+1. *.pdb file*: The Protein Data Bank (.pdb) extension provides a description of the atomic coordinates, secondary structure assignments and atomic connectivity of a molecule. An .xyz file can be easily converted to this format by means of `Open Babel <https://openbabel.org/docs/dev/Installation/install.html>`__, a commonly employed chemical format converter. You can follow this link for the installation instructions (or just look for any Open Babel-based format converters available online). Once the program is correctly installed, the .xyz files can be converted to the .pdb format by running this simple command for each organic molecule (note that this step does **NOT** apply to our qd.xyz file): ``obabel -ixyz file.xyz -opdb file.pdb``.
 To sum up, we will now have the following .pdb files:
 
 - oaola.pdb;
@@ -416,28 +416,32 @@ Preparing the simulation
 We have now got all the files we need to start our Molecular Dynamics (MD) simulation. In our specific case, we will run the simulations on **GROMACS**, so we will need the `.gro <https://manual.gromacs.org/documentation/2018/user-guide/file-formats.html#gro>`__ file (for the starting molecular structure) and the topology file (`.top <https://manual.gromacs.org/documentation/2018/user-guide/file-formats.html#top>`__) of our box. As we mentioned earlier, we will use the **VMD** package for this purpose.
 First of all, we will open our .psf file on **VMD** (click on File > New Molecule in the Main Window and then Load the .psf file). Once the file is correctly loaded, we can proceed to load the .xyz structure in our .psf file by right clicking on the loaded .psf and selecting Load Data Into Molecule and our .xyz file). This procedure is common to both formats.
 Let's now see how to obtain the two file extensions:
+
 - *.gro file*: This file can be very easily obtained by selecting File > Save Coordinates > File Type: gro. The resulting file is now ready to be used.
 - *.top file*: This extension can be obtained from the **VMD** command line. We will first need to move to the directory containing our .prm file. After that, we can just insert the following commands in the terminal: ``topo writegmxtop box_ordered.top box.prm`` (``box.prm`` being our previously built "global" .prm file). The .top file will be generated in the same directory with the name we specified in the command line. As our very last step before running the simulation, we will need to perform a few small modifications to the file:
-    1. The ``[ atomtypes ]`` section is to be updated to include the inorganic atoms (Cs, Pb, Br), as well as their relative parameters (atomic number, mass, charge etc.) in the description;
-    2. In the ``[ nonbond_params ]`` section each couple of atoms is associated to a sigma and an epsilon. In our case, these parameters account for the description of the Lennard-Jones terms in our force field, and we will need to insert their corresponding values in the column. The section would then look like this:
+
+1. The ``[ atomtypes ]`` section is to be updated to include the inorganic atoms (Cs, Pb, Br), as well as their relative parameters (atomic number, mass, charge etc.) in the description;
+2. In the ``[ nonbond_params ]`` section each couple of atoms is associated to a sigma and an epsilon. In our case, these parameters account for the description of the Lennard-Jones terms in our force field, and we will need to insert their corresponding values in the column. The section would then look like this:
     
-    ::
-        
-        [ nonbond_params ]
-        ;type1 type2 1 sigma epsilon
-        Pb Pb    1  0.6248523340799998  2.773992
-        Br Pb    1  0.31212  1.7068104799678259
-        ....
-        
-    3. The charges in the ``[ moleculetype ]`` section, containing all the information on the atoms and molecules figuring in the structure, need to be updated as well to coincide to those in our force field. In our case we updated those of the inorganic core (Cs, Pb, Br) as well as those belonging to the anchoring groups of the ligands (C2O3, O2D2 etc). Here's a snippet of what the section should look like:
+::
     
-    ::
+    [ nonbond_params ]
+    ;type1 type2 1 sigma epsilon
+    Pb Pb    1  0.6248523340799998  2.773992
+    Br Pb    1  0.31212  1.7068104799678259
+    ....
         
-        [ moleculetype ]
-        ; Name      nrexcl
-        molecule0     3
-        
-        [ atoms ]
-        ; nr  type  resnr residue atom cgnr charge  mass
-          1   Cs    1     COR     Cs   1    0.6976  132.9055
-        ....
+3. The charges in the ``[ moleculetype ]`` section, containing all the information on the atoms and molecules figuring in the structure, need to be updated as well to coincide to those in our force field. In our case we updated those of the inorganic core (Cs, Pb, Br) as well as those belonging to the anchoring groups of the ligands (C2O3, O2D2 etc). Here's a snippet of what the section should look like:
+    
+::
+    
+    [ moleculetype ]
+    ; Name      nrexcl
+    molecule0     3
+    
+    [ atoms ]
+    ; nr  type  resnr residue atom cgnr charge  mass
+      1   Cs    1     COR     Cs   1    0.6976  132.9055
+    ....
+
+We now have all of the files required to run our **GROMACS** simulation!
