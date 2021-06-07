@@ -16,39 +16,39 @@ We will start from an *ab-initio* Molecular Dynamics (MD) trajectory (NVT, 300K,
     .. code:: yaml
     
         param:
-        charge:
-        param: charge
-        Cs: 0.4174
-        Pb: 0.8348
-        Br: -0.4174
-        constraints:
-            - '0 < Cs < 1.5'
-            - '0 < Pb < 2'
-            - '-1.5 < Br < 0'
-            - 'Cs == -1 * Br'
-            - 'Pb == -2 * Br'
-
-        lennard_jones:
-            - param: epsilon
-              unit: kjmol
-              frozen: 
-                  guess: uff
-            - param: sigma
-              unit: nm
-              Cs Cs:  0.453
-              Cs Pb:  0.367
-              Br Cs:  0.363
-              Pb Pb:  0.610
-              Br Pb:  0.298
-              Br Br:  0.369
+          charge:
+              param: charge
+              Cs: 0.4174
+              Pb: 0.8348
+              Br: -0.4174
               constraints:
-                  - 'Cs Cs   > 0.433'
-                  - 'Cs Pb   > 0.347'
-                  - 'Br Cs   > 0.343'
-                  - 'Pb Pb   > 0.590'
-                  - 'Br Pb   > 0.278'
-                  - 'Br Br   > 0.349'
+                  - '0 < Cs < 1.5'
+                  - '0 < Pb < 2'
+                  - '-1.5 < Br < 0'
+                  - 'Cs == -1 * Br'
+                  - 'Pb == -2 * Br'
 
+          lennard_jones:
+              - param: epsilon
+                unit: kjmol
+                frozen: 
+                    guess: uff
+              - param: sigma
+                unit: nm
+                Cs Cs:  0.453
+                Cs Pb:  0.367
+                Br Cs:  0.363
+                Pb Pb:  0.610
+                Br Pb:  0.298
+                Br Br:  0.369
+                constraints:
+                       - 'Cs Cs   > 0.433'
+                       - 'Cs Pb   > 0.347'
+                       - 'Br Cs   > 0.343'
+                       - 'Pb Pb   > 0.590'
+                       - 'Br Pb   > 0.278'
+                       - 'Br Br   > 0.349'
+  
         pes:
             rdf:
                 func: FOX.MultiMolecule.init_rdf
@@ -123,17 +123,17 @@ and the Lennard-Jones potential (epsilon_ & sigma_). Let's have a look at the re
     .. code:: yaml
     
         param:
-        charge:
-        param: charge
-        Cs: 0.4174
-        Pb: 0.8348
-        Br: -0.4174
-        constraints:
-            - '0 < Cs < 1.5'
-            - '0 < Pb < 2'
-            - '-1.5 < Br < 0'
-            - 'Cs == -1 * Br'
-            - 'Pb == -2 * Br'
+          charge:
+              param: charge
+              Cs: 0.4174
+              Pb: 0.8348
+              Br: -0.4174
+              constraints:
+                  - '0 < Cs < 1.5'
+                  - '0 < Pb < 2'
+                  - '-1.5 < Br < 0'
+                  - 'Cs == -1 * Br'
+                  - 'Pb == -2 * Br'
 
     Here, the to-be optimized charges are those of the nanocrystal core ions (Cs, Pb, Br). Their initial values are usually obtained from their DFT trajectory. You can simply use the most stable oxidation state of each ion if you don't have a better starting point.
     In this case, the core ions charges are constrained to a certain range in order to keep the correct oxidation state (for example cations constrained to values higher than 0), as well as the prerequisite of the overall neutrality of the system. Additional constraints are added to ensure that the ions correctly balance each other in case of the detachment of a neutral species, i.e. CsBr and PbBr\ :sub:`2`\, from the surface of the core.
