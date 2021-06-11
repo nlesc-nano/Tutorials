@@ -7,7 +7,7 @@ The goal of this tutorial is to prepare a 11.5 nm simulation box for Classical M
 The box specifically contains:
 
 - One CsPbBr\ :sub:`3`\ core capped by 20% oleate (OA) and 20% oleylammonium (OLA) ligands;
-- 75 ionic oleate-oleylammonium couples (by-products obtained from the reaction);
+- 75 ionic oleate-oleylammonium couples (OA+OLA, by-products obtained from the reaction);
 - 287 oleylamine (OLAM) molecules, used as a reagent in the synthesis;
 - 2293 octadecene (ODA) molecules, used as solvent for the reaction;
 
