@@ -11,7 +11,7 @@ The script requires the download and use of the **CAT**, **data-CAT** and **nano
 Basic - The core
 ----------------
 
-We will start from an *ab-initio* Molecular Dynamics (MD) trajectory (NVT, 300K, 5ps) of a 2.3 nm sided cubic CsPbBr\ :sub:`3`\ core. This Density Functional Theory (DFT) based trajectory will provide the QM basis for the fitting our forcefield parameters using the ARMC scheme. Let's have a look at the .yaml file containing our ARMC settings.
+We will start from an *ab-initio* Molecular Dynamics (MD) trajectory (NVT, 300K, 5ps) of a 2.3 nm sided cubic CsPbBr\ :sub:`3`\  core. This Density Functional Theory (DFT) based trajectory will provide the QM basis for the fitting our forcefield parameters using the ARMC scheme. Let's have a look at the .yaml file containing our ARMC settings.
 
     .. code:: yaml
     
