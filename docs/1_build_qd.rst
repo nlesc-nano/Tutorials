@@ -2,7 +2,7 @@
 
 Building a Quantum Dot Model
 ============================
-The goal of this tutorial is to outline the steps to build a Quantum Dot (QD) model from scratch. As an example, we will build a 4.2 nm sided cubic perovskite CsPbBr\ :sub:`3`\ nanocrystal capped by 80% oleate ligands.
+The goal of this tutorial is to outline the steps to build a Quantum Dot (QD) model from scratch. As an example, we will build a 4.2 nm sided cubic perovskite CsPbBr\ :sub:`3`\  nanocrystal capped by 80% oleate ligands.
 
 Installation Requirements
 -------------------------
@@ -11,7 +11,7 @@ Please also note that the script requires the download and use of the Compound A
 The inorganic core
 ------------------
 
-The starting point to build our inorganic nanocrystal core we will be to download the Crystallographic Information File (CIF) of the cubic bulk structure of CsPbBr\ :sub:`3`\.  You can find an example of the file used in this tutorial to build the NC core `here <https://github.com/nlesc-nano/Tutorials/tree/build_qd/docs/CsPbBr3_mp-600089_conventional_standard.cif>`_. This can be done from an online repository such as The Materials Project or others. The CIF file provides a precise numerical description of the crystallographic structure, and it can be downloaded from several different databases and libraries.
+The starting point to build our inorganic nanocrystal core we will be to download the Crystallographic Information File (CIF) of the cubic bulk structure of CsPbBr\ :sub:`3`\.  You can find an example of the file used in this tutorial to build the NC core `here <https://github.com/nlesc-nano/Tutorials/tree/build_qd/docs/_files/CsPbBr3_mp-600089_conventional_standard.cif>`_. This can be done from an online repository such as The Materials Project or others. The CIF file provides a precise numerical description of the crystallographic structure, and it can be downloaded from several different databases and libraries.
 
 To create our CsPbBr\ :sub:`3`\  nanocrystal  model of about 4.2 nm in diameter, we will upload the CIF file in an appropriate visualization program (VESTA, ADF-GUI, ...) and generate an 8x8x8 supercell (see Figure, 1.). According to available experimental data combined with computational models, cubic CsPbBr\ :sub:`3`\  QDs are terminated by (100) facets with Cs and Br ions. To obtain this surface termination, we will thus cut the cubic supercell along the (100) planes, leaving Cs and Br on the surface by manually deleting the external layers in excess (see Figure, 2.).
 Notice that the choice of the nanocrystal dimension is usually a trade-off between the computational cost of the follow-up calculations and the necessity of providing a realistic description, in line with experiments.
@@ -24,7 +24,7 @@ Our nanostructure now features a stoichiometry of Cs\ :sub:`512`\ Pb\ :sub:`343`
 when each ion is assumed to be in its more stable thermodynamic electronic configuration (i.e. Cs\ :sup:`+`\, Pb\ :sup:`2+`\  and Br\ :sup:`-`\).
 To ensure the charge balance of our structure (*J. Phys. Chem. Lett.*, **2017**, *8*, 5209-5215), we will compensate this excess of positive charge by removing 12 Cs ions one by one, first from the corners (-8 Cs) and then from the edges (-14 Cs) of the nanocrystal surface (see Figure 3.). This choice is based on the fact that Cs ions don't participate significantly to the band edge states, so that their removal results in perovskite nanocrystal models with clean band gaps, i.e. free of midgap states. Moreover, it is known that it is energetically favorable to remove the excess ions from the corners and edges of the nanostructure and that a structure with surface vacancies is more tolerant to traps.  
 
-Once the core is charge-balanced we will save and export the resulting .xyz into a file called ``'cspbbr3_4.2nm.xyz'``.
+Once the core is charge-balanced we will save and export the resulting .xyz into a file called ``'cspbbr3_4.2nm.xyz'``. You can find an example `here <https://github.com/nlesc-nano/Tutorials/tree/build_qd/docs/_files/cspbbr3_4.2nm.xyz>`__.
 
 .. image:: qd1.PNG
   :scale: 15%
