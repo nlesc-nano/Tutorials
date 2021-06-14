@@ -7,7 +7,7 @@ The goal of this tutorial is to prepare a 11.5 nm simulation box for Classical M
 The box specifically contains:
 
 - One CsPbBr\ :sub:`3`\ core capped by 20% oleate (OA) and 20% oleylammonium (OLA) ligands;
-- 75 ionic oleate-oleylammonium couples (by-products obtained from the reaction);
+- 75 ionic oleate-oleylammonium couples (OA+OLA, by-products obtained from the reaction);
 - 287 oleylamine (OLAM) molecules, used as a reagent in the synthesis;
 - 2293 octadecene (ODA) molecules, used as solvent for the reaction;
 
@@ -76,12 +76,9 @@ The `path <https://cat.readthedocs.io/en/latest/2_path.html#path>`_, `input_core
 - the ``optional.qd.multiligand`` block. All the keys under this section are completely parallel to the aforementioned ones: Rb atoms are now being replaced by oleylammonium molecules. **Please note** that, in order to work effectively, this block acccepts SMILES strings by assuming a ``split: True`` specification.
 
 An important concept to remember here, which we will need in a while, is that **CAT** builds the .xyz file in the following order: all the core atoms in the exact order we gave in the ``core.xyz``, followed by a certain number of ligand molecules (depending on the chosen coverage). If the model comprises more than one ligand, we will first have all of the molecules of the first ligand, followed by those of the second ligand. In our specific case, the order of our .xyz file will therefore be: Cs, Pb, Br, OA, OLA.
-
 We are finally ready to run CAT with the following command: ``init_cat input_settings.yaml``.
 After running **CAT** the .xyz file corresponding to our NC can be found in the specified directory, 'qd'. Don't worry, the directory will be created from scratch if it does not yet exist. Remember to rename the file before using it!
-
 In a parallel fashion, the same script can be used to build the .xyz file containing OA+OLA molecules (i.e. our ionic oleate-oleylammonium couples) with two main differences: we will use a RbCl molecule as our "minimal", biatomic core, specified by our .xyz file (``RbCl.xyz``). In addition, we'll use the ``optional.core.allignment: sphere`` key, which is mandatory on **CAT** when diatomic molecules are set as cores in the script;
-
 All of the remaining molecules (such as the .xyz files for ODA and OLAM) can be built using any (commonly available) molecular structure processing program, such as `Molden <https://www3.cmbi.umcn.nl/molden/>`__.
 To sum up, in our case, we have now successfully built **these** files (the names have been chosen to represent their chemical formula for simplicity):
 
