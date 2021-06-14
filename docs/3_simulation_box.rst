@@ -7,7 +7,7 @@ The goal of this tutorial is to prepare a 11.5 nm simulation box for Classical M
 The box specifically contains:
 
 - One CsPbBr\ :sub:`3`\ core capped by 20% oleate (OA) and 20% oleylammonium (OLA) ligands;
-- 75 ionic oleate-oleylammonium couples (by-products obtained from the reaction);
+- 75 ionic oleate-oleylammonium couples (OA+OLA, by-products obtained from the reaction);
 - 287 oleylamine (OLAM) molecules, used as a reagent in the synthesis;
 - 2293 octadecene (ODA) molecules, used as solvent for the reaction;
 
@@ -79,8 +79,7 @@ We are finally ready to run CAT with the following command: ``init_cat input_set
 After running **CAT** the .xyz file corresponding to our NC can be found in the specified directory, 'qd'. Don't worry, the directory will be created from scratch if it does not yet exist. Remember to rename the file before using it!
 
 In a parallel fashion, the same script can be used to build the .xyz file containing OA+OLA molecules (i.e. our ionic oleate-oleylammonium couples) with two main differences: we will use a RbCl molecule as our "minimal", biatomic core, specified by our .xyz file (``RbCl.xyz``). In addition, we'll use the ``optional.core.allignment: sphere`` key, which is mandatory on **CAT** when diatomic molecules are set as cores in the script. The .xyz files of the remaining molecules (i.e. the .xyz files for ODA and OLAM) can be built using any (commonly available) molecular structure processing program, such as `Molden <https://www3.cmbi.umcn.nl/molden/>`__.
-
-To sum up, we will now have successfully built the following files (the names have been chosen to represent their chemical formula for simplicity):
+We will now have successfully built the following files (the names have been chosen to represent their chemical formula for simplicity):
 
 - qd.xyz (our ligand-capped NC);
 - oaola.xyz;
