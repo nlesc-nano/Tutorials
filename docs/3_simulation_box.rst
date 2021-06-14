@@ -411,10 +411,10 @@ is then saved by means of the ``write`` method. Our ordered .psf file (``box_ord
 Preparing the simulation
 ------------------------
 We have now got all the files we need to start our Molecular Dynamics (MD) simulation. In our specific case, we will run the simulations on **GROMACS**, so we will need the `.gro <https://manual.gromacs.org/documentation/2018/user-guide/file-formats.html#gro>`__ file (for the starting molecular structure) and the topology file (`.top <https://manual.gromacs.org/documentation/2018/user-guide/file-formats.html#top>`__) of our box. As we mentioned earlier, we will use the **VMD** package for this purpose.
-First of all, we will open our .psf file on **VMD** (click on File > New Molecule in the Main Window and then Load the .psf file). Once the file is correctly loaded, we can proceed to load the .xyz structure in our .psf file by right clicking on the loaded .psf and selecting Load Data Into Molecule and our .xyz file). This procedure is common to both formats.
+First of all, we will open our .psf file on **VMD** (click on File, New Molecule in the Main Window and then Load the .psf file). Once the file is correctly loaded, we can proceed to load the .xyz structure in our .psf file by right clicking on the loaded .psf and selecting Load Data Into Molecule and our .xyz file). This procedure is common to both formats.
 Let's now see how to obtain the two file extensions:
 
-- *.gro file*: This file can be very easily obtained by selecting File > Save Coordinates > File Type: gro. The resulting file is now ready to be used.
+- *.gro file*: This file can be very easily obtained by selecting File, Save Coordinates, File Type: gro. The resulting file is now ready to be used.
 - *.top file*: This extension can be obtained from the **VMD** command line. We will first need to move to the directory containing our .prm file. After that, we can just insert the following commands in the terminal: ``topo writegmxtop box_ordered.top box.prm`` (``box.prm`` being our previously built "global" .prm file). The .top file will be generated in the same directory with the name we specified in the command line. As our very last step before running the simulation, we will need to perform a few small modifications to the file:
 
 1. The ``[ atomtypes ]`` section is to be updated to include the inorganic atoms (Cs, Pb, Br), as well as their relative parameters (atomic number, mass, charge etc.) in the description;
