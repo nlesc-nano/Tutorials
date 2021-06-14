@@ -90,10 +90,10 @@ To sum up, we will now have successfully built the following files (the names ha
 Other file extensions
 ^^^^^^^^^^^^^^^^^^^^^
 
-Now that we've obtained our .xyz files, we need to convert it to other extensions in order to complete our 3D structure with additional, "missing" information. Let's see how to obtain the other files:
+Now that we've obtained our .xyz files, we need to convert them to other extensions to ensure our 3D structures can be read and used by the softwares while building our simulation boxes. Let's see the other extensions and how to obtain them:
 
-1. *.pdb file*: The Protein Data Bank (.pdb) extension provides a description of the atomic coordinates, secondary structure assignments and atomic connectivity of a molecule. An .xyz file can be easily converted to this format by means of `Open Babel <https://openbabel.org/docs/dev/Installation/install.html>`__, a commonly employed chemical format converter. You can follow this link for the installation instructions (or just look for any Open Babel-based format converters available online). Once the program is correctly installed, the .xyz files can be converted to the .pdb format by running this simple command for each organic molecule (note that this step does **NOT** apply to our qd.xyz file): ``obabel -ixyz file.xyz -opdb file.pdb``.
-To sum up, we will now have the following .pdb files:
+1. *.pdb file*: The Protein Data Bank (.pdb) extension provides a description of the atomic coordinates, secondary structure assignments and atomic connectivity of our molecules. An .xyz file can be easily converted to this format by means of `Open Babel <https://openbabel.org/docs/dev/Installation/install.html>`__, a commonly employed chemical format converter. You can follow this link for the installation instructions (or just look for any Open Babel-based format converters available online). Once the program is correctly installed, we can convert our .xyz files to the .pdb format by running this simple command (note that this step does only apply to our organic molecules, i.e. **NOT** to our qd.xyz file): ``obabel -ixyz file.xyz -opdb file.pdb``.
+We will now have the following .pdb files:
 
 - oaola.pdb;
 - olam.pdb;
@@ -102,10 +102,10 @@ To sum up, we will now have the following .pdb files:
 2. *.prm and .rtf files*: Each .pdb file we created now needs to be converted to the following formats:
 
 - The CHARMM forcefield Parameter (.prm) file, including all of the numerical constants needed to evaluate forces and energies;
-- The Residue Topology File (.rtf) This file defines the main groups (atoms, properties, bond and charge information) for our molecular structures.
+- The Residue Topology File (.rtf) This file defines the main groups (atoms, properties, bond and charge information) of our molecular structures.
     
-These formats can be easily obtained from our .pdb files by inserting our .pdb files in `MATCH <https://openbabel.org/docs/dev/Installation/install.html>`__. This online server will convert our files into the three required formats, which we will download as a zipped directory. We will first of all need to rename the new files to match their molecular formulas (2 for each .pdb file, for a total of 6 new files).
-The .rtf files are ready for our next step, so we can put them aside for the present moment. Let's instead focus on the .prm files. An example of a .prm file (here we chose OLAM) looks like this:
+These formats can be easily obtained from our .pdb files by inserting our .pdb files in `MATCH <https://openbabel.org/docs/dev/Installation/install.html>`__. This online server will convert our files into the three required formats, which we will download as a zipped directory (the one we obtained for OLAM can be found `here  <https://github.com/nlesc-nano/Tutorials/tree/build_qd/docs/_files/3.olam.zip>`__. We will first of all need to rename the new files to match their molecular formulas (2 for each .pdb file, for a total of 6 new files in this example).
+Let's put the .rtf files aside and focus on the .prm files. An example of a MATCH-built .prm file (here, once again, we chose OLAM) looks like this:
 
 ::
 
@@ -187,7 +187,7 @@ The .rtf files are ready for our next step, so we can put them aside for the pre
     HPA2   0.0000     -0.0100    0.8750     
     HGA4   0.0000     -0.0310    1.2500     
 
-The input for our MD simulation, however, requires only **one** .prm file, so we will need to merge all of our .prm files in a single, global one. We will achieve this by manually copying and pasting the lines of each individual .prm file into a "global" one section by section (BONDS, ANGLES, DIHEDRALS etc). Pay attention to this step: the .prm file won't be read correctly if lines are missing or repeated twice. Take your time with this step and check twice to make sure everything has been pasted appropriately!
+The input for our MD simulation requires only **one** .prm file, so we will need to merge all of our .prm files into one. We will achieve this by manually copying and pasting the lines of each individual .prm file into a "global" one section by section (BONDS, ANGLES, DIHEDRALS etc). Pay attention to this step: the .prm file won't be read correctly if lines are missing or repeated twice. Take your time with this step and check twice to make sure everything has been pasted appropriately!
 Now that our .prm and .rtf files are ready, we are finally ready to proceed to the next step!
     
 Preparing the box
