@@ -2,7 +2,7 @@
 
 Building a Quantum Dot Model
 ============================
-The goal of this tutorial is to outline the steps to build a Quantum Dot (QD) model from scratch. As an example, we will build a 4.2 nm sided cubic perovskite CsPbBr\ :sub:`3`\ nanocrystal capped by 80% oleate ligands.
+The goal of this tutorial is to outline the steps to build a Quantum Dot (QD) model from scratch. As an example, we will build a 4.2 nm sided cubic perovskite CsPbBr\ :sub:`3`\  nanocrystal capped by 80% oleate ligands.
 
 Installation Requirements
 -------------------------
