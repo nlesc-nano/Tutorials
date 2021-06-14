@@ -411,7 +411,7 @@ is then saved by means of the ``write`` method as ``box_ordered.psf``, and it is
 
 Preparing the simulation
 ------------------------
-We have now got all the files we need to start our MD simulation. In our specific case, we will run the simulations on **GROMACS**, so we will need the `.gro <https://manual.gromacs.org/documentation/2018/user-guide/file-formats.html#gro>`__ file (for the starting molecular structure) and the topology file (`.top <https://manual.gromacs.org/documentation/2018/user-guide/file-formats.html#top>`__) of our box. As we mentioned earlier, we will use the **VMD** `software <https://www.ks.uiuc.edu/Research/vmd/>`__package for this purpose.
+We have now got all the files we need to start our MD simulation. In our specific case, we will run the simulations on **GROMACS**, so we will need the `.gro <https://manual.gromacs.org/documentation/2018/user-guide/file-formats.html#gro>`__ file (for the starting molecular structure) and the topology file (`.top <https://manual.gromacs.org/documentation/2018/user-guide/file-formats.html#top>`__) of our box. As we mentioned earlier, we will use the **VMD** `software <https://www.ks.uiuc.edu/Research/vmd/>`__ package for this purpose.
 First of all, we will open our .psf file on **VMD** (click on File > New Molecule in the Main Window and then Load the .psf file). Once the file is correctly loaded, we can proceed to load the .xyz structure in our .psf file by right clicking on the loaded .psf and selecting Load Data Into Molecule and our .xyz file). This procedure is common to both formats.
 Let's now see how to obtain the two separate file extensions:
 
