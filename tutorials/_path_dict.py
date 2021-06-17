@@ -8,6 +8,7 @@ import reprlib
 import textwrap
 import pathlib
 from typing import Dict, TypeVar, ClassVar, Callable, Type, Any, Mapping
+from inspect import signature, Parameter, Signature
 from collections.abc import Iterable
 
 if sys.version_info >= (3, 8, 0):
@@ -19,23 +20,7 @@ else:
 _VT = TypeVar("_VT")
 _TT = TypeVar("_TT", bound=Type[Any])
 
-__all__ = ["PathDict"]
-
-
-class _NoValue:
-    __slots__ = ("__weakref__",)
-    _cache: ClassVar[_NoValue] = NotImplemented
-
-    def __new__(cls) -> _NoValue:
-        if cls._cache is NotImplemented:
-            cls._cache = object.__new__(cls)
-        return cls._cache
-
-    def __repr__(self) -> str:
-        return "<no value>"
-
-
-_NO_VALUE = _NoValue()
+__all__ = ["PathMapping"]
 
 
 def _copy_docstring(cls1: Type[Any]) -> Callable[[_TT], Callable[[], _TT]]:
@@ -64,106 +49,122 @@ def _is_mapping_like(obj):
     )
 
 
+def _modify_init_signature(func):
+    """Change ``__iterable`` into a positional-only parameter."""
+    sgn = signature(func)
+    prm = list(sgn.parameters.values())
+    prm[0] = prm[0].replace(kind=Parameter.POSITIONAL_ONLY)
+    prm[1] = prm[1].replace(name="iterable", kind=Parameter.POSITIONAL_ONLY)
+    func.__signature__ = sgn.replace(parameters=prm)
+    return func
+
+
+def _init(self, iterable, kwargs):
+    self._hash = None
+    if iterable is None:
+        self._dict = dict(**kwargs)
+        return None
+
+    if _is_mapping_like(iterable):
+        iterator = ((os.fsdecode(k), iterable[k]) for k in iterable.keys())
+    elif isinstance(iterable, Iterable):
+        iterator = ((os.fsdecode(k), v) for k, v in iterable)
+    else:
+        iterator = iterable
+    self._dict = dict(iterator, **kwargs)
+
+
 @_copy_docstring(dict)
-class PathDict(Dict[str, _VT]):
-    """A :class:`dict` subclass that takes :term:`path-like object <path-like objects>` as keys and automatically converts them into strings."""
+class PathMapping(Mapping[str, _VT]):
+    """A :class:`~collections.abc.Mapping` that takes :term:`path-like object <path-like objects>` as keys and automatically converts them into strings."""
 
-    __slots__ = ("__weakref__",)
+    __slots__ = ("__weakref__", "_dict", "_hash")
+    __signature__ = Signature([
+        Parameter("iterable", Parameter.POSITIONAL_ONLY, default=None),
+        Parameter("kwargs", Parameter.VAR_KEYWORD),
+    ])
 
-    def __init__(self, iterable=None, **kwargs) -> None:
-        if iterable is None:
-            return super().__init__(**kwargs)
+    if sys.version_info >= (3, 8, 0):
+        def __init__(self, iterable=None, /, **kwargs):
+            return self._init(self, iterable, kwargs)
+    else:
+        @_modify_init_signature
+        def __init__(self, __iterable=None, **kwargs):
+            return self._init(self, __iterable, kwargs)
 
-        if _is_mapping_like(iterable):
-            iterator = ((os.fsdecode(k), iterable[k]) for k in iterable.keys())
-        elif isinstance(iterable, Iterable):
-            iterator = ((os.fsdecode(k), v) for k, v in iterable)
-        else:
-            raise TypeError(f"{iterable.__class__.__name__!r} object is not iterable")
-        return super().__init__(iterator, **kwargs)
+    @classmethod
+    def _reconstruct(cls, dct, hsh=None):
+        """Construct a new **cls** instance while bypassing :meth:`__init__`."""
+        ret = object.__new__(cls)
+        ret._dict = dct
+        ret._hash = hsh
+        return ret
 
-    def as_pathlib(self) -> Dict[pathlib.Path, _VT]:
+    def to_pathlib_dict(self):
         """Return a new dictionary wherein all keys are converted into :class:`pathlib.Path` instances."""
         return {pathlib.Path(k): v for k, v in self.items()}
 
-    def setdefault(self, key, default=None):
+    def keys(self):
+        return self._dict.keys()
+
+    def items(self):
+        return self._dict.items()
+
+    def values(self):
+        return self._dict.values()
+
+    def get(self, key, default=None):
         key = os.fsdecode(key)
-        return super().setdefault(key, default)
+        return self._dict.get(key, default)
 
-    def get(self, k, default=_NO_VALUE):
-        k = os.fsdecode(k)
-        return super().get(k) if default is _NO_VALUE else super().get(k, default)
+    def __hash__(self):
+        if self._hash is None:
+            self._hash: None | int = hash(frozenset(self.items()))
+        return self._hash
 
-    def pop(self, k, default=_NO_VALUE):
-        k = os.fsdecode(k)
-        return super().pop(k) if default is _NO_VALUE else super().pop(k, default)
+    def __copy__(self):
+        return self
 
-    def update(self, iterable=None, **kwargs) -> None:
-        if iterable is None:
-            return super().update(**kwargs)
+    def __deepcopy__(self, memo=None):
+        return self
 
-        if _is_mapping_like(iterable):
-            iterator = ((os.fsdecode(k), iterable[k]) for k in iterable.keys())
-        elif isinstance(iterable, Iterable):
-            iterator = ((os.fsdecode(k), v) for k, v in iterable)
-        else:
-            raise TypeError(f"{iterable.__class__.__name__!r} object is not iterable")
-        return super().update(iterator, **kwargs)
-
-    def copy(self):
-        # Bypass the relativelly slow `PathDict` constructor
+    def __reduce__(self):
         cls = type(self)
-        ret = dict.__new__(cls)
-        dict.__init__(ret, self)
-        return ret
+        return cls._reconstruct, (self._dict, self._hash)
 
-    @classmethod
-    def fromkeys(cls, iterable, value=None):
-        iterator = (os.fsdecode(i) for i in iterable)
-        return super().fromkeys(iterator, value)
+    def __getitem__(self, key):
+        key = os.fsdecode(key)
+        return self._dict[key]
 
-    def __getitem__(self, k):
-        k = os.fsdecode(k)
-        return super().__getitem__(k)
-
-    def __setitem__(self, k, v):
-        k = os.fsdecode(k)
-        return super().__setitem__(k, v)
-
-    def __delitem__(self, k):
-        k = os.fsdecode(k)
-        return super().__delitem__(k)
-
-    def __contains__(self, k):
+    def __contains__(self, key):
         try:
-            k = os.fsdecode(k)
+            key = os.fsdecode(key)
         except TypeError:
             pass
-        return super().__contains__(k)
+        return key in self._dict
+
+    def __iter__(self):
+        return iter(self._dict)
+
+    def __len__(self):
+        return len(self._dict)
 
     @reprlib.recursive_repr(fillvalue="...")
     def __repr__(self):
-        ret = pformat(dict(self))
+        ret = pformat(self._dict)
         cls_name = self.__class__.__name__
         if "\n" in ret:
             indent = " " * (len(cls_name) + 1)
-            return f"{cls_name}({textwrap.indent(ret, indent)[len(indent):]})"
+            ret_indent = textwrap.indent(ret, indent)[len(indent):]
+            return f"{cls_name}({ret_indent})"
         else:
             return f"{cls_name}({ret})"
 
-    def __eq__(self, value: object) -> bool:
-        if not isinstance(value, (dict, types.MappingProxyType)):
-            return NotImplemented
-
-        cls = type(self)
-        try:
-            value_parsed: Mapping[Any, Any] = cls(value) if not isinstance(value, cls) else value
-        except Exception:
-            value_parsed = value
-        return super().__eq__(value_parsed)
+    def __eq__(self, value):
+        return self._dict == value
 
     if sys.version_info >= (3, 9):
         def __or__(self, value):
-            ret = self.copy()
-            ret.update(value)
-            return ret
+            cls = type(self)
+            other = cls(value)
+            return cls._reconstruct(self._dict | other._dict)
