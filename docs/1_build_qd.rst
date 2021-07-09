@@ -97,7 +97,6 @@ In all cases, the ``*`` in the keywords accounts for the name of the subsection 
 
 We are finally ready to run CAT with the following command: ``init_cat input_settings.yaml``
 After running **CAT** the .xyz file corresponding to our oleate capped perovskite nanocrystal can be found in the specified directory, 'qd'. Don't worry, the directory will be created from scratch if it does not yet exist!
-
 An important point here is that CAT automatically browse the provided ligand for "default" functional groups - the complete list is provided `here <https://github.com/nlesc-nano/CAT/blob/master/CAT/data/templates/smiles.yaml>`__. If there is more than one present, e.g. 3, then CAT will build 3 QD models with the ligands bound from different anchoring groups. 
 
 Rename the .xyz file, you are now ready to use it!
