@@ -179,7 +179,7 @@ Let's move to the :code:`lennard_jones` block.
                   - 'Br Pb   > 0.278'
                   - 'Br Br   > 0.349'
                   
-    Here we need to optimize the sigma parameters for the pair interactions of interest (provided with the corresponding `atom pairs <https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/MM/FORCEFIELD/NONBONDED/LENNARD-JONES.html#list_ATOMS>`_), i.e.
+    Please be aware of the fact that, to work, each individual sigma couple needs to be provided in alphabetical order (e.g. ``Br Pb`` instead of ``Pb Br``, and so on). Here we need to optimize the sigma parameters for the pair interactions of interest (provided with the corresponding `atom pairs <https://manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/MM/FORCEFIELD/NONBONDED/LENNARD-JONES.html#list_ATOMS>`_), i.e.
     the ion-ion interactions inside the nanocrystal core (eg. Cs-Cs).
     The initial parameters for these pairs are obtained from the DFT trajectory by means of a small python script:
 
@@ -465,7 +465,7 @@ The param block
           
 Here, the Coulomb potential sub-block shows both the charges of the nanocrystal core ions (Cs, Pb, Br) and those of the ligand anchoring group atoms (in this specific case, the carboxylate group of the acetate, i.e. C2O3 and O2D2). Their initial values are usually obtained: 
     
-    * For the nanocrystal core ions, from the approximated results of the previous fitting procedure used for the inorganic core or by their most stable oxidation state, in absence of more accurate parameters.
+    * For the nanocrystal core ions, from the approximated results of the previous fitting procedure used for the inorganic core or from **half** of their most stable oxidation states, in absence of more accurate parameters.
     * For the anchoring group of the ligand, by adjusting the charges (found both in the .yaml input and in the CHARMM .rtf file of the ligand) to achieve the overall charge neutrality of the system. More specifically, the total charge of the ligand needs to equal the charge of the atom it replaces: in this specific case, our ligand is an acetate group, and it thus needs to balance the charge of the Br atom (-0.4). We will provide an example of this procedure in the following section.
     
     .. code:: yaml    
