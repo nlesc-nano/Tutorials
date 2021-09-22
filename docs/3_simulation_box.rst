@@ -104,7 +104,7 @@ We will now have the following .pdb files:
 - The CHARMM forcefield Parameter (.prm) file, including all of the numerical constants needed to evaluate forces and energies;
 - The Residue Topology File (.rtf) This file defines the main groups (atoms, properties, bond and charge information) of our molecular structures.
 
-These formats can be easily obtained from our .pdb files by inserting our .pdb files in `MATCH <https://brooks.chem.lsa.umich.edu/index.php?matchserver=submit>`__. This online server will convert our files into the three required formats, which we will download as a zipped directory (the one we obtained for OLAM can be found :download:`here  <https://github.com/nlesc-nano/Tutorials/docs/_files/3.olam.zip>`__.
+These formats can be easily obtained from our .pdb files by inserting our .pdb files in `MATCH <https://brooks.chem.lsa.umich.edu/index.php?matchserver=submit>`__. This online server will convert our files into the three required formats, which we will download as a zipped directory (the one we obtained for OLAM can be found :download:`here  <_files/3.olam.zip>`.
 
 We will first of all need to rename the new files to match their molecular formulas (2 for each .pdb file, for a total of 6 new files in this example).
 Let's put the .rtf files aside and focus on the .prm files. An example of a MATCH-built .prm file (here, once again, we chose OLAM) looks like this:
@@ -237,7 +237,7 @@ Once the script has run, the ``box.xyz`` output containing the box will be insid
 
 Generating the .psf file
 ------------------------
-We will now need to build the Protein Structure File (.psf) of our simulation box, containing the molecular-level information required to apply the force field to our system over the course of our MD trajectory (here is an :download:`example <https://github.com/nlesc-nano/Tutorials/tree/master/docs/_files/3.box_ordered.psf.zip>`__ of what ours looks like. You can take a look at this `website <https://www.ks.uiuc.edu/Training/Tutorials/namd/namd-tutorial-unix-html/node23.html>`__ to get an idea of its structure). Let's now take a peek at its first lines:
+We will now need to build the Protein Structure File (.psf) of our simulation box, containing the molecular-level information required to apply the force field to our system over the course of our MD trajectory (here is an :download:`example <_files/3.box_ordered.psf.zip>` of what ours looks like. You can take a look at this `website <https://www.ks.uiuc.edu/Training/Tutorials/namd/namd-tutorial-unix-html/node23.html>`__ to get an idea of its structure). Let's now take a peek at its first lines:
 
 ::
 
@@ -418,8 +418,8 @@ We have now got all the files we need to start our MD simulation. In our specifi
 First of all, we will open our .psf file on **VMD** (click on File > New Molecule in the Main Window and then Load the .psf file). Once the file is correctly loaded, we can proceed to load the .xyz structure in our .psf file by right clicking on the loaded .psf and selecting Load Data Into Molecule and our .xyz file). This procedure is common to both formats.
 Let's now see how to obtain the two separate file extensions:
 
-- *.gro file*: This file can be very easily obtained by selecting File > Save Coordinates > File Type: gro. The resulting :download:`file <https://github.com/nlesc-nano/Tutorials/tree/master/docs/_files/3.box_ordered.gro.zip>`__ (hereby provided) is now ready to be used.
-- *.top file*: This :download:`file <https://github.com/nlesc-nano/Tutorials/tree/master/docs/_files/3.box_ordered.top.zip>`__ (you can find it by following the previous link) can be obtained from the **VMD** command line. We will first need to move to the directory containing our .prm file. After that, we can just insert the following commands in the terminal: ``topo writegmxtop box_ordered.top box.prm`` (``box.prm`` being our `previously built <https://nanotutorials.readthedocs.io/en/latest/3_simulation_box.html#other-file-extensions>`__ "global" .prm file). The .top file will be generated in the same directory with the name we specified in the command line. As our very last step before running the simulation, we will need to perform a few small modifications to the file:
+- *.gro file*: This file can be very easily obtained by selecting File > Save Coordinates > File Type: gro. The resulting :download:`file <_files/3.box_ordered.gro.zip>` (hereby provided) is now ready to be used.
+- *.top file*: This :download:`document <_files/3.box_ordered.top.zip>` (you can find it by following the previous link) can be obtained from the **VMD** command line. We will first need to move to the directory containing our .prm file. After that, we can just insert the following commands in the terminal: ``topo writegmxtop box_ordered.top box.prm`` (``box.prm`` being our `previously built <https://nanotutorials.readthedocs.io/en/latest/3_simulation_box.html#other-file-extensions>`__ "global" .prm file). The .top file will be generated in the same directory with the name we specified in the command line. As our very last step before running the simulation, we will need to perform a few small modifications to the file:
 
 1. The ``[ atomtypes ]`` section is to be updated to include the inorganic atoms (Cs, Pb, Br), as well as their relative parameters (atomic number, mass, charge etc.) in the description;
 2. In the ``[ nonbond_params ]`` section each couple of atoms is associated to a sigma and an epsilon. In our case, these parameters account for the description of the Lennard-Jones terms in our force field, and we will need to insert their corresponding values in the column. The section would then look like this:
