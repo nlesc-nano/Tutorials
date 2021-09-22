@@ -237,7 +237,7 @@ Once the script has run, the ``box.xyz`` output containing the box will be insid
 
 Generating the .psf file
 ------------------------
-We will now need to build the Protein Structure File (.psf) of our simulation box, containing the molecular-level information required to apply the force field to our system over the course of our MD trajectory (here is an `example <https://github.com/nlesc-nano/Tutorials/build_qd/docs/_files/3.box_ordered.psf.zip>`__ of what ours looks like. You can take a look at this `website <https://www.ks.uiuc.edu/Training/Tutorials/namd/namd-tutorial-unix-html/node23.html>`__ to get an idea of its structure). Let's now take a peek at its first lines:
+We will now need to build the Protein Structure File (.psf) of our simulation box, containing the molecular-level information required to apply the force field to our system over the course of our MD trajectory (here is an :download:`example <https://github.com/nlesc-nano/Tutorials/build_qd/docs/_files/3.box_ordered.psf.zip>`__ of what ours looks like. You can take a look at this `website <https://www.ks.uiuc.edu/Training/Tutorials/namd/namd-tutorial-unix-html/node23.html>`__ to get an idea of its structure). Let's now take a peek at its first lines:
 
 ::
 
