@@ -104,7 +104,7 @@ We will now have the following .pdb files:
 - The CHARMM forcefield Parameter (.prm) file, including all of the numerical constants needed to evaluate forces and energies;
 - The Residue Topology File (.rtf) This file defines the main groups (atoms, properties, bond and charge information) of our molecular structures.
     
-These formats can be easily obtained from our .pdb files by inserting our .pdb files in `MATCH <https://brooks.chem.lsa.umich.edu/index.php?matchserver=submit>`__. This online server will convert our files into the three required formats, which we will download as a zipped directory (the one we obtained for OLAM can be found :download:`here  <_files/3.olam.zip>`. We will first of all need to rename the new files to match their molecular formulas (2 for each .pdb file, for a total of 6 new files in this example).
+These formats can be easily obtained from our .pdb files by inserting our .pdb files in `MATCH <https://brooks.chem.lsa.umich.edu/index.php?matchserver=submit>`__. This online server will convert our files into the three required formats, which we will download as a zipped directory (the one we obtained for OLAM can be found :download:`here <./_files/3.olam.zip>`. We will first of all need to rename the new files to match their molecular formulas (2 for each .pdb file, for a total of 6 new files in this example).
 Let's put the .rtf files aside and focus on the .prm files. An example of a MATCH-built .prm file (here, once again, we chose OLAM) looks like this:
 
 ::
