@@ -2,6 +2,7 @@
 
 Preparing a Simulation Box
 ==========================
+..only:: builder_html
 
 The goal of this tutorial is to prepare a 11.5 nm simulation box for Classical Molecular Dynamics (CMD) simulations. We have chosen to simulate the products of a synthesis procedure to obtain monodisperse CsPbBr\ :sub:`3`\  NCs, described by M. Imran *et al* in *J. Am. Chem. Soc.*, **2018**, *140*, 2656−2664.
 The box specifically contains:
