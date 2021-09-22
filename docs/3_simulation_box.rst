@@ -89,7 +89,7 @@ We will now have successfully built the following files (the names have been cho
 
 Other file extensions
 ^^^^^^^^^^^^^^^^^^^^^
-..only:: builder_html
+.. only:: builder_html
 
 Now that we've obtained our .xyz files, we need to convert them to other extensions to ensure our 3D structures can be read and used by the softwares while building our simulation boxes. Let's see the other extensions and how to obtain them:
 
