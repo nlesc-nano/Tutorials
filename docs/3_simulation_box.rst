@@ -445,4 +445,4 @@ Let's now see how to obtain the two separate file extensions:
 
 We now have all of the files required to run our **GROMACS** simulation!
 
-:download:`here <_files/3.olam.zip>`
+.. download:`here <_files/3.olam.zip>`
