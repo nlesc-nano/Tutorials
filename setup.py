@@ -18,7 +18,7 @@ setup(
     version=version['__version__'],
     description="A collection of tutorials for the analysis of nanocrystals.",
     long_description=readme + '\n\n',
-    author=["Juliette Zito", "felipe zapata"], 
+    author=["Juliette Zito", "felipe zapata"],
     author_email='juliette.zito@hotmail.fr',
     url='https://github.com/nlesc-nano/Tutorials',
     packages=[
@@ -48,7 +48,7 @@ setup(
         'pycodestyle',
     ],
     extras_require={
-        'docs':  ['sphinx', 'sphinx_rtd_theme'],
+        'docs':  ['sphinx', 'sphinx_rtd_theme>=1.0'],
         'test':  ['pytest', 'pytest-cov', 'pycodestyle'],
     }
 )
