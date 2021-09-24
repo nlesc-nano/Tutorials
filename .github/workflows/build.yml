@@ -35,6 +35,14 @@ jobs:
         run: |
           pip install -e .[docs,test]
 
+      - name: show python version
+        run: |
+          python --version
+
+      - name: show installed packages
+        run: |
+          pip list
+
       - name: Test
         run: |
           pytest --cov-config setup.cfg
