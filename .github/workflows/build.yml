@@ -34,7 +34,7 @@ jobs:
       - name: Set up Python ${{ matrix.version }}
         uses: actions/setup-python@v2
         with:
-          version: ${{ matrix.version }}
+          python-version: ${{ matrix.version }}
 
       - name: Install the library
         if: matrix.special != '; pre-release'
