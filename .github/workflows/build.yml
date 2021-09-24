@@ -10,30 +10,49 @@ on:
 
 jobs:
   build:
-    name: Build for (${{ matrix.python-version }}, ${{ matrix.os }})
+    name: ${{ matrix.os }} (py ${{ matrix.version }}${{ matrix.special }})
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         os: ['ubuntu-latest', 'macos-latest', 'windows-latest']
-        python-version: ['3.6', '3.7', '3.8']
+        version: ['3.6', '3.7', '3.8', '3.9']
+        special: ['']
+        include:
+          - os: ubuntu-latest
+            special: '; pre-release'
+            version: 3.9
 
     steps:
       - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.4.1
+        uses: styfle/cancel-workflow-action@0.9.1
         with:
           access_token: ${{ github.token }}
 
       - uses: actions/checkout@v2
 
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python ${{ matrix.version }}
         uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python-version }}
+          version: ${{ matrix.version }}
 
       - name: Install the library
+        if: matrix.special != '; pre-release'
         run: |
           pip install -e .[docs,test]
+
+      - name: Install the library (pre-release)
+        if: matrix.special == '; pre-release'
+        run: |
+          pip install --pre -e .[docs,test]  --upgrade --force-reinstall
+
+      - name: show python version
+        run: |
+          python --version
+
+      - name: show installed packages
+        run: |
+          pip list
 
       - name: Test
         run: |
