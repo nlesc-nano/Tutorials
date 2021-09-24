@@ -169,3 +169,6 @@ texinfo_documents = [(
     "A collection of tutorials for the analysis of nanocrystals.",
     "Documentation"
 )]
+
+# A list of warning types to suppress arbitrary warning messages.
+suppress_warnings = ["epub.unknown_project_files"]
