@@ -22,6 +22,10 @@ jobs:
           - os: ubuntu-latest
             special: '; pre-release'
             version: 3.9
+        exclude:
+          - os: macos-latest
+            special: ''
+            version: 3.6
 
     steps:
       - name: Cancel Previous Runs
