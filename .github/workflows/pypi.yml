@@ -45,7 +45,7 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: __token__
-          password: ${{ secrets.QMFLOWS_PYPI }}
+          password: ${{ secrets.PYPI_TOKEN }}
 
       - name: Attach wheels to GitHub release
         if: github.event_name == 'release'
