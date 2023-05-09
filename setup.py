@@ -34,13 +34,14 @@ setup(
         'License :: OSI Approved :: Apache Software License',
         'Natural Language :: English',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
         'Topic :: Documentation :: Sphinx',
         'Topic :: Scientific/Engineering :: Chemistry'
     ],
+    python_requires='>=3.8',
     test_suite='tests',
     install_requires=[],
     tests_require=[
@@ -50,6 +51,6 @@ setup(
     ],
     extras_require={
         'docs':  ['sphinx', 'sphinx_rtd_theme>=1.0'],
-        'test':  ['pytest', 'pytest-cov', 'pycodestyle'],
+        'test':  ['pytest>=6.0', 'pytest-cov', 'pycodestyle'],
     }
 )

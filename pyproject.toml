@@ -1,0 +1,13 @@
+[tool.mypy]
+show_error_codes = true
+
+[tool.coverage.run]
+branch = true
+source = ["tutorials"]
+
+[tool.flake8]
+max-line-length = 100
+
+[tool.pytest.ini_options]
+testpaths = "src test"
+addopts = "--tb=short --cov --doctest-modules --cov-report xml --cov-report term --cov-report html -s --pdbcls=IPython.terminal.debugger:TerminalPdb"
