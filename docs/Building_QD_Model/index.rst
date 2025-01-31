@@ -5,4 +5,4 @@ Building a QD Model
    :maxdepth: 2
    :caption: Building a QD Model
 
-   Building a QD model from scratch
+   Building_QD_model_from_scratch

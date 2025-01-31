@@ -1,13 +1,12 @@
-.. Tutorials documentation master file, created by
-   sphinx-quickstart on Thu Jun 21 11:07:11 2018.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
-Welcome to Tutorials's documentation!
-==========================================================
+Tutorials Documentation
+=======================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
+   :caption: Tutorials
 
-   includeme
-   0_documentation
+   Building_QD_Model/index
+   Classical_MD_Simulations/index
+   Filtering_Candidates/index
+   Machine_Learning_Force_Fields/index
+
