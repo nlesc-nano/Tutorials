@@ -514,4 +514,4 @@ Step 4: Convert All DFT Structures to ML-Ready Format
 
   .. code-block:: bash
 
-       xyztonpz.py consolidated_dataset_1000.xyz
+       python xyztonpz.py consolidated_dataset_1000.xyz
