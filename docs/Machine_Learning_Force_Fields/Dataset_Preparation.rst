@@ -511,6 +511,7 @@ The output files contain:
      * `random_dataset`: random structures from the whole dataset.
 
 Choose the subset preferred for your method and convert according `xyz` file to `npz` using: 
+
 .. code-block:: bash
 
    xyztonpz.py consolidated_dataset_1000.xyz
