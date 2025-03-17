@@ -93,7 +93,7 @@ In the context of dataset generation for **MLFF**, PCA helps identify the most s
 By projecting the data onto the principal components, PCA effectively reveals directions of **maximum variance**, enabling the creation of **diverse and representative configurations** that capture essential structural dynamics. This approach ensures that the generated dataset spans the most relevant regions of the chemical space.
 
 You can download the script `generate_mlff_dataset.py` from:  
-`https://github.com/nlesc-nano/MLFF_QD/tree/main/Preprocessing`  
+`https://github.com/nlesc-nano/MLFF_QD/tree/main/src/mlff_qd/preprocessing`  
 
 Then run the script with the following command:
 
@@ -471,5 +471,44 @@ Step 4: Convert All DFT Structures to ML-Ready Format
 
    .. code-block:: bash
 
-      python compact_input.py --pos merged_positions.xyz --frc merged_forces.xyz
+      python compact_input.py --pos merged_positions.xyz --frc merged_forces.xy
 
+4. **Pick DFT Structures for Training the Model**
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Use `consolidate.py` to pick random structures suitable for ML training:
+
+   .. code-block:: bash
+
+      python consolidate.py input.yaml
+
+An example of input YAML file:
+
+   .. code-block:: bash
+  dataset:
+   input_file: "dataset_pos_frc_ev.xyz"
+   output_prefix: "consolidated_dataset" 
+   sizes: [500, 1000, 2000, 4000]
+  # Subset counts (number of structures from each method)
+   subset_counts:
+     MD: 2533  # Structures obtained from Molecular Dynamics (MD) simulation -- Adjust according to your model 
+     PCA: 1200 # Structures obtained from Principal Component Analysis (PCA) 
+     PCA_Surface: 600 # Surface-focused structures from PCA sampling 
+     Random: 200 # Randomly selected structures for additional diversity
+   contamination: 0.05 # Fraction of outliers removed by Isolation Forest 
+SOAP: 
+   species: ["In", "P", "Cl"] -- #Adjust according to your model
+   r_cut: 12.0 
+   n_max: 7 
+   l_max: 3 
+   sigma: 0.1 
+   periodic: False
+   sparse: False
+
+The output files contain:
+     * `consolidated_dataset`: a chunk of dataset with the most diverse structures (preferred for ML training).
+     * `MD_random_dataset`: random structures picked from MD data.
+     * `random_dataset`: random structures from the whole dataset.
+
+Choose the subset preferred for your method and convert according `xyz` file to `npz` using: 
+.. code-block:: bash
+xyztonpz.py consolidated_dataset_1000.xyz
