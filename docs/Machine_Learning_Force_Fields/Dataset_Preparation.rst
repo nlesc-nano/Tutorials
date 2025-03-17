@@ -369,7 +369,7 @@ Detailed Explanation of YAML Input Keywords
 
    .. code-block:: bash
 
-      distribute_job.py -i train.yaml
+      distribute_jobs.py -i train.yaml
 
    **Process Explanation:**  
    - The script **splits the dataset** into **5 folders** (or more/less depending on settings) to parallelize calculations.  
@@ -385,9 +385,9 @@ Detailed Explanation of YAML Input Keywords
    .. code-block:: bash
 
       cd chunk_1/
-      sbatch job.sh
+      sbatch lauch.sh
       cd ../chunk_2/
-      sbatch job.sh
+      sbatch launch.sh
       # Repeat for all chunks
 
    *Tip:*  
@@ -401,7 +401,7 @@ Detailed Explanation of YAML Input Keywords
 
    .. code-block:: bash
 
-      sbatch job.sh
+      sbatch launch.sh
 
 Key Points to Consider
 ^^^^^^^^^^^^^^^^^^^^^^
