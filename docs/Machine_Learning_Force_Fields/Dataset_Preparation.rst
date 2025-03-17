@@ -484,25 +484,26 @@ Use `consolidate.py` to pick random structures suitable for ML training:
 An example of input YAML file:
 
    .. code-block:: bash
-  dataset:
-   input_file: "dataset_pos_frc_ev.xyz"
-   output_prefix: "consolidated_dataset" 
-   sizes: [500, 1000, 2000, 4000]
-  # Subset counts (number of structures from each method)
-   subset_counts:
-     MD: 2533  # Structures obtained from Molecular Dynamics (MD) simulation -- Adjust according to your model 
-     PCA: 1200 # Structures obtained from Principal Component Analysis (PCA) 
-     PCA_Surface: 600 # Surface-focused structures from PCA sampling 
-     Random: 200 # Randomly selected structures for additional diversity
-   contamination: 0.05 # Fraction of outliers removed by Isolation Forest 
-SOAP: 
-   species: ["In", "P", "Cl"] -- #Adjust according to your model
-   r_cut: 12.0 
-   n_max: 7 
-   l_max: 3 
-   sigma: 0.1 
-   periodic: False
-   sparse: False
+
+      dataset:
+         input_file: "dataset_pos_frc_ev.xyz"
+         output_prefix: "consolidated_dataset" 
+         sizes: [500, 1000, 2000, 4000]
+      # Subset counts (number of structures from each method)
+         subset_counts:
+            MD: 2533  # Structures obtained from Molecular Dynamics (MD) simulation -- Adjust according to your model 
+            PCA: 1200 # Structures obtained from Principal Component Analysis (PCA) 
+            PCA_Surface: 600 # Surface-focused structures from PCA sampling 
+            Random: 200 # Randomly selected structures for additional diversity
+            contamination: 0.05 # Fraction of outliers removed by Isolation Forest 
+      SOAP: 
+         species: ["In", "P", "Cl"] -- #Adjust according to your model
+         r_cut: 12.0 
+         n_max: 7 
+         l_max: 3 
+         sigma: 0.1 
+        periodic: False
+        sparse: False
 
 The output files contain:
      * `consolidated_dataset`: a chunk of dataset with the most diverse structures (preferred for ML training).
@@ -511,4 +512,5 @@ The output files contain:
 
 Choose the subset preferred for your method and convert according `xyz` file to `npz` using: 
 .. code-block:: bash
-xyztonpz.py consolidated_dataset_1000.xyz
+
+   xyztonpz.py consolidated_dataset_1000.xyz
