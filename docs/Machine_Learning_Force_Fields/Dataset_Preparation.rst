@@ -473,8 +473,6 @@ Step 4: Convert All DFT Structures to ML-Ready Format
 
       python compact_input.py --pos merged_positions.xyz --frc merged_forces.xy
 
-4. **Pick DFT Structures for Training the Model**
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   Use `consolidate.py` to pick random structures suitable for ML training:
 
     .. code-block:: bash
@@ -510,7 +508,7 @@ Step 4: Convert All DFT Structures to ML-Ready Format
      * `MD_random_dataset`: random structures picked from MD data.
      * `random_dataset`: random structures from the whole dataset.
 
-  Choose the subset preferred for your method and convert according `xyz` file to `npz` using: 
+  Choose the subset preferred for your method and convert according `xyz` file to `npz` format using: 
 
   .. code-block:: bash
 
