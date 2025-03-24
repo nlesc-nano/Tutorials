@@ -509,7 +509,7 @@ Detailed Explanation of YAML Input :
 - ``output_prefix``: specifies the prefix of the output files
 - ``sizes``: creates chunks of different sizes.
 
-**Subset counts**
+Subset counts:
 
 - ``MD``: structures obtained from Molecular Dynamics (MD) simulation. Adjust according to your data.
 - ``PCA``: structures obtained from Principal Component Analysis (PCA).
@@ -522,7 +522,7 @@ Detailed Explanation of YAML Input :
 - ``species``: adjust according to your model.
 - ``r_cut``: a cutoff for the neighbouring environment.
 - ``n_max``: max number of radial basis functions (RBF).
-- ``l_max``: max degree of shperical harmonics.
+- ``l_max``: max degree of spherical harmonics.
 - ``sigma``: the width of smearing.
 
 The output files contain:
