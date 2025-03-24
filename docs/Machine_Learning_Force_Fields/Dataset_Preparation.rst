@@ -508,7 +508,9 @@ Detailed Explanation of YAML Input :
 - ``input_file``: specifies the input file name.
 - ``output_prefix``: specifies the prefix of the output files
 - ``sizes``: creates chunks of different sizes.
+
 **Subset counts**
+
 - ``MD``: structures obtained from Molecular Dynamics (MD) simulation. Adjust according to your data.
 - ``PCA``: structures obtained from Principal Component Analysis (PCA).
 - ``PCA_Surface``: Surface'focused structures from PCA sampling.
@@ -516,18 +518,19 @@ Detailed Explanation of YAML Input :
 - ``contamination``: Fraction of outliers removed by Isolation Forest. 
 
 **SOAP** refers to **Smooth Overlap of Atomic Positions**:
+
 - ``species``: adjust according to your model.
 - ``r_cut``: a cutoff for the neighbouring environment.
 - ``n_max``: max number of radial basis functions (RBF).
 - ``l_max``: max degree of shperical harmonics.
 - ``sigma``: the width of smearing.
 
- The output files contain:
+The output files contain:
      * `consolidated_dataset`: a chunk of dataset with the most diverse structures (preferred for ML training).
      * `MD_random_dataset`: random structures picked from MD data.
      * `random_dataset`: random structures from the whole dataset.
 
-  Choose the subset preferred for your method and convert according `xyz` file to `npz` format using: 
+Choose the subset preferred for your method and convert according `xyz` file to `npz` format using: 
 
   .. code-block:: bash
 
