@@ -513,9 +513,9 @@ Subset counts:
 
 - ``MD``: structures obtained from Molecular Dynamics (MD) simulation. Adjust according to your data.
 - ``PCA``: structures obtained from Principal Component Analysis (PCA).
-- ``PCA_Surface``: Surface'focused structures from PCA sampling.
-- ``Random``: Randomly selected structures for additional diversity.
-- ``contamination``: Fraction of outliers removed by Isolation Forest. 
+- ``PCA_Surface``: surface-focused structures from PCA sampling.
+- ``Random``: randomly selected structures for additional diversity.
+- ``contamination``: fraction of outliers removed by Isolation Forest. 
 
 **SOAP** refers to **Smooth Overlap of Atomic Positions**:
 
