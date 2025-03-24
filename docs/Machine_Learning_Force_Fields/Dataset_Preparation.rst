@@ -489,13 +489,13 @@ Step 4: Convert All DFT Structures to ML-Ready Format
          sizes: [500, 1000, 2000, 4000]
       # Subset counts (number of structures from each method)
          subset_counts:
-            MD: 2533  # Structures obtained from Molecular Dynamics (MD) simulation -- Adjust according to your model 
-            PCA: 1200 # Structures obtained from Principal Component Analysis (PCA) 
-            PCA_Surface: 600 # Surface-focused structures from PCA sampling 
-            Random: 200 # Randomly selected structures for additional diversity
-            contamination: 0.05 # Fraction of outliers removed by Isolation Forest 
+            MD: 2533   
+            PCA: 1200 
+            PCA_Surface: 600 
+            Random: 200
+            contamination: 0.05 
       SOAP: 
-         species: ["In", "P", "Cl"] -- #Adjust according to your model
+         species: ["In", "P", "Cl"] 
          r_cut: 12.0 
          n_max: 7 
          l_max: 3 
@@ -503,7 +503,26 @@ Step 4: Convert All DFT Structures to ML-Ready Format
         periodic: False
         sparse: False
 
-  The output files contain:
+Detailed Explanation of YAML Input :
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+- ``input_file``: specifies the input file name.
+- ``output_prefix``: specifies the prefix of the output files
+- ``sizes``: creates chunks of different sizes.
+**Subset counts**
+- ``MD``: structures obtained from Molecular Dynamics (MD) simulation. Adjust according to your data.
+- ``PCA``: structures obtained from Principal Component Analysis (PCA).
+- ``PCA_Surface``: Surface'focused structures from PCA sampling.
+- ``Random``: Randomly selected structures for additional diversity.
+- ``contamination``: Fraction of outliers removed by Isolation Forest. 
+
+**SOAP** refers to **Smooth Overlap of Atomic Positions**:
+- ``species``: adjust according to your model.
+- ``r_cut``: a cutoff for the neighbouring environment.
+- ``n_max``: max number of radial basis functions (RBF).
+- ``l_max``: max degree of shperical harmonics.
+- ``sigma``: the width of smearing.
+
+ The output files contain:
      * `consolidated_dataset`: a chunk of dataset with the most diverse structures (preferred for ML training).
      * `MD_random_dataset`: random structures picked from MD data.
      * `random_dataset`: random structures from the whole dataset.
