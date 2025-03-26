@@ -110,19 +110,27 @@ Example YAML Configuration for the Script
 
    pos_file: "mean_md-pos-1.xyz"
    frc_file: "mean_md-frc-1.xyz"
-   temperature: 300.0
-   temperature_target: 300
-   temperature_target_surface: 450
-   max_displacement: 2.0
-   max_random_displacement: 0.1
-   surface_atom_types:
-      - "Cs"
-      - "Br"
-   clustering_method: "KMeans"
-   num_clusters: 100
-   num_samples_pca: 1200
-   num_samples_pca_surface: 600
-   num_samples_randomization: 200
+   scaling_factor: 0.4
+   scaling_surf: 0.6
+   scaling_core: 0.4
+  max_random_displacement: 0.15
+  surface_atom_types:
+    - "In"
+    - "P"
+    - "Cl"
+  clustering_method: "KMeans"
+  num_clusters: 100
+  num_samples_pca: 1200
+  num_samples_pca_surface: 600
+  num_samples_randomization: 200
+  SOAP:
+    species: ["In", "P", "Cl"]
+    r_cut: 12.0
+    n_max: 7
+    l_max: 3
+    sigma: 0.1
+    periodic: False
+    sparse: False
 
 Structure Generation Breakdown
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -149,26 +157,11 @@ Detailed Explanation of YAML Input Keywords
   Path to the `.xyz` file containing **corresponding atomic forces**.  
   - These forces are used to evaluate **structural dynamics**.
 
-- **temperature**  
-  The temperature at which the **AIMD simulation** was run (typically in **Kelvin**).  
-  - This provides context for the **thermal behavior** of the system.
-
-- **temperature_target**  
-  Desired **temperature for the core atoms** during structure perturbation, ensuring they reflect **realistic thermal motion**.
-
-- **temperature_target_surface**  
-  Higher **target temperature for surface atoms** to reflect their **increased mobility**, leading to **larger perturbations** compared to core atoms.
-
-- **max_displacement**  
-  The **maximum allowed atomic displacement** (in Ångströms) during structure perturbation along PCA components.  
-  - This limits how much atoms can move, maintaining **realistic structures**.
-
 - **max_random_displacement**  
   The **maximum displacement** applied in the **random sampling step**.  
-  - This value is **smaller** than `max_displacement` to introduce **minor random variations** without disrupting structural integrity.
 
 - **surface_atom_types**  
-  A list of **atomic species** (e.g., `"Cs"`, `"Br"`) considered as **surface atoms**.  
+  A list of **atomic species** (e.g., `"In"`, `"Cl"`) considered as **surface atoms**.  
   - These atoms are **more prone to movement** and are treated differently during **PCA sampling**.
 
 - **clustering_method**  
@@ -188,6 +181,13 @@ Detailed Explanation of YAML Input Keywords
 - **num_samples_randomization**  
   Number of **randomly perturbed structures** added to the dataset to increase **diversity**.
 
+**SOAP** refers to **Smooth Overlap of Atomic Positions**:
+
+- **species**: adjust according to your model.
+- **r_cut**: a cutoff for the neighbouring environment.
+- **n_max**: max number of radial basis functions (RBF).
+- **l_max**: max degree of spherical harmonics.
+- **sigma**: the width of smearing.
 
 
 Output Files and Visualization
@@ -516,14 +516,6 @@ Subset counts:
 - ``PCA_Surface``: surface-focused structures from PCA sampling.
 - ``Random``: randomly selected structures for additional diversity.
 - ``contamination``: fraction of outliers removed by Isolation Forest. 
-
-**SOAP** refers to **Smooth Overlap of Atomic Positions**:
-
-- ``species``: adjust according to your model.
-- ``r_cut``: a cutoff for the neighbouring environment.
-- ``n_max``: max number of radial basis functions (RBF).
-- ``l_max``: max degree of spherical harmonics.
-- ``sigma``: the width of smearing.
 
 The output files contain:
      * `consolidated_dataset`: a chunk of dataset with the most diverse structures (preferred for ML training).
