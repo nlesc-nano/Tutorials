@@ -194,7 +194,7 @@ Output Files and Visualization
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - **Generated Structures:**  
-  The script outputs a `dataset_2000.xyz` file containing:
+  The script outputs a `training_dataset.xyz` file containing:
   - 1200 PCA-sampled structures
   - 600 surface-PCA structures
   - 200 randomized structures
