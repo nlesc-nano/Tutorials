@@ -181,7 +181,7 @@ Detailed Explanation of YAML Input Keywords
 - **num_samples_randomization**  
   Number of **randomly perturbed structures** added to the dataset to increase **diversity**.
 
-**SOAP** refers to **Smooth Overlap of Atomic Positions**:
+**SOAP** refers to **Smooth Overlap of Atomic Positions**. This representation expands a local neighborhood density in orthogonal radial and spherical harmonics basis functions.
 
 - **species**: adjust according to your model.
 - **r_cut**: a cutoff for the neighbouring environment.
